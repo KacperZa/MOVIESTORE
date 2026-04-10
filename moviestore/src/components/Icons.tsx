@@ -9,7 +9,7 @@ export const MagnifyingGlassIcon = ({size = 40, color = "#B4B4B4"}: IconProps) =
 )
 export const HeartIcon = ({size = 40, color = "#B4B4B4"}: IconProps) => (
               <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M34.7333 7.68332C33.8821 6.83166 32.8714 6.15607 31.7589 5.69513C30.6465 5.23419 29.4542 4.99695 28.25 4.99695C27.0459 4.99695 25.8535 5.23419 24.7411 5.69513C23.6286 6.15607 22.6179 6.83166 21.7667 7.68332L20 9.44999L18.2333 7.68332C16.5138 5.96384 14.1817 4.99784 11.75 4.99784C9.31828 4.99784 6.98616 5.96384 5.26667 7.68332C3.54718 9.40281 2.58118 11.7349 2.58118 14.1667C2.58118 16.5984 3.54718 18.9305 5.26667 20.65L20 35.3833L34.7333 20.65C35.585 19.7987 36.2606 18.788 36.7215 17.6756C37.1825 16.5632 37.4197 15.3708 37.4197 14.1667C37.4197 12.9625 37.1825 11.7702 36.7215 10.6577C36.2606 9.5453 35.585 8.53458 34.7333 7.68332Z" stroke={color} stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M34.7333 7.68332C33.8821 6.83166 32.8714 6.15607 31.7589 5.69513C30.6465 5.23419 29.4542 4.99695 28.25 4.99695C27.0459 4.99695 25.8535 5.23419 24.7411 5.69513C23.6286 6.15607 22.6179 6.83166 21.7667 7.68332L20 9.44999L18.2333 7.68332C16.5138 5.96384 14.1817 4.99784 11.75 4.99784C9.31828 4.99784 6.98616 5.96384 5.26667 7.68332C3.54718 9.40281 2.58118 11.7349 2.58118 14.1667C2.58118 16.5984 3.54718 18.9305 5.26667 20.65L20 35.3833L34.7333 20.65C35.585 19.7987 36.2606 18.788 36.7215 17.6756C37.1825 16.5632 37.4197 15.3708 37.4197 14.1667C37.4197 12.9625 37.1825 11.7702 36.7215 10.6577C36.2606 9.5453 35.585 8.53458 34.7333 7.68332Z" stroke={color} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
          
 )
@@ -33,7 +33,7 @@ export const SettingsIcon = ({size = 40, color = "#B4B4B4"}: IconProps) => (
 )
 export const FavouriteIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
             <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M20 3.33333L25.15 13.7667L36.6667 15.45L28.3333 23.5667L30.3 35.0333L20 29.6167L9.70001 35.0333L11.6667 23.5667L3.33334 15.45L14.85 13.7667L20 3.33333Z" stroke={color} stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M20 3.33333L25.15 13.7667L36.6667 15.45L28.3333 23.5667L30.3 35.0333L20 29.6167L9.70001 35.0333L11.6667 23.5667L3.33334 15.45L14.85 13.7667L20 3.33333Z" stroke={color} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
 )
 export const HomeIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
@@ -52,5 +52,15 @@ export const HomeIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
                     </g>
                 </g>
             </g>
+            </svg>
+)
+export const LesserThanIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
+            <svg fill={color} width={size} height={size} viewBox="-64 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M31.7 239l136-136c9.4-9.4 24.6-9.4 33.9 0l22.6 22.6c9.4 9.4 9.4 24.6 0 33.9L127.9 256l96.4 96.4c9.4 9.4 9.4 24.6 0 33.9L201.7 409c-9.4 9.4-24.6 9.4-33.9 0l-136-136c-9.5-9.4-9.5-24.6-.1-34z"/>
+            </svg>
+)
+export const GreaterThanIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
+            <svg fill={color} width={size} height={size} viewBox="-128 0 512 512" xmlns="http://www.w3.org/2000/svg">
+            <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/>
             </svg>
 )
