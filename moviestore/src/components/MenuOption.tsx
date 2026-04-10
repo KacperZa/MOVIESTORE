@@ -13,7 +13,7 @@ function MenuOption({text, icon, url}: MenuOptionsProps) {
     <>
     <Link to={url}>
       <motion.div 
-      className="flex flex-row gap-3 bg-gray-950 w-fit p-1.5 p-px-2 rounded-xl"
+      className="flex flex-row gap-3 bg-gray-950 w-fit p-1.5 p-px-2 rounded-xl select-none"
       initial= {{ x: 0}}
       whileHover={{ x:10}}
       >

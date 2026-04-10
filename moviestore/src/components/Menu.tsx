@@ -15,7 +15,7 @@ function Menu({children}: MenuProps) {
     <motion.div className="flex flex-row font-inter p-6 bg-gray-200 w-full  mb-0 ">  {/* OPAKOWANIE CALEJ STRONY */}
     <div className="flex flex-col">
       {/* SIDEBAR */}
-      <motion.div className="flex flex-col gap-14 h-100% bg-blue-600 p-6 rounded-2xl sticky top-6  w-1/1 "
+      <motion.div className="flex flex-col gap-14 h-100% bg-blue-400 p-6 rounded-2xl sticky top-6  w-1/1 "
       // initial = {{opacity:1, x: 0}}
       // whileHover={{opacity: 0, x:-400}} 
       > 
@@ -35,6 +35,7 @@ function Menu({children}: MenuProps) {
         <div className='flex flex-col gap-8'>
         <div className="text-4xl font-bold">General</div>
         <div className="flex flex-col gap-9">
+              <MenuOption text={"Settings"} url='/browse' icon={<SettingsIcon/>}/>
               <MenuOption text={"Settings"} url='/browse' icon={<SettingsIcon/>}/>
 
           </div>
