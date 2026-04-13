@@ -1,6 +1,7 @@
 interface IconProps{
-    size?: number
+    size?: number | string
     color?: string
+    fill?: string
 }
 
 export const MagnifyingGlassIcon = ({size = 40, color = "#B4B4B4"}: IconProps) => (
@@ -31,8 +32,8 @@ export const SettingsIcon = ({size = 40, color = "#B4B4B4"}: IconProps) => (
               </defs>
               </svg>        
 )
-export const FavouriteIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
-            <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const FavouriteIcon = ({size = 40, color = "#B4B4B4", fill = "none" } : IconProps) => (
+            <svg width={size} height={size} viewBox="0 0 40 40" fill={fill} xmlns="http://www.w3.org/2000/svg">
             <path d="M20 3.33333L25.15 13.7667L36.6667 15.45L28.3333 23.5667L30.3 35.0333L20 29.6167L9.70001 35.0333L11.6667 23.5667L3.33334 15.45L14.85 13.7667L20 3.33333Z" stroke={color} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
 )
