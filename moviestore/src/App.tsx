@@ -12,6 +12,7 @@ function App() {
   // const [loading, setLoading] = useState(true);
 
 
+  // Fetching data for movies genres and saving it in context 
   useEffect(() =>{
     fetch("/api/movie/genres")
     .then(r => r.json())
@@ -21,16 +22,18 @@ function App() {
     })
   },[])
 
+  // bg-[#141414] TŁO
+  // bg-gray-700 PANELE
   return (
   <>
-    <Menu>
-      <GenreContext.Provider value={genre}>
+    <GenreContext.Provider value={genre}>
+      <Menu>
         <Routes>
           <Route path="/" element={<HomePage/>}></Route>
           <Route path="/browse" element={<BrowsePage/>}></Route>
         </Routes>
-      </GenreContext.Provider>
-    </Menu>
+      </Menu>
+    </GenreContext.Provider>
   </>
 )
 }
