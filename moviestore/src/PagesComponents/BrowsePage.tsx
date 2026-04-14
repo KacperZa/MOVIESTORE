@@ -11,7 +11,6 @@ function BrowsePage() {
   const [films, setFilms] = useState<any[]>([])
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || 1);
-  const [isloading, setIsLoading] = useState(false)
 
   const genreHolder = useContext(GenreContext)
 
@@ -46,6 +45,7 @@ function BrowsePage() {
 
   // fetching data from backend
   useEffect(() => {
+    if (!genreHolder || (genreHolder as Genres[]).length === 0) return;
     const pobierz = async () =>{
 
       const filmy = await fetch('/api')
@@ -57,11 +57,10 @@ function BrowsePage() {
     
       const filmyZGatunkami: FilmsWithGenres[] = (filmy as Films[]).map(film => ({
         ...film, 
-        gatunki: film.genre_ids.map((id: number) => genreMap[id])
-      }))
+        gatunki: film.genre_ids.map((id: number) => genreMap[id] ?? 'Unknown')
+      }));
     
       setFilms(filmyZGatunkami)
-      setIsLoading(true)
     }
 
     pobierz()
@@ -77,7 +76,7 @@ function BrowsePage() {
     <p onClick={() => page > 1 ? changePage(page - 1) : null } className="cursor-pointer"><LesserThanIcon color="black" size={60}/></p>
     <div className="grid grid-cols-4 gap-y-7 gap-6 p-10 justify-center items-center">
       <AnimatePresence>
-      {(!isloading) ? (
+      {(currentMovies.length === 0) ? (
         // <SkeletonImage cards={8}/>
         <p>Loading...</p>
       ):
@@ -87,7 +86,6 @@ function BrowsePage() {
           initial={{ opacity: 0, x: -200 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -200}}
-          layout
           >
             
             <Link to={`/movie/${film.id}`}>
