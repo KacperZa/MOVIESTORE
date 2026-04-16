@@ -43,7 +43,7 @@ function MenuOption({ text, icon, url}: MenuOptionsProps) {
           </motion.div>
       </Link>
       <AnimatePresence>
-      {isOpen && 
+      {isOpen && genres?.length !== 0 && 
         <motion.div 
         className={`flex flex-col absolute z-20 bg-blue-300 p-3 mt-2 rounded-2xl w-full translate-x-[10%]`}
         initial={{x:-100, opacity: 0}}
@@ -53,7 +53,7 @@ function MenuOption({ text, icon, url}: MenuOptionsProps) {
         >
         <ul className="flex flex-col gap-1 p-2 py-1 font-medium">
           {genres?.map((genres, id) => (
-            <Link to={`movie/genre/${genres.id}`}>
+            <Link to={`movie/genre/${genres.id}`} key={id}>
               <li className="relative w-1/2
               after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
               hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10" key={id}> {genres.name}</li>
