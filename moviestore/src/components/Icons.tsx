@@ -1,6 +1,7 @@
 interface IconProps{
-    size?: number
+    size?: number | string
     color?: string
+    fill?: string
 }
 
 export const MagnifyingGlassIcon = ({size = 40, color = "#B4B4B4"}: IconProps) => (
@@ -31,8 +32,8 @@ export const SettingsIcon = ({size = 40, color = "#B4B4B4"}: IconProps) => (
               </defs>
               </svg>        
 )
-export const FavouriteIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
-            <svg width={size} height={size} viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+export const FavouriteIcon = ({size = 40, color = "#B4B4B4", fill = "none" } : IconProps) => (
+            <svg width={size} height={size} viewBox="0 0 40 40" fill={fill} xmlns="http://www.w3.org/2000/svg">
             <path d="M20 3.33333L25.15 13.7667L36.6667 15.45L28.3333 23.5667L30.3 35.0333L20 29.6167L9.70001 35.0333L11.6667 23.5667L3.33334 15.45L14.85 13.7667L20 3.33333Z" stroke={color} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
 )
@@ -64,3 +65,9 @@ export const GreaterThanIcon = ({size = 40, color = "#B4B4B4"} : IconProps) => (
             <path d="M224.3 273l-136 136c-9.4 9.4-24.6 9.4-33.9 0l-22.6-22.6c-9.4-9.4-9.4-24.6 0-33.9l96.4-96.4-96.4-96.4c-9.4-9.4-9.4-24.6 0-33.9L54.3 103c9.4-9.4 24.6-9.4 33.9 0l136 136c9.5 9.4 9.5 24.6.1 34z"/>
             </svg>
 )
+export const NoImageIcon = ({size = 40} : IconProps) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M7.828 5l-1-1H22v15.172l-1-1v-.69l-3.116-3.117-.395.296-.714-.714.854-.64a.503.503 0 0 1 .657.046L21 16.067V5zM3 20v-.519l2.947-2.947a1.506 1.506 0 0 0 .677.163 1.403 1.403 0 0 0 .997-.415l2.916-2.916-.706-.707-2.916 2.916a.474.474 0 0 1-.678-.048.503.503 0 0 0-.704.007L3 18.067V5.828l-1-1V21h16.172l-1-1zM17 8.5A1.5 1.5 0 1 1 15.5 7 1.5 1.5 0 0 1 17 8.5zm-1 0a.5.5 0 1 0-.5.5.5.5 0 0 0 .5-.5zm5.646 13.854l.707-.707-20-20-.707.707z"/>
+            <path fill="none" d="M0 0h24v24H0z"/></svg>
+)
+
