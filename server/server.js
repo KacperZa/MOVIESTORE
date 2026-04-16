@@ -24,6 +24,18 @@ const tmdbFetch = async (endpoint, params = {}) => {
 };
 
 app.get('/api', async (req, res) => {
+    const { page = '1', keywords, sort} = req.query;
+    let data;
+    // Checking if user used search bar
+    if(keywords){
+        data = await tmdbFetch('/search/movie', { page, query: keywords});
+    }else{
+        data = await tmdbFetch('/discover/movie', { page });
+    }
+
+    res.json(data.results)
+})
+app.get('/popular', async (req, res) => {
     const { page = '1'} = req.query;
     const data = await tmdbFetch('/movie/popular', { page })
     res.json(data.results)
