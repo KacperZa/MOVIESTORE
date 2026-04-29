@@ -20,12 +20,12 @@ function Menu({children}: MenuProps) {
       // initial = {{opacity:1, x: 0}}
       // whileHover={{opacity: 0, x:-400}} 
       > 
-        <div className="text-5xl font-istok-web font-semibold">MOVIESTORE</div>
+        <div className="text-5xl font-istok-web font-semibold select-none">MOVIESTORE</div>
         <div className='flex flex-col gap-8 max-h-full'>
             <div className="text-4xl font-bold">Menu</div>
             <div className="flex flex-col gap-9">
               <MenuOption text={"Home"} url='/' icon={<HomeIcon/>}/>
-              <MenuOptionBrowse text={"Browse"} url='/browse' icon={<MagnifyingGlassIcon/>}/>
+              <MenuOptionBrowse text={"Browse"} icon={<MagnifyingGlassIcon/>}/>
               <MenuOption text={"Coming soon"} url='/browse' icon={<SkipIcon/>}/>
               <MenuOption text={"Watchlist"} url='/browse' icon={<HeartIcon/>}/>
               {/* TODO ZMIENIC IKONE  */}
