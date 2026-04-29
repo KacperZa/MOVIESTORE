@@ -100,19 +100,22 @@ function BrowsePage() {
   return (
   <>
   <div className="flex flex-col ml-5 g-4">
-    <motion.div layout className="flex flex-2 flex-row justify-center items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
+    <motion.div layout className="flex flex-0.5 flex-row justify-center items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
       <form action="" onSubmit={(e) => {e.preventDefault()}}>
-      <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg border-gray-300 bg-white" type="text" name="" id="input" placeholder='Szukaj filmów...' />
+      <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="" id="input" placeholder='Szukaj filmów...' />
       <button type="submit" id="btn" className="hidden">Send</button>
       </form>
     </motion.div>
-    <div className="flex flex-col bg-green-400 rounded-2xl p-2">
+    <motion.div layout className="flex flex-col bg-green-400 rounded-2xl p-2">
       {/* Displaying the search value */}
       {search ? <div className="flex justify-start font-medium text-xl p-2 rounded-xl bg-green-300">Search results for: {search}</div>:null}
       <motion.div layout className="flex flex-8 flex-row rounded-2xl justify-center items-center ">
 
         {/* Changing the page */}
+        {page !== 1 ? 
         <p onClick={() => page > 1 ? changePage(page - 1) : null } className="cursor-pointer"><LesserThanIcon color="black" size={60}/></p>
+        : null
+      }
 
         {/* Grid for posters  */}
         <motion.div layout className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
