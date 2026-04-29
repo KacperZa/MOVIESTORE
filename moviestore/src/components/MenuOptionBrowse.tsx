@@ -6,10 +6,10 @@ import { GenreContext } from "../img/context/GenreContext"
 interface MenuOptionsProps {
   text: string
   icon: React.ReactNode
-  url: string
+  // url: string
 }
 
-function MenuOption({ text, icon, url}: MenuOptionsProps) {
+function MenuOption({ text, icon}: MenuOptionsProps) {
   const [isOpen, setIsOpen] = useState<boolean | null>(false)
 
   const ref = useRef<HTMLDivElement>(null);
@@ -30,7 +30,7 @@ function MenuOption({ text, icon, url}: MenuOptionsProps) {
   return (
     <>
     <div ref={ref} className="relative group w-fit" onClick={() => setIsOpen(true)}>
-      <Link  to={url} className=" w-fit">
+      <div className=" w-fit cursor-pointer">
           <motion.div 
           className="flex flex-row gap-3 bg-gray-950 w-fit p-1.5 p-px-2 rounded-xl select-none"
           initial= {{ x: 0}}
@@ -41,7 +41,7 @@ function MenuOption({ text, icon, url}: MenuOptionsProps) {
                 {text}
                 </div>
           </motion.div>
-      </Link>
+      </div>
       <AnimatePresence>
       {isOpen && genres?.length !== 0 && 
         <motion.div 
@@ -52,8 +52,13 @@ function MenuOption({ text, icon, url}: MenuOptionsProps) {
         transition={{duration: 0.3}}
         >
         <ul className="flex flex-col gap-1 p-2 py-1 font-medium">
+            <Link to={`/browse`}>
+              <li className="relative w-1/2
+              after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
+              hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10 "> All movies</li>
+            </Link> 
           {genres?.map((genres, id) => (
-            <Link to={`movie/genre/${genres.id}`} key={id}>
+            <Link to={`movie/genre/${genres.id}/${genres.name}`} key={id}>
               <li className="relative w-1/2
               after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
               hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10" key={id}> {genres.name}</li>
