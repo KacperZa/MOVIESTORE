@@ -5,6 +5,7 @@ import HomePage from './PagesComponents/HomePage'
 import BrowsePage from './PagesComponents/BrowsePage'
 import { useEffect, useState } from 'react'
 import { GenreContext } from './img/context/GenreContext'
+import SpecificGenre from './PagesComponents/SpecificGenre'
 
 
 function App() {
@@ -29,8 +30,9 @@ function App() {
     <GenreContext.Provider value={genre}>
       <Menu>
         <Routes>
-          <Route path="/" element={<HomePage/>}></Route>
-          <Route path="/browse" element={<BrowsePage/>}></Route>
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/browse" element={<BrowsePage />}></Route>
+          <Route path='/movie/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
         </Routes>
       </Menu>
     </GenreContext.Provider>
