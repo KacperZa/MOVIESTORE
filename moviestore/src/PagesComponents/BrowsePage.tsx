@@ -88,8 +88,8 @@ function BrowsePage() {
     const press = (e: KeyboardEvent) => {
       if (e.key === "Enter") {
         e.preventDefault()
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars 
-        const btn = document.getElementById("btn")?.click();
+        const btn = document.getElementById("btn");
+        btn?.click();
       }
     }
   
@@ -100,6 +100,7 @@ function BrowsePage() {
   return (
   <>
   <div className="flex flex-col ml-5 g-4">
+    {/* Search bar */}
     <motion.div layout className="flex flex-0.5 flex-row justify-center items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
       <form action="" onSubmit={(e) => {e.preventDefault()}}>
       <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="" id="input" placeholder='Szukaj filmów...' />
@@ -107,8 +108,10 @@ function BrowsePage() {
       </form>
     </motion.div>
     <motion.div layout className="flex flex-col bg-green-400 rounded-2xl p-2">
-      {/* Displaying the search value */}
-      {search ? <div className="flex justify-start font-medium text-xl p-2 rounded-xl bg-green-300">Search results for: {search}</div>:null}
+      <div className="flex flex-row gap-2">
+      <motion.div layout className="flex justify-start font-medium text-xl p-2  rounded-xl bg-green-300">All movies</motion.div>
+      {search ? <motion.div layout className="flex justify-start font-medium text-xl p-2 px-2 rounded-xl bg-green-300">Search results for: {search}</motion.div> : null}
+      </div>
       <motion.div layout className="flex flex-8 flex-row rounded-2xl justify-center items-center ">
 
         {/* Changing the page */}
@@ -191,7 +194,7 @@ function BrowsePage() {
         <p onClick={() => page < 3 ? changePage(page + 1) : null } className="cursor-pointer"><GreaterThanIcon color="black" size={60}/></p>
       </motion.div>
 
-    </div>
+    </motion.div>
   </div>
 </>
   )
