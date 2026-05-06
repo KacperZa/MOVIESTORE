@@ -5,6 +5,14 @@
   --font-istok-web: 'Istok Web', sans-serif;
 }
 
+@layer components{
+  .underline-anim{
+    @apply relative w-1/2
+          after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
+          hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10;
+  }
+}
+
 html, body, #root{
     width: 100%;
     height: 100%;

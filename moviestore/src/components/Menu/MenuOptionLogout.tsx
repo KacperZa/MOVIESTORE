@@ -1,20 +1,22 @@
 import type React from "react"
 import { motion, spring } from "motion/react"
-import { Link } from "react-router-dom"
+import { useUser } from "../../context/useUser"
 interface MenuOptionsProps {
-  text: string
   icon: React.ReactNode
-  url: string
 }
 
-function MenuOption({ text, icon, url}: MenuOptionsProps) {
+function MenuOption({ icon}: MenuOptionsProps) {
 
+    const { setUser} = useUser()
 
+    const handleLogout = () =>{
+        setUser(null)
+    }
 
   return (
     <>
     <div className="relative group w-fit">
-        <Link to={url} className=" w-fit">
+        <button onClick={handleLogout} className=" w-fit cursor-pointer">
             <motion.div 
             className="flex flex-row gap-3 bg-gray-950 w-fit p-1.5 p-px-2 rounded-xl select-none"
             initial= {{ x: 0}}
@@ -22,10 +24,10 @@ function MenuOption({ text, icon, url}: MenuOptionsProps) {
             transition={{type: spring, stiffness: 150, damping: 8, mass: 1 }}>
                 {icon}
                 <div className='text-2xl font-medium text-gray-200'>
-                  {text}
+                  Logout
                   </div>
             </motion.div>
-        </Link>
+        </button>
       </div>
     </>
   )
