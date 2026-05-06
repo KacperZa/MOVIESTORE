@@ -4,7 +4,7 @@ import { LesserThanIcon, GreaterThanIcon, FavouriteIcon, NoImageIcon } from "../
 // import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence, spring } from "motion/react";
-import { GenreContext } from "../img/context/GenreContext";
+import { GenreContext } from "../context/GenreContext";
 
 function BrowsePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -101,11 +101,13 @@ function BrowsePage() {
   <>
   <div className="flex flex-col ml-5 g-4">
     {/* Search bar */}
-    <motion.div layout className="flex flex-0.5 flex-row justify-center items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
-      <form action="" onSubmit={(e) => {e.preventDefault()}}>
-      <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="" id="input" placeholder='Szukaj filmów...' />
-      <button type="submit" id="btn" className="hidden">Send</button>
-      </form>
+    <motion.div layout className="flex flex-0.5 flex-row justify-evenly gap-2 items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
+        <form action="" onSubmit={(e) => {e.preventDefault()}}>
+          <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="search" id="input" placeholder='Szukaj filmów...' />
+          <button type="submit" id="btn" className="hidden">Send</button>
+        </form>
+
+      <Link to={'/login'} className="text-lg bg-amber-200 w-fit p-2 px-4 rounded-xl font-medium">Sign in</Link>
     </motion.div>
     <motion.div layout className="flex flex-col bg-green-400 rounded-2xl p-2">
       <div className="flex flex-row gap-2">
@@ -117,7 +119,8 @@ function BrowsePage() {
         {/* Changing the page */}
         {page !== 1 ? 
         <p onClick={() => page > 1 ? changePage(page - 1) : null } className="cursor-pointer"><LesserThanIcon color="black" size={60}/></p>
-        : null
+        : 
+        <p onClick={() => page > 1 ? changePage(page - 1) : null } className=""><LesserThanIcon color="gray" size={60}/></p>
       }
 
         {/* Grid for posters  */}

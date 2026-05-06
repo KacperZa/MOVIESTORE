@@ -2,7 +2,7 @@ import type React from "react"
 import { AnimatePresence, motion, spring } from "motion/react"
 import { Link } from "react-router-dom"
 import { useEffect, useState, useRef, useContext } from "react"
-import { GenreContext } from "../img/context/GenreContext"
+import { GenreContext } from "../../context/GenreContext"
 interface MenuOptionsProps {
   text: string
   icon: React.ReactNode

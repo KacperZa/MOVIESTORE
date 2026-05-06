@@ -1,16 +1,16 @@
 import MenuOption from './MenuOption'
 // import { motion } from 'motion/react'
-import {HeartIcon, MagnifyingGlassIcon, SkipIcon, SettingsIcon, FavouriteIcon, HomeIcon} from './Icons'
+import { HeartIcon, MagnifyingGlassIcon, SkipIcon, SettingsIcon, FavouriteIcon, HomeIcon, LogoutIcon } from '../Icons'
 import { motion } from 'motion/react'
 import MenuOptionBrowse from './MenuOptionBrowse'
+import { Outlet } from 'react-router-dom'
+import MenuOptionLogout from './MenuOptionLogout'
+import { useUser } from '../../context/useUser'
 
-interface MenuProps {
-  children: React.ReactNode
-}
+function Menu() {
 
-function Menu({children}: MenuProps) {
+  const {user} = useUser()
 
-  
   return (
   <>
     <motion.div className="flex flex-row font-inter p-6 bg-gray-200 w-full max-h-screen mb-0 overflow-hidden">  {/* OPAKOWANIE CALEJ STRONY */}
@@ -27,25 +27,24 @@ function Menu({children}: MenuProps) {
               <MenuOption text={"Home"} url='/' icon={<HomeIcon/>}/>
               <MenuOptionBrowse text={"Browse"} icon={<MagnifyingGlassIcon/>}/>
               <MenuOption text={"Coming soon"} url='/browse' icon={<SkipIcon/>}/>
-              <MenuOption text={"Watchlist"} url='/browse' icon={<HeartIcon/>}/>
+              <MenuOption text={"Watchlist"} url={user !== null ? `/browse` : `/login`} icon={<HeartIcon/>}/>
               {/* TODO ZMIENIC IKONE  */}
-              <MenuOption text={"Watched films"} url='/browse' icon={<HeartIcon/>}/>
-              <MenuOption text={"Favourite"} url='/browse' icon={<FavouriteIcon/>}/>
+              <MenuOption text={"Watched films"} url={user !== null ? `/browse` : `/login`} icon={<HeartIcon/>}/>
+              <MenuOption text={"Favourite"} url={user !== null ? `/browse` : `/login`} icon={<FavouriteIcon/>}/>
             </div>
           </div>
         <div className='flex flex-col gap-8'>
         <div className="text-4xl font-bold ">General</div>
         <div className="flex flex-col gap-9">
-              <MenuOption text={"Settings"} url='/browse' icon={<SettingsIcon/>}/>
-              <MenuOption text={"Settings"} url='/browse' icon={<SettingsIcon/>}/>
-
+              <MenuOption text={"Settings"} url={user !== null ? `/browse` : `/login`} icon={<SettingsIcon/>}/>
+              <MenuOptionLogout icon={<LogoutIcon />}/>
           </div>
         </div>
 
       </motion.div>
     </div>
     {/* MAIN PANEL  */}
-    {children}
+    <Outlet/>
     </motion.div>
   </>
 )

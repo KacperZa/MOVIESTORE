@@ -4,7 +4,7 @@ import { LesserThanIcon, GreaterThanIcon, FavouriteIcon, NoImageIcon } from "../
 // import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence, spring } from "motion/react";
-import { GenreContext } from "../img/context/GenreContext";
+import { GenreContext } from "../context/GenreContext";
 
 function SpecificGenre() {
     const { id_genre, name_genre } = useParams()
