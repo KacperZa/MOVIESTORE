@@ -29,52 +29,24 @@ const tmdbFetch = async (endpoint, params = {}) => {
         url.searchParams.set(key, value)
     })
 
-    const res = await fetch(url.toString(), {
-        method: 'GET',
-        headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${process.env.TMDB_TOKEN}`
-        },
-    });
-
-    return res.json();
+    try{
+        const res = await fetch(url.toString(), {
+            method: 'GET',
+            headers: {
+                accept: 'application/json',
+                Authorization: `Bearer ${process.env.TMDB_TOKEN}`
+            },
+        });
+        if(!res.ok){
+            throw new Error (`HTTP: ${res.status}`)
+        }
+        return res.json();
+    } catch(err) {
+        console.error("Appeared an error: ", err)
+    }
 };
 
-// login routes
 
-// const users = []
-
-// const posts = [
-//     {
-//         username: 'Kyle',
-//         title: 'Post 1'
-//     },
-//     {
-//         username: 'Ania',
-//         title: 'Post 2'
-//     }
-// ]
-
-// app.get('/posts', authenticateToken, (req, res) => {
-//     console.log('user z tokenu', req.user)
-//     console.log('posts', posts)
-//     res.json(posts.filter(post => post.username === req.user.name ))
-// })
-
-// app.get('/users', (req, res) => {
-//     res.json(users)
-// })
-
-// app.post('/users', async (req, res) =>{
-//     try{
-//         const hashedPassword = await bcrypt.hash(req.body.password, 10)
-//         const user = {username: req.body.username, password: hashedPassword}
-//         users.push(user)
-//         res.status(201).send()
-//     } catch {
-//         res.status(500).send()
-//     }
-// })
 
 
 
@@ -95,16 +67,15 @@ app.get('/popular', async (req, res) => {
     const data = await tmdbFetch('/movie/popular', { page })
     res.json(data.results)
 })
-// MOVIE GENRES
-app.get('/api/movie/genres', async (req, res) => {
-    const data = await tmdbFetch('/genre/movie/list')
-    res.json(data.genres)
-})
-
 // MOVIE DETAILS
 app.get('/api/movie/details/:movieId', async (req, res) => {
     const movieId = req.params['movieId']
     const data = await tmdbFetch(`/movie/${movieId}`)
+    res.json(data.genres)
+})
+// MOVIE GENRES
+app.get('/api/movie/genres', async (req, res) => {
+    const data = await tmdbFetch('/genre/movie/list')
     res.json(data.genres)
 })
 // MOVIE WITH SPEFICIC GENRE
@@ -115,19 +86,34 @@ app.get('/api/movie/:genre_id', async (req, res) => {
 })
 
 
-// TV SHOWS
-app.get('/api/tv', async (req, res) => {
-    const { page = '1'} = req.query;
-    const data = await tmdbFetch('/tv/changes', { page })
+// TV SHOWS GENRES
+app.get('/api/tv/genres', async (req, res) => {
+    const data = await tmdbFetch('/genre/tv/list')
+    res.json(data.genres)
+})
+// SHOWS WITH SPEFICIC GENRE
+app.get('/api/tv/:genre_id', async (req, res) => {
+    const genreId = req.params.genre_id;
+    const data = await tmdbFetch(`/discover/tv?with_genres=${genreId}`)
     res.json(data.results)
 })
 
 
-// TV SHOWS GENRES
-app.get('/api/tv/genres', async (req, res) => {
-    const data = await tmdbFetch('/genre/movie/list')
-    res.json(data.genres)
+// TV SHOWS
+app.get('/api/tv', async (req, res) => {
+    const { page = '1', keywords} = req.query;
+    let data;
+
+    if(keywords){
+        data = await tmdbFetch('/search/tv', { page, query: keywords});
+    }else{
+        data = await tmdbFetch('/discover/tv', { page });
+    }
+
+    res.json(data.results)
 })
+
+
 
 // function authenticateToken(req, res, next){
 //     const authHeader = req.headers['authorization']

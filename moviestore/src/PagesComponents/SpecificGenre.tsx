@@ -4,19 +4,22 @@ import { LesserThanIcon, GreaterThanIcon, FavouriteIcon, NoImageIcon } from "../
 // import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence, spring } from "motion/react";
-import { GenreContext } from "../context/GenreContext";
+import { MovieGenreContext } from "../context/MovieGenreContext";
+import { TvGenreContext } from "../context/TvMovieGenreContext";
 
 function SpecificGenre() {
-    const { id_genre, name_genre } = useParams()
+    const { type, id_genre, name_genre } = useParams()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [films, setFilms] = useState<any[]>([])
   const [search, setSearch] = useState("")
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || 1);
 
-  const genreHolder = useContext(GenreContext) // Context with genre list
+  const movieGenreHolder = useContext(MovieGenreContext) // Context with movie genre list
+  const tvGenreHolder = useContext(TvGenreContext) // Context with tv shows genre list
 
 
+  const genreHolder = type === 'tv' ? tvGenreHolder : movieGenreHolder
   // function for changing pages and setting the search value in url
   const changePage = (newPage : number) => {
     setSearchParams({query: search, page: String(newPage)});
@@ -52,15 +55,15 @@ function SpecificGenre() {
     name: string
 }
 
-  // fetching data from backend
+  // fetching data from api
   useEffect(() => {
     if (!genreHolder || (genreHolder as Genres[]).length === 0) return;
     const pobierz = async () =>{
 
-      const filmy = await fetch(`/api/movie/${id_genre}?keywords=${search}`)
+      const filmy = await fetch(`/api/${type}/${id_genre}?keywords=${search}`)
       .then(r => r.json())
       // const gatunki = await gatunkiRes.json();
-    
+      // mapping movies / shows with genres 
       const genreMap: Record<number, string> = {};
       (genreHolder as Genres[]).forEach(g => genreMap[g.id] = g.name);
     
@@ -73,9 +76,9 @@ function SpecificGenre() {
     }
 
     pobierz()
-  },[genreHolder, search, id_genre])
+  },[genreHolder, search, id_genre, type])
   
-  // Soorting by votes
+  // Sorting by votes
   const sorted = useMemo(() => 
     [...films].sort((a, b) => a.vote_average < b.vote_average ? 1 : -1),
   [films])
@@ -102,22 +105,33 @@ function SpecificGenre() {
   <>
   <div className="flex flex-col ml-5 g-4">
     {/* Search bar */}
-    <motion.div layout className="flex flex-0.5 flex-row justify-center items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
-      <form action="" onSubmit={(e) => {e.preventDefault()}}>
-      <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="" id="input" placeholder='Szukaj filmów...' />
-      <button type="submit" id="btn" className="hidden">Send</button>
-      </form>
+    {/* Search bar */}
+    <motion.div layout className="flex flex-0.5 shrink-0 flex-row justify-evenly gap-2 items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
+        <form action="" onSubmit={(e) => {e.preventDefault()}}>
+          <input onChange={changeSearch} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="search" id="input" placeholder='Szukaj filmów...' />
+          <button type="submit" id="btn" className="hidden">Send</button>
+        </form>
+      
+      {/* Switch for enabling tv data */}
+
+
+      <Link to={'/login'} className="text-lg bg-amber-200 w-fit p-2 px-4 rounded-xl font-medium">Sign in</Link> {/* LOGIN */}
     </motion.div>
     <motion.div layout className="flex flex-col bg-green-400 rounded-2xl p-2">
       <div className="flex flex-row gap-2">
       {search ? <motion.div layout className="flex justify-start font-medium text-xl p-2 px-3 rounded-xl bg-green-300"> Search results for: {search}</motion.div> : null}
-      {name_genre ? <motion.div layout className="flex justify-start font-medium text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} films: </motion.div> : null}
+      {name_genre && type === "movie" ? <motion.div layout className="flex justify-start font-medium text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} movies: </motion.div> : null}
+      {name_genre && type === "tv" ? <motion.div layout className="flex justify-start font-medium text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} shows: </motion.div> : null}
       </div>
       {/* Displaying the search value */}
       <motion.div layout className="flex flex-8 flex-row rounded-2xl justify-center items-center ">
 
         {/* Changing the page */}
-        <p onClick={() => page > 1 ? changePage(page - 1) : null } className={`cursor-pointer ${page == 1 ? 'hidden' : null}`}><LesserThanIcon color="black" size={60}/></p>
+        {page !== 1 ? 
+        <p onClick={() => page > 1 ? changePage(page - 1) : null } className="cursor-pointer"><LesserThanIcon color="black" size={60}/></p>
+        : 
+        <p onClick={() => page > 1 ? changePage(page - 1) : null } className=""><LesserThanIcon color="gray" size={60}/></p>
+      }
 
         {/* Grid for posters  */}
         <motion.div layout className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
@@ -175,9 +189,7 @@ function SpecificGenre() {
                       {film.gatunki.map((g:string, i:number) => (
                         <span key={i} className="text-xs"> {i === film.gatunki.length - 1 ? g  : g+","}</span>
                       ))}
-                      
                       </div>
-                      
                     </div>
                   </motion.div>
               </motion.div>

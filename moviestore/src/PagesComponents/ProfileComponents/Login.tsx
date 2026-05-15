@@ -34,8 +34,8 @@ const HandleSubmit = async (e:React.SubmitEvent<HTMLFormElement>) => {
   
   if(res.ok){
     console.log('Zalogowano się')
-    navigate('/')
     setUser(data)
+    navigate('/')
     console.log(`Context to: `, user)
   }
   if(!res.ok){

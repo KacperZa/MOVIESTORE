@@ -1,6 +1,8 @@
 import { motion } from "framer-motion"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { calculateAge } from "../UsefulFunctions"
+
 
 function Login() {
 const [ username, setUsername ] = useState('')
@@ -49,17 +51,9 @@ const HandleSubmit = async (e:React.SubmitEvent<HTMLFormElement>) => {
 }
 
 
-
 const validateDate = (val:string) => {
-  const today = new Date()
-  const birth = new Date(val)
-
-  let age = today.getFullYear() - birth.getFullYear()
-
-  const hadBirthday = today.getMonth() > birth.getMonth() || (today.getMonth()  === birth.getMonth() && today.getDate() >= birth.getDate())
-
-  if(!hadBirthday) age--;
   
+  const age = calculateAge(val)
   if(age <= 8 || age >= 70){
     setDateBirthError(true)
   } else {

@@ -18,10 +18,22 @@ type UserContextType = {
   const UserContext = createContext<UserContextType | null >(null)
 
   export const UserProvider = ({ children }: {children : ReactNode}) => {
-    const [user, setUser] = useState<User | null>(null);
+    const [user, setUser] = useState<User | null>(() => {
+        const saved = localStorage.getItem('user')
+        return saved ? JSON.parse(saved) : null
+    });
+
+    const handleSetUser = (user: User | null) => {
+        if (user) {
+            localStorage.setItem('user', JSON.stringify(user))
+        } else {
+            localStorage.removeItem('user')
+        }
+        setUser(user)
+    }
 
     return (
-        <UserContext.Provider value={{user, setUser}}> 
+        <UserContext.Provider value={{user, setUser: handleSetUser}}> 
             { children }
         </UserContext.Provider>
     )

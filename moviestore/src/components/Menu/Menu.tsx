@@ -1,6 +1,6 @@
 import MenuOption from './MenuOption'
 // import { motion } from 'motion/react'
-import { HeartIcon, MagnifyingGlassIcon, SkipIcon, SettingsIcon, FavouriteIcon, HomeIcon, LogoutIcon } from '../Icons'
+import { HeartIcon, MagnifyingGlassIcon, SkipIcon, SettingsIcon, FavouriteIcon, HomeIcon} from '../Icons'
 import { motion } from 'motion/react'
 import MenuOptionBrowse from './MenuOptionBrowse'
 import { Outlet } from 'react-router-dom'
@@ -36,8 +36,8 @@ function Menu() {
         <div className='flex flex-col gap-8'>
         <div className="text-4xl font-bold ">General</div>
         <div className="flex flex-col gap-9">
-              <MenuOption text={"Settings"} url={user !== null ? `/browse` : `/login`} icon={<SettingsIcon/>}/>
-              <MenuOptionLogout icon={<LogoutIcon />}/>
+              <MenuOption text={"Profile"} url={user !== null ? `/profile` : `/login`} icon={<SettingsIcon/>}/>
+              <MenuOptionLogout/>
           </div>
         </div>
 
