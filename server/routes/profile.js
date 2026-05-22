@@ -36,11 +36,22 @@ router.post('/register', async (req, res) =>{
 })  
 // Updating a user
 router.patch('/:id', getUser, async (req, res) =>{
-    if(req.body.name != null){
-        req.user.name = req.body.name
+    if(req.body.username != null){
+        req.user.username = req.body.username
     }
-    if(req.body.followingMovies != null){
-        req.user.followingMovies = req.body.followingMovies
+    if(req.body.email != null){
+        req.user.email = req.body.email
+    }
+    if(req.body.dateOfBirth != null){
+        req.user.dateOfBirth = req.body.dateOfBirth
+    }
+    if(req.body.password != null){
+        try {
+            let hashedPassword = await bcrypt.hash(req.body.password, 10)
+            req.user.password = hashedPassword
+        } catch (err){
+            res.status(400).json({message: err.message})
+        }
     }
 
     try {
@@ -51,7 +62,7 @@ router.patch('/:id', getUser, async (req, res) =>{
     }
 })
 // Deleting a user
-router.delete('/:id', getUser, async (req, res) =>{
+router.delete('delete/:id', getUser, async (req, res) =>{
     try {
         await req.user.deleteOne()
         res.json({message: 'Deleted a user'})
