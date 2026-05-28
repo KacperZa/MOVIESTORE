@@ -11,6 +11,8 @@ import SpecificGenre from './PagesComponents/SpecificGenre'
 import Login from './PagesComponents/ProfileComponents/Login'
 import Register from './PagesComponents/ProfileComponents/Register'
 import Profile from './PagesComponents/ProfileComponents/Profile'
+import { PrimeReactProvider } from 'primereact/api';
+        
 
 
 function App() {
@@ -52,22 +54,26 @@ function App() {
   // bg-gray-700 PANELE
   return (
   <>
-    <UserProvider>
-      <TvGenreContext.Provider value={tvGenre}>
-        <MovieGenreContext.Provider value={genre}>
-          <Routes>
-            <Route element={<Menu />}>
-              <Route path="/" element={<HomePage />}></Route>
-              <Route path="/browse/:type" element={<BrowsePage />}></Route>
-              <Route path='/:type/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
-              <Route path='/profile' element={<Profile />}></Route>
-            </Route>
-            <Route path='/login' element={<Login />}></Route>
-            <Route path='/register' element={<Register />}></Route>
-          </Routes>
-        </MovieGenreContext.Provider>
-      </TvGenreContext.Provider>
-    </UserProvider>
+    <PrimeReactProvider value={{
+      
+    }}>
+      <UserProvider>
+        <TvGenreContext.Provider value={tvGenre}>
+          <MovieGenreContext.Provider value={genre}>
+            <Routes>
+              <Route element={<Menu />}>
+                <Route path="/" element={<HomePage />}></Route>
+                <Route path="/browse/:type" element={<BrowsePage />}></Route>
+                <Route path='/:type/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
+                <Route path='/profile' element={<Profile />}></Route>
+              </Route>
+              <Route path='/login' element={<Login />}></Route>
+              <Route path='/register' element={<Register />}></Route>
+            </Routes>
+          </MovieGenreContext.Provider>
+        </TvGenreContext.Provider>
+      </UserProvider>
+    </PrimeReactProvider>
   </>
 )
 }

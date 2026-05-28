@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'   // ← dodaj ten import
+import tailwindcss from '@tailwindcss/vite'
 
 
 // https://vite.dev/config/
@@ -9,7 +9,13 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  resolve: {
+    dedupe: ['react', 'react-dom']  
+  },
   server: {
+    fs: {
+      allow: ['..']
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:5000',
