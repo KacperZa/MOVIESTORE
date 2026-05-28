@@ -9,6 +9,7 @@ function Login() {
 
   const [ emailError, setEmailError ] = useState(false)
   const [ passwordError, setPasswordError ] = useState(false)
+  const [ dataError, setDataError ] = useState(false)
   
 interface HandleChange {
   setSmth: (value: string) => void,
@@ -39,9 +40,16 @@ const HandleSubmit = async (e:React.SubmitEvent<HTMLFormElement>) => {
     console.log(`Context to: `, user)
   }
   if(!res.ok){
-    console.log('No nie udalo sie')
+    console.log("Error: ", res.status)
+  }
+
+  if(data.message === "Cannot find the user"){
+    setDataError(true)
+  } else {
+    setDataError(false)
   }
 }
+
 
 const validateEmail = (val: string) => {
   
@@ -85,8 +93,10 @@ const HandleChange = ({setSmth, e, validate} : HandleChange) => {
                 {passwordError ? <p>Your password must be at least 8 characters long! </p> : null}
 
                 <button disabled={emailError || passwordError} className={`py-4 px-6 ${emailError || passwordError || !password || !email  ? `bg-gray-600 cursor-not-allowed` : `bg-gray-500 cursor-pointer`}  w-fit justify-self-center rounded-xl`}>Submit</button>
+                {dataError ? <p className="text-red-700">Credentials are invalid or user doesn't exist.</p> : null}
+
             </form>
-            <div className="font-medium">You don't have an account? Create one <Link to={'/register'} className="underline-anim">here</Link>! </div>
+            <div className="font-medium ">You don't have an account? Create one <Link to={'/register'} className="underline-anim">here</Link>! </div>
         </motion.div>
     </div>
     </>
