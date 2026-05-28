@@ -62,7 +62,7 @@ router.patch('/:id', getUser, async (req, res) =>{
     }
 })
 // Deleting a user
-router.delete('delete/:id', getUser, async (req, res) =>{
+router.delete('/delete/:id', getUser, async (req, res) =>{
     try {
         await req.user.deleteOne()
         res.json({message: 'Deleted a user'})
@@ -75,14 +75,14 @@ router.post('/login', async (req, res) =>{
     try {
         const myUser = await User.findOne({email: req.body.email})
         if (myUser == null) {
-            return res.status(400).send('Cannot find the user')
+            return res.status(400).json({message:'Cannot find the user'})
         } 
         if(await bcrypt.compare(req.body.password, myUser.password)) {
             res.json(myUser)
             res.redirect('/')
             res.send('Correct password')
         } else {
-            res.send('Wrong password')
+            res.status(401).json({message: 'Wrong password'})
         }
     } catch(err) {
         res.sendStatus(500)

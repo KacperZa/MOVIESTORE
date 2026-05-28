@@ -1,8 +1,10 @@
 import { motion } from 'motion/react'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { EditIcon } from '../../components/Icons'
 import { useUser } from '../../context/useUser'
-import Modal from '../Modal'
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
+import { useNavigate } from 'react-router-dom'
 
 
 function Profile() {
@@ -25,6 +27,8 @@ function Profile() {
   const [passwdError, setPasswdError] = useState(false)
 
   const [openModal, setOpenModal] = useState(false)
+
+  const navigate = useNavigate()
 
 
   const handleChange = ({e, setSmth} : ChangeProps) => {
@@ -65,13 +69,22 @@ function Profile() {
     }
   }
 
-  const handleDelete = async (e: React.SubmitEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const handleDelete = async () => {
     try {
       const res = await fetch(`http://localhost:5000/profile/delete/${user?._id}`, {
         method: 'DELETE',
         headers: {'Content-Type': 'application/json'},
       })
+
+      if(!res.ok){
+        console.error('Error', res.status)
+        return
+      }
+      if(res.ok){
+        console.log('Deleted an account')
+        navigate('/')
+        setUser(null)
+      }
 
       const data = await res.json()
       console.log(data)
@@ -82,9 +95,12 @@ function Profile() {
     }
   }
 
-  const handleDeleteButton = () => {
-    setOpenModal((prev) => !prev)
-  }
+  const footerContent = (
+    <div className='flex justify-around'>
+      <Button label='No' icon='pi pi-times' onClick={() => console.log('Tak')}></Button>
+      <Button label='Yes' icon='pi pi-check' onClick={() => handleDelete()}></Button>
+    </div>
+  )
 
 
   return (
@@ -152,9 +168,17 @@ function Profile() {
                   <motion.button layout type='submit' onClick={() => setEditMode(true)} className='bg-gray-400 py-3 px-8 rounded-lg font-medium  shadow-xl/15 shadow-black flex justify-center cursor-pointer'> <EditIcon color='black'/></motion.button>
                 }
                 <motion.button layout type='button' onClick={() => setPasswdEditMode(true)} className='relative py-4 px-8 shadow-xl/15 cursor-pointer shadow-black bg-gray-400 rounded-lg font-medium '>Change password</motion.button>
-                <motion.button layout type='button' onClick={handleDeleteButton} className='relative py-4 px-8 shadow-xl/15 cursor-pointer shadow-black bg-black rounded-lg font-medium text-red-500 border-red-500 border-2'>Delete the account</motion.button>
+                {/* <motion.button layout type='button' onClick={handleDeleteButton} className='relative py-4 px-8 shadow-xl/15 cursor-pointer shadow-black bg-black rounded-lg font-medium text-red-500 border-red-500 border-2'>Delete the account</motion.button> */}
+                <div className="card flex justify-content-center">
+                    <Button label="Show" icon="pi pi-external-link"  onClick={() => setOpenModal(true)} />
+                    <Dialog header="Header" footer={footerContent} modal visible={openModal} maximizable={false} draggable={false} style={{ width: 'fit-content' }} onHide={() => {if (!openModal) return; setOpenModal(false); }}>
+                        <p className="m-0">
+                            Do you want to <strong>delete</strong> your account?
+                        </p>
+                    </Dialog>
+                </div>
 
-                <Modal open={openModal} />
+                {/* <Modal open={openModal} /> */}
               </div>
             </form>
           </motion.div>

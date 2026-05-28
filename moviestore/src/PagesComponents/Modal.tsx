@@ -11,7 +11,7 @@ if (!open) return null
     <>
     <div id="ModalBackground" className='w-screen h-screen flex justify-center items-center'>
         <div id="ModalContainer" className='w-4/10 h-2/10 bg-white flex'>
-            <button type="button" onClick={() => }> X </button>
+            <button type="button"> X </button>
             <div>Are you sure you want to delete your account?</div>
             <div className='flex flex-row'>
                 <button>No, I dont want.</button>
