@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const mediaSchema = new mongoose.Schema({
+    userId: {
+        type: String,
+        required: true,
+    },
     mediaType: {
         type: String
     },

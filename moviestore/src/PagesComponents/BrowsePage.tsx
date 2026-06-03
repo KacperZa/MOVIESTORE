@@ -1,20 +1,26 @@
 import { useContext, useEffect, useMemo, useState, type ChangeEvent } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { LesserThanIcon, GreaterThanIcon, FavouriteIcon, NoImageIcon } from "../components/Icons";
 // import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence, spring } from "motion/react";
 import { MovieGenreContext } from "../context/MovieGenreContext";
 import { TvGenreContext } from "../context/TvMovieGenreContext";
+import { useUser } from "../context/useUser";
+import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 
 function BrowsePage() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [films, setFilms] = useState<any[]>([])
   const [search, setSearch] = useState("")
   const [isTv, setIsTv] = useState(false)
+  const [mediaVisibleId, setMediaVisibleId] = useState<number | null>(null)
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || 1);
 
+  const { user } = useUser()
+  const navigate = useNavigate()
   const { type } = useParams()
 
   const movieGenreHolder = useContext(MovieGenreContext)
@@ -34,19 +40,60 @@ function BrowsePage() {
     setSearch(val)
     setSearchParams({query: val, page: '1'})
   }
+
+  const handleFavouriteButton = async (e:React.MouseEvent<HTMLButtonElement>, movie: Films) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if(user !== null) {
+      try {
+        const res = await fetch(`http://localhost:5000/favourite/add/${user._id}`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            userId: user._id,
+            mediaType: type,
+            tmdbId: movie.id,
+            adult: movie.adult,
+            backdrop_path: movie.backdrop_path,
+            genre_ids: movie.genre_ids,
+            original_language: movie.original_language,
+            original_title: movie.original_title,
+            overview: movie.overview,
+            popularity: movie.popularity,
+            poster_path: movie.poster_path,
+            release_date: movie.release_date,
+            title: type === "tv" ? movie.name : movie.title,
+            video: movie.video,
+            vote_average: movie.vote_average,
+            vote_count: movie.vote_count
+          })
+        })
+        const data = await res.json()
+        console.log(data)
+      } catch(err) {
+        console.error(err)
+      }
+      
+    } else {
+      navigate('/login')
+    }
+  }
+
   const itemsPerPage = 8;
 
   interface Films {
     adult: boolean
     backdrop_path: string
     genre_ids: number[]
+    id: string
     original_language: string
-    original_title: string
+    original_title?: string
     overview: string
     popularity: Float32Array
     poster_path: string
     release_date: string
-    title: string
+    title?: string
+    name?: string
     video: boolean
     vote_average: Float32Array
     vote_count: Float32Array
@@ -106,6 +153,7 @@ function BrowsePage() {
       return () => input?.removeEventListener('keypress', press)
   },[])
 
+
   
   return (
   <>
@@ -157,7 +205,7 @@ function BrowsePage() {
               className="aspect-2/3 m-0 relative w-7/10 mx-auto"
               >
  
-                <Link to={`/movie/${film.id}`}>
+                <div onClick={() => setMediaVisibleId(film.id)} className="cursor-pointer">
                 <motion.div className="" initial="hidden" whileHover="visible" transition={{ duration: 0.3, staggerChildren: 0, when: "beforeChildren"}}>
                   {/* Default image if poster image doesn't exist */}
                 {film.poster_path ? 
@@ -182,29 +230,46 @@ function BrowsePage() {
                   <motion.div className="flex flex-col items-center"
                   variants={{
                     hidden: { opacity: 0, y: 10},
-                    visible: { opacity: 1, y: 0, }
+                    visible: { opacity: 1, y: 0, }  
                   }}
                   transition={{duration: 0.3}}
                   >
-                    <div className="text-xl font-bold text-center">{film.title}</div>
-                    <div className="flex flex-row text-sm w-full gap-1">
-                      <div className="flex  flex-1 flex-row w-1/2 text-xs justify-center items-center gap-1.5">
+                    <div className="text-xl font-bold text-center">{ type === "tv" ? film.name : film.title}</div>
+                    <div className="flex flex-row text-sm w-full gap-2 mb-2">
+                      <div className="flex flex-0.75 flex-row w-1/2 text-xs justify-center items-center gap-1.5">
                           <div className=""><FavouriteIcon size="1.5em" color="#ff0" fill="#ff0"/></div>
                       {/* Rounding the votes percents */}
                           <div>{Math.round(film.vote_average * 10)}%</div>
                       </div>
-                      <div className="w-1/2 flex-wrap ">
+                      <div className="flex-wrap w-full flex-1 ">
                       {film.gatunki.map((g:string, i:number) => (
                         <span key={i} className="text-xs"> {i === film.gatunki.length - 1 ? g  : g+","}</span>
                       ))}
                       
                       </div>
+                      <div className="flex  flex-0.25 justify-center items-center">
+                        <button onClick={(e) => handleFavouriteButton(e, film)}
+                          className="cursor-pointer">
+                            <i className="pi pi-heart" style={{ color: '#F00'}}></i>
+                          {/* {isFavourite ? <i className="pi pi-heart-fill" style={{ color: '#F00'}}></i> :  <i className="pi pi-heart" style={{ color: '#F00'}}></i>} */}
+                        </button>
+                      </div>
                       
                     </div>
+
                   </motion.div>
               </motion.div>
               </motion.div>
-                </Link>
+                </div>
+                  <Dialog  resizable={false} header={`${type === "tv" ? film.name : film.title}`} visible={mediaVisibleId === film.id} style={{ width: '50vw'}} onHide={() =>  {if (mediaVisibleId === null) return; setMediaVisibleId(null);  }}>
+                    <div className=" flex justify-center items-center flex-col gap-4">
+                      <img src={`https://image.tmdb.org/t/p/w1280/${film.backdrop_path}`} alt="" />
+                      <div className="flex gap-2">
+                        <Button label="I watched this show" icon="pi pi-check" raised />
+                      </div>
+                      <p className="m-0"> {film.overview}</p>
+                    </div>
+                  </Dialog>
               </motion.div>
             ))
           )

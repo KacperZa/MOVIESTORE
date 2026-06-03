@@ -1,11 +1,12 @@
 import { useContext, useEffect, useMemo, useState, type ChangeEvent } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { LesserThanIcon, GreaterThanIcon, FavouriteIcon, NoImageIcon } from "../components/Icons";
 // import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence, spring } from "motion/react";
 import { MovieGenreContext } from "../context/MovieGenreContext";
 import { TvGenreContext } from "../context/TvMovieGenreContext";
+import { useUser } from "../context/useUser";
 
 function SpecificGenre() {
     const { type, id_genre, name_genre } = useParams()
@@ -31,17 +32,62 @@ function SpecificGenre() {
     setSearchParams({query: val, page: '1'})
   }
   const itemsPerPage = 8;
+
+  const { user } = useUser()
+
+  const navigate = useNavigate()
+  
+  const handleFavouriteButton = async (e:React.MouseEvent<HTMLButtonElement>, movie: Films) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if(user !== null) {
+      try {
+        const res = await fetch(`http://localhost:5000/favourite/add/${user._id}`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            userId: user._id,
+            mediaType: type,
+            tmdbId: movie.id,
+            adult: movie.adult,
+            backdrop_path: movie.backdrop_path,
+            genre_ids: movie.genre_ids,
+            original_language: movie.original_language,
+            original_title: movie.original_title,
+            overview: movie.overview,
+            popularity: movie.popularity,
+            poster_path: movie.poster_path,
+            release_date: movie.release_date,
+            title: type === "tv" ? movie.name : movie.title,
+            video: movie.video,
+            vote_average: movie.vote_average,
+            vote_count: movie.vote_count
+          })
+        })
+        const data = await res.json()
+        console.log(data)
+      } catch(err) {
+        console.error(err)
+      }
+      
+    } else {
+      navigate('/login')
+    }
+  }
+
   interface Films {
     adult: boolean
     backdrop_path: string
     genre_ids: number[]
+    id: string
     original_language: string
-    original_title: string
+    original_title?: string
     overview: string
     popularity: Float32Array
     poster_path: string
     release_date: string
-    title: string
+    title?: string
+    name?: string
     video: boolean
     vote_average: Float32Array
     vote_count: Float32Array
@@ -178,7 +224,7 @@ function SpecificGenre() {
                   }}
                   transition={{duration: 0.3}}
                   >
-                    <div className="text-xl font-bold text-center">{film.title}</div>
+                    <div className="text-xl font-bold text-center">{ type === "tv" ? film.name : film.title}</div>
                     <div className="flex flex-row text-sm w-full gap-1">
                       <div className="flex  flex-1 flex-row w-1/2 text-xs justify-center items-center gap-1.5">
                           <div className=""><FavouriteIcon size="1.5em" color="#ff0" fill="#ff0"/></div>
@@ -187,8 +233,15 @@ function SpecificGenre() {
                       </div>
                       <div className="w-1/2 flex-wrap ">
                       {film.gatunki.map((g:string, i:number) => (
-                        <span key={i} className="text-xs"> {i === film.gatunki.length - 1 ? g  : g+","}</span>
+                        <span key={i} className="text-xs"> {i === film.gatunki.length - 1 ? g  : g + ","}</span>
                       ))}
+                      </div>
+                       <div className="flex  flex-0.25 justify-center items-center">
+                        <button onClick={(e) => handleFavouriteButton(e, film)}
+                          className="cursor-pointer">
+                            <i className="pi pi-heart" style={{ color: '#F00'}}></i>
+                          {/* {isFavourite ? <i className="pi pi-heart-fill" style={{ color: '#F00'}}></i> :  <i className="pi pi-heart" style={{ color: '#F00'}}></i>} */}
+                        </button>
                       </div>
                     </div>
                   </motion.div>

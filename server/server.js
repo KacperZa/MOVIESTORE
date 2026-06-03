@@ -20,6 +20,12 @@ db.once('open', () => {console.log('Connected to database!')})
 const profilesRouter = require('./routes/profile')
 app.use('/profile', profilesRouter)
 
+const mediasRouter = require('./routes/favourite')
+app.use('/favourite', mediasRouter)
+
+const historyRouter = require('./routes/history')
+app.use('/history', historyRouter)
+
 const tmdbFetch = async (endpoint, params = {}) => {
     const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
 
