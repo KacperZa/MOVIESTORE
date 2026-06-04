@@ -13,6 +13,7 @@ import Register from './PagesComponents/ProfileComponents/Register'
 import Profile from './PagesComponents/ProfileComponents/Profile'
 import { PrimeReactProvider } from 'primereact/api';
 import Favourites from './PagesComponents/Favourites'
+import WatchedFilms from './PagesComponents/WatchedFilms'
         
 
 
@@ -66,6 +67,7 @@ function App() {
                 <Route path="/" element={<HomePage />}></Route>
                 <Route path="/browse/:type" element={<BrowsePage />}></Route>
                 <Route path='/favourites' element={<Favourites />}></Route>
+                <Route path='/watch-history' element={<WatchedFilms />}></Route>
                 <Route path='/:type/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
                 <Route path='/profile' element={<Profile />}></Route>
               </Route>

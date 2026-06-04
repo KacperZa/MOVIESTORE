@@ -4,17 +4,17 @@ import { useUser } from "../../context/useUser"
 import { motion } from "motion/react"
 
 function Login() {
-  const [ email, setEmail ] = useState('')
+  const [ username, setUsername ] = useState('')
   const [ password, setPassword ] = useState('')
 
-  const [ emailError, setEmailError ] = useState(false)
+  const [ usernameError, setUsernameError ] = useState(false)
   const [ passwordError, setPasswordError ] = useState(false)
   const [ dataError, setDataError ] = useState(false)
   
 interface HandleChange {
   setSmth: (value: string) => void,
   e: React.ChangeEvent<HTMLInputElement>,
-  validate: (value: string) => void
+  validate?: (value: string) => void
 }
 
 const { user, setUser } = useUser()
@@ -22,12 +22,12 @@ const navigate = useNavigate()
 
 const HandleSubmit = async (e:React.SubmitEvent<HTMLFormElement>) => {
   e.preventDefault();
-  if(emailError || passwordError || !email || !password) return;
+  if(usernameError || passwordError || !username || !password) return;
 
   const res = await fetch('http://localhost:5000/profile/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({ email, password})
+    body: JSON.stringify({ username, password})
   });
 
   const data = await res.json()
@@ -51,16 +51,16 @@ const HandleSubmit = async (e:React.SubmitEvent<HTMLFormElement>) => {
 }
 
 
-const validateEmail = (val: string) => {
+// const validateEmail = (val: string) => {
   
-  const emailCheck = /^[\w.-]+@[a-z\d.-]+\.[a-z]{2,}$/.test(val)
+//   const emailCheck = /^[\w.-]+@[a-z\d.-]+\.[a-z]{2,}$/.test(val)
 
-  if(!emailCheck){
-    setEmailError(true)
-  } else{
-    setEmailError(false)
-  }
-}
+//   if(!emailCheck){
+//     setEmailError(true)
+//   } else{
+//     setEmailError(false)
+//   }
+// }
 
 const validatePassword = (val: string) => {
   if(val.length < 8) {
@@ -73,7 +73,7 @@ const validatePassword = (val: string) => {
 const HandleChange = ({setSmth, e, validate} : HandleChange) => {
   const value = e.target.value
   setSmth(value)
-  validate(value)
+  validate?.(value)
 }
 
 
@@ -84,15 +84,15 @@ const HandleChange = ({setSmth, e, validate} : HandleChange) => {
             <div className="text-3xl w-full font-medium ">Login</div>
             <form onSubmit={(e) => HandleSubmit(e)} method="POST" className="flex flex-col gap-3">
 
-                <label> E-mail </label>
-                <input onChange={(e) => HandleChange({setSmth: setEmail, e, validate: validateEmail})} className="w-2xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="email" id="input" placeholder='someone@example.com' />
-                {emailError ? <p>Incorrect e-mail format! </p> : null}
+                <label> Username </label>
+                <input onChange={(e) => HandleChange({setSmth: setUsername, e})} className="w-2xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="email" id="input" placeholder='tomhanks123' />
+                {/* {emailError ? <p>Incorrect e-mail format! </p> : null} */}
 
                 <label> Password </label>
-                <input onChange={(e) => HandleChange({setSmth: setPassword, e, validate: validatePassword})} className="w-2xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="password" name="" id="input" placeholder='Password' />
+                <input onChange={(e) => HandleChange({setSmth: setPassword, e, validate: validatePassword})} className="w-2xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="password" name="" id="input"  />
                 {passwordError ? <p>Your password must be at least 8 characters long! </p> : null}
 
-                <button disabled={emailError || passwordError} className={`py-4 px-6 ${emailError || passwordError || !password || !email  ? `bg-gray-600 cursor-not-allowed` : `bg-gray-500 cursor-pointer`}  w-fit justify-self-center rounded-xl`}>Submit</button>
+                <button disabled={usernameError || passwordError} className={`py-4 px-6 ${usernameError || passwordError || !password || !username  ? `bg-gray-600 cursor-not-allowed` : `bg-gray-500 cursor-pointer`}  w-fit justify-self-center rounded-xl`}>Submit</button>
                 {dataError ? <p className="text-red-700">Credentials are invalid or user doesn't exist.</p> : null}
 
             </form>

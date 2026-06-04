@@ -7,12 +7,16 @@ import { motion, AnimatePresence, spring } from "motion/react";
 import { MovieGenreContext } from "../context/MovieGenreContext";
 import { TvGenreContext } from "../context/TvMovieGenreContext";
 import { useUser } from "../context/useUser";
+import { Dialog } from "primereact/dialog";
+import { Button } from "primereact/button";
 
 function SpecificGenre() {
     const { type, id_genre, name_genre } = useParams()
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [films, setFilms] = useState<any[]>([])
   const [search, setSearch] = useState("")
+  const [mediaVisibleId, setMediaVisibleId] = useState<number | null>(null)
+
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || 1);
 
@@ -70,6 +74,43 @@ function SpecificGenre() {
         console.error(err)
       }
       
+    } else {
+      navigate('/login')
+    }
+  }
+
+  const addAsWatched = async (movie: Films) => {
+    if(user !== null) {
+      try {
+        const res = await fetch(`http://localhost:5000/history/add/${user?._id}`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+                userId: user._id,
+                mediaType: type,
+                tmdbId: movie.id,
+                adult: movie.adult,
+                backdrop_path: movie.backdrop_path,
+                genre_ids: movie.genre_ids,
+                original_language: movie.original_language,
+                original_title: movie.original_title,
+                overview: movie.overview,
+                popularity: movie.popularity,
+                poster_path: movie.poster_path,
+                release_date: movie.release_date,
+                title: type === "tv" ? movie.name : movie.title,
+                video: movie.video,
+                vote_average: movie.vote_average,
+                vote_count: movie.vote_count
+          })
+        })
+        if(res.ok){
+          const data = await res.json()
+          console.log(data)
+        }
+      } catch (err) {
+        console.error(err)
+      }
     } else {
       navigate('/login')
     }
@@ -197,7 +238,7 @@ function SpecificGenre() {
               className="aspect-2/3 m-0 relative w-7/10 mx-auto"
               >
                 
-                <Link to={`/movie/${film.id}`}>
+                <div onClick={() => setMediaVisibleId(film.id)} className="cursor-pointer">
                 <motion.div className="" initial="hidden" whileHover="visible" transition={{ duration: 0.3, staggerChildren: 0, when: "beforeChildren"}}>
                   {/* Default image if poster image doesn't exist */}
                 {film.poster_path ? 
@@ -247,7 +288,16 @@ function SpecificGenre() {
                   </motion.div>
               </motion.div>
               </motion.div>
-                </Link>
+                </div>
+                <Dialog  resizable={false} header={`${type === "tv" ? film.name : film.title}`} visible={mediaVisibleId === film.id} style={{ width: '50vw'}} onHide={() =>  {if (mediaVisibleId === null) return; setMediaVisibleId(null);  }}>
+                  <div className=" flex justify-center items-center flex-col gap-4">
+                    <img src={`https://image.tmdb.org/t/p/w1280/${film.backdrop_path}`} alt="" />
+                    <div className="flex gap-2">
+                      <Button label="Mark as watched" icon="pi pi-check" raised onClick={() => addAsWatched(film)} />
+                    </div>
+                    <p className="m-0"> {film.overview}</p>
+                  </div>
+                </Dialog>
               </motion.div>
             ))
           )

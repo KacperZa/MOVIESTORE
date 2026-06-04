@@ -29,7 +29,7 @@ function Menu() {
               <MenuOption text={"Coming soon"} url='/browse' icon={<SkipIcon/>}/>
               <MenuOption text={"Watchlist"} url={user !== null ? `/browse` : `/login`} icon={<HeartIcon/>}/>
               {/* TODO ZMIENIC IKONE  */}
-              <MenuOption text={"Watched films"} url={user !== null ? `/browse` : `/login`} icon={<HeartIcon/>}/>
+              <MenuOption text={"Watched films"} url={user !== null ? `/watch-history` : `/login`} icon={<HeartIcon/>}/>
               <MenuOption text={"Favourite"} url={user !== null ? `/favourites` : `/login`} icon={<FavouriteIcon/>}/>
             </div>
           </div>

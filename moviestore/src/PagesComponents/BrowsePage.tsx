@@ -79,6 +79,41 @@ function BrowsePage() {
     }
   }
 
+  const addAsWatched = async (movie: Films) => {
+    if(user !== null) {
+      try {
+        const res = await fetch(`http://localhost:5000/history/add/${user?._id}`, {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+                userId: user._id,
+                mediaType: type,
+                tmdbId: movie.id,
+                adult: movie.adult,
+                backdrop_path: movie.backdrop_path,
+                genre_ids: movie.genre_ids,
+                original_language: movie.original_language,
+                original_title: movie.original_title,
+                overview: movie.overview,
+                popularity: movie.popularity,
+                poster_path: movie.poster_path,
+                release_date: movie.release_date,
+                title: type === "tv" ? movie.name : movie.title,
+                video: movie.video,
+                vote_average: movie.vote_average,
+                vote_count: movie.vote_count
+          })
+        })
+        if(res.ok){
+          const data = await res.json()
+          console.log(data)
+        }
+      } catch (err) {
+        console.error(err)
+      }
+    }
+  }
+
   const itemsPerPage = 8;
 
   interface Films {
@@ -265,7 +300,7 @@ function BrowsePage() {
                     <div className=" flex justify-center items-center flex-col gap-4">
                       <img src={`https://image.tmdb.org/t/p/w1280/${film.backdrop_path}`} alt="" />
                       <div className="flex gap-2">
-                        <Button label="I watched this show" icon="pi pi-check" raised />
+                        <Button label="Mark as watched" icon="pi pi-check" raised onClick={() => addAsWatched(film)} />
                       </div>
                       <p className="m-0"> {film.overview}</p>
                     </div>
