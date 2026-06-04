@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useUser } from '../context/useUser'
 import { motion, spring } from 'motion/react'
-import { FavouriteIcon, NoImageIcon } from '../components/Icons'
+import { NoImageIcon } from '../components/Icons'
 import { Link } from 'react-router-dom'
 
 
