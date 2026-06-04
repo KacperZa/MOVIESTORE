@@ -73,7 +73,7 @@ router.delete('/delete/:id', getUser, async (req, res) =>{
 // Login to user
 router.post('/login', async (req, res) =>{
     try {
-        const myUser = await User.findOne({email: req.body.email})
+        const myUser = await User.findOne({username: req.body.username})
         if (myUser == null) {
             return res.status(400).json({message:'Cannot find the user'})
         } 
@@ -107,4 +107,4 @@ async function getUser(req, res, next){
     next()
 }
 
-module.exports = router
+module.exports = router, getUser
