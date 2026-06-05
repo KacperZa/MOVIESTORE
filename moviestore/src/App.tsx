@@ -56,9 +56,7 @@ function App() {
   // bg-gray-700 PANELE
   return (
   <>
-    <PrimeReactProvider value={{
-      
-    }}>
+    <PrimeReactProvider>
       <UserProvider>
         <TvGenreContext.Provider value={tvGenre}>
           <MovieGenreContext.Provider value={genre}>
