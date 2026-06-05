@@ -16,6 +16,7 @@ function BrowsePage() {
   const [search, setSearch] = useState("")
   const [isTv, setIsTv] = useState(false)
   const [mediaVisibleId, setMediaVisibleId] = useState<number | null>(null)
+  const [favouriteIds, setFavouriteIds] = useState<Set<number>>(new Set())
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page') || 1);
 
@@ -68,8 +69,36 @@ function BrowsePage() {
             vote_count: movie.vote_count
           })
         })
+
         const data = await res.json()
-        console.log(data)
+        if(res.ok) {
+          console.log(data)
+          setFavouriteIds(prev => new Set([...prev, movie.id]))
+        }
+
+        if (data.message === 'Already in favourites'){
+          try {
+            const resDelete = await fetch(`http://localhost:5000/favourite/${movie.id}`, {
+              method: 'DELETE',
+              headers: {'Content-Type': 'application/json'}
+            })
+            const dataDelete = await resDelete.json()
+            console.log(dataDelete)
+  
+            if (!resDelete.ok) {
+              console.error(data.message)
+              return
+            }
+
+            setFavouriteIds(prev => new Set([...prev].filter(id => id !== movie.id)))
+            
+          } catch(err) {
+            console.error(err)
+          }
+
+
+        }
+
       } catch(err) {
         console.error(err)
       }
@@ -114,13 +143,15 @@ function BrowsePage() {
     }
   }
 
+
+
   const itemsPerPage = 8;
 
   interface Films {
     adult: boolean
     backdrop_path: string
     genre_ids: number[]
-    id: string
+    id: number
     original_language: string
     original_title?: string
     overview: string
@@ -186,8 +217,25 @@ function BrowsePage() {
   
     input?.addEventListener("keypress", press)
       return () => input?.removeEventListener('keypress', press)
+
   },[])
 
+  useEffect(() => {
+    const fetchFavouriteIds = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/favourite/ids/${user?._id}`)
+        if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
+        
+        const data = await res.json()
+        setFavouriteIds(new Set(data.map((item: {tmdbId: number}) => item.tmdbId)))
+
+      } catch(err) {
+        console.error(err);
+      }
+    }
+
+    fetchFavouriteIds()
+  },[user?._id])
 
   
   return (
@@ -283,11 +331,10 @@ function BrowsePage() {
                       
                       </div>
                       <div className="flex  flex-0.25 justify-center items-center">
-                        <button onClick={(e) => handleFavouriteButton(e, film)}
+                        <motion.button whileTap={{ scale: 1.2, rotate: -2 }} onClick={(e) => handleFavouriteButton(e, film)}
                           className="cursor-pointer">
-                            <i className="pi pi-heart" style={{ color: '#F00'}}></i>
-                          {/* {isFavourite ? <i className="pi pi-heart-fill" style={{ color: '#F00'}}></i> :  <i className="pi pi-heart" style={{ color: '#F00'}}></i>} */}
-                        </button>
+                          {favouriteIds.has(film.id) ? <i className="pi pi-heart-fill" style={{ color: '#F00'}}></i> :  <i className="pi pi-heart" style={{ color: '#F00'}}></i>}
+                        </motion.button>
                       </div>
                       
                     </div>

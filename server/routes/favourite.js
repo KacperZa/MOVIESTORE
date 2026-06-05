@@ -14,6 +14,15 @@ router.get('/', async (req, res) => {
     }
 })
 
+router.get('/ids/:id', authMiddleware, async (req, res) => {
+    try{
+        const ids = await Media.find({ userId: req.user._id}).select('tmdbId -_id')
+        res.status(200).json(ids)
+    } catch(err) {
+        res.status(500).json({message: err.message})
+    }
+})
+
 
 // Adding the media record
 router.post('/add/:id', authMiddleware, async (req, res) => {
@@ -65,10 +74,10 @@ router.patch('/:mediaId',  getMedia, async (req, res) => {
     }
 })
 
-router.delete('/:mediaId', getMedia, async (req, res) => {
+router.delete('/:tmdbId', getMedia, async (req, res) => {
     try{
         await req.media.deleteOne()
-        res.json({message: "Deleted a show/movie"})
+        res.json({message: "Removed movie/show from favourites"})
     } catch(err) {
         res.status(500).json({message: err.message})
     }
@@ -76,7 +85,7 @@ router.delete('/:mediaId', getMedia, async (req, res) => {
 
 async function getMedia(req, res, next){
     try{
-        const media = await Media.findById(req.params.mediaId)
+        const media = await Media.findOne({tmdbId: req.params.tmdbId})
         if (media == null){
             return res.status(404).json({ message: "Cannot find the movie/tv show."})
         }
