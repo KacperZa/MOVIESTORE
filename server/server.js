@@ -66,7 +66,7 @@ app.get('/api', async (req, res) => {
         data = await tmdbFetch('/discover/movie', { page });
     }
 
-    res.json(data.results)
+    res.json(data)
 })
 app.get('/popular', async (req, res) => {
     const { page = '1'} = req.query;
