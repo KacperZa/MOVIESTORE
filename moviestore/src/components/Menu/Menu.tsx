@@ -7,13 +7,14 @@ import { Outlet } from 'react-router-dom'
 import MenuOptionLogout from './MenuOptionLogout'
 import { useUser } from '../../context/useUser'
 
+
 function Menu() {
 
   const {user} = useUser()
 
   return (
   <>
-    <motion.div className="flex flex-row font-inter p-6 bg-gray-200 w-screen max-h-screen mb-0 overflow-hidden">  {/* OPAKOWANIE CALEJ STRONY */}
+    <motion.div className="flex flex-row font-inter p-6 bg-gray-200 min-w-screen max-h-screen mb-0 overflow-hidden">  {/* OPAKOWANIE CALEJ STRONY */}
     <div className="flex flex-col max-h-screen justify-between">
       {/* SIDEBAR */}
       <motion.div className="flex flex-col gap-13 max-h-screen bg-blue-400 p-6 py-11 rounded-2xl w-90 top-6 overflow-y-auto"
@@ -21,7 +22,7 @@ function Menu() {
       // whileHover={{opacity: 0, x:-400}} 
       > 
         <div className="text-5xl font-istok-web font-semibold select-none">MOVIESTORE</div>
-        <div className='flex flex-col gap-8 max-h-full'>
+        <div className='flex flex-col gap-8 '>
             <div className="text-4xl font-bold">Menu</div>
             <div className="flex flex-col gap-9">
               <MenuOption text={"Home"} url='/' icon={<HomeIcon/>}/>
