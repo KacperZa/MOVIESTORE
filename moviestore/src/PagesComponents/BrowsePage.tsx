@@ -316,7 +316,7 @@ function BrowsePage() {
       } */}
 
         {/* Grid for posters  */}
-        <motion.div layout className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
+        <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
           <AnimatePresence>
 
           {error && (<div> Error</div>)}
