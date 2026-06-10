@@ -90,13 +90,13 @@ const HandleChange = ({setSmth, e, validate} : HandleChange) => {
 
                 <label> Password </label>
                 <input onChange={(e) => HandleChange({setSmth: setPassword, e, validate: validatePassword})} className="w-2xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="password" name="" id="input"  />
-                {passwordError ? <p>Your password must be at least 8 characters long! </p> : null}
+                {passwordError ? <p className="text-red-700">Your password must be at least 8 characters long! </p> : null}
 
                 <button disabled={usernameError || passwordError} className={`py-4 px-6 ${usernameError || passwordError || !password || !username  ? `bg-gray-600 cursor-not-allowed` : `bg-gray-500 cursor-pointer`}  w-fit justify-self-center rounded-xl`}>Submit</button>
-                {dataError ? <p className="text-red-700">Credentials are invalid or user doesn't exist.</p> : null}
+                {dataError ? <p className="text-red-700" >Credentials are invalid or user doesn't exist.</p> : null}
 
             </form>
-            <div className="font-medium ">You don't have an account? Create one <Link to={'/register'} className="underline-anim">here</Link>! </div>
+            <div className="font-medium">You don't have an account? Create one <Link to={'/register'} className="underline-anim">here</Link>! </div>
         </motion.div>
     </div>
     </>
