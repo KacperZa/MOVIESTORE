@@ -1,6 +1,6 @@
 import { motion, spring } from "motion/react"
 import { useUser } from "../../context/useUser"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { LoginIcon, LogoutIcon } from "../Icons"
 
 
@@ -8,8 +8,11 @@ function MenuOption() {
 
     const { user, setUser} = useUser()
 
+    const navigate = useNavigate()
+
     const handleLogout = () =>{
         setUser(null)
+        navigate('/')
     }
 
   return (
