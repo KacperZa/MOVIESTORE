@@ -86,9 +86,10 @@ app.get('/api/movie/genres', async (req, res) => {
 })
 // MOVIE WITH SPEFICIC GENRE
 app.get('/api/movie/:genre_id', async (req, res) => {
+    const { page } = req.query
     const genreId = req.params.genre_id;
-    const data = await tmdbFetch(`/discover/movie?with_genres=${genreId}`)
-    res.json(data.results)
+    const data = await tmdbFetch(`/discover/movie?with_genres=${genreId}`, {page})
+    res.json(data)
 })
 
 
@@ -101,7 +102,7 @@ app.get('/api/tv/genres', async (req, res) => {
 app.get('/api/tv/:genre_id', async (req, res) => {
     const genreId = req.params.genre_id;
     const data = await tmdbFetch(`/discover/tv?with_genres=${genreId}`)
-    res.json(data.results)
+    res.json(data)
 })
 
 
@@ -116,7 +117,7 @@ app.get('/api/tv', async (req, res) => {
         data = await tmdbFetch('/discover/tv', { page });
     }
 
-    res.json(data.results)
+    res.json(data)
 })
 
 
