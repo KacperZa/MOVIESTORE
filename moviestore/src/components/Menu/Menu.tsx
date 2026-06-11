@@ -17,7 +17,7 @@ function Menu() {
     <motion.div className="flex flex-row font-inter p-6 bg-gray-200 min-w-screen max-h-screen mb-0 overflow-hidden">  {/* OPAKOWANIE CALEJ STRONY */}
     <div className="flex flex-col max-h-screen justify-between">
       {/* SIDEBAR */}
-      <motion.div className="flex flex-col gap-13 max-h-screen bg-blue-400 p-6 py-11 rounded-2xl w-90 top-6 overflow-y-auto"
+      <motion.div className="flex flex-col gap-13 h-screen bg-blue-400 p-6 py-11 rounded-2xl w-90 top-6 overflow-y-auto justify-center"
       // initial = {{opacity:1, x: 0}}
       // whileHover={{opacity: 0, x:-400}} 
       > 
