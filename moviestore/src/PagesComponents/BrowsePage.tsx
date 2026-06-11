@@ -59,7 +59,7 @@ function BrowsePage() {
   // prevScrollHeight.current = containerRef.current?.scrollHeight ?? 0;
   
   // fetching data API
-  const { films, loading, error, hasMore } = useFetchMedia(debouncedSearch, page)
+  const { films, loading, error, hasMore } = useFetchMedia({ search: debouncedSearch, page, setPage})
   const toggleSwitch = () => setIsTv(!isTv) 
   
   const observer = useRef<IntersectionObserver | null>(null)
@@ -280,7 +280,7 @@ function BrowsePage() {
   <>
 
 
-  <div className="flex flex-col ml-5 g-4">
+  <div className="flex flex-col ml-5 g-4 w-full">
     {/* Search bar */}
     <motion.div layout className="flex flex-0.5 min-w-full shrink-0 flex-row justify-evenly gap-2 items-center w-full bg-amber-300 p-2 rounded-2xl mb-2.5 ">
         <form action="" onSubmit={(e) => {e.preventDefault()}}>
@@ -301,29 +301,26 @@ function BrowsePage() {
 
       <Link to={'/login'} className="text-lg bg-amber-200 w-fit p-2 px-4 rounded-xl font-medium">Sign in</Link> {/* LOGIN */}
     </motion.div>
-    <motion.div className="flex w-full h-10/9 flex-col bg-green-400 rounded-2xl p-2 overflow-auto">
-      <div className="flex flex-row gap-2">
-      <motion.div layout className="flex justify-start font-medium text-xl p-2  rounded-xl bg-green-300">All {type ? 'TV shows: ' : 'movies: '}</motion.div>
+    <motion.div className=" mask-b-from-90% mask-alpha flex w-full h-9/10 flex-col bg-green-400 rounded-2xl p-2 overflow-auto">
+      <div className="flex flex-row gap-2 w-full">
+        <div className="bg-green-500 p-3 rounded-2xl w-full flex mask-b-from-90%">
+          <motion.div layout className=" flex justify-start font-medium text-xl p-2  rounded-xl bg-green-300">All {type === 'tv' ? 'TV shows: ' : 'movies: '}</motion.div>
+        </div>
       {search ? <motion.div  className="flex justify-start font-medium text-xl p-2 px-2 rounded-xl bg-green-300">Search results for: {search}</motion.div> : null}
       </div>
-      <motion.div  className="flex flex-8 flex-col rounded-2xl gap-3 justify-center items-center ">
+      <motion.div  className="flex h-full flex-col rounded-2xl gap-3  items-center overflow-auto">
 
-        {/* Changing the page */}
-        {/* {page !== 1 ? 
-        <p onClick={() => page > 1 ? changePage(page - 1) : null } className="cursor-pointer"><LesserThanIcon color="black" size={60}/></p>
-        : 
-        <p onClick={() => page > 1 ? changePage(page - 1) : null } className=""><LesserThanIcon color="gray" size={60}/></p>
-      } */}
 
         {/* Grid for posters  */}
         <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
           <AnimatePresence>
 
-          {error && (<div> Error</div>)}
           {loading ? (
             // <SkeletonImage cards={8}/>
             <>
-              <div>Loading...</div>
+              <div className=" min-w-7/10 mx-auto border-red-500">
+                <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem'  }}></i>
+              </div>  
             </>
           ):
           (
@@ -333,7 +330,7 @@ function BrowsePage() {
                 <motion.div 
               key={i} 
               ref={lastMediaElementRef}
-              initial={{ opacity: 0, x: -200, scale: 1}}
+              initial={{ opacity: 0, scale: 1}}
               animate={{ opacity: 1, x: 0}}
               whileHover={{scale: 1.02}}
               transition={{type: spring, stiffness: 100, damping: 10, mass: 1 }}
@@ -414,8 +411,8 @@ function BrowsePage() {
                 return (
                 <motion.div 
               key={i} 
-              initial={{ opacity: 0, x: -200, scale: 1}}
-              animate={{ opacity: 1, x: 0}}
+              initial={{ opacity: 0, scale: 1}}
+              animate={{ opacity: 1}}
               whileHover={{scale: 1.02}}
               transition={{type: spring, stiffness: 100, damping: 10, mass: 1 }}
               // exit={{ opacity: 0, x: -200}}
