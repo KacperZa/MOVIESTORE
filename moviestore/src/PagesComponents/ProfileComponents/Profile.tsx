@@ -5,6 +5,7 @@ import { useUser } from '../../context/useUser'
 import { Button } from 'primereact/button';
 import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom'
+import { InputText } from 'primereact/inputtext';
 
 
 function Profile() {
@@ -110,8 +111,8 @@ function Profile() {
           <p className='flex font-bold text-6xl p-14 justify-center text-white'>{user?.username.toUpperCase()}</p>
           <motion.div layout className='bg-blue-500 h-fit w-full p-8 flex flex-col gap-7 rounded-2xl shadow-xl/30 shadow-black'>
             <div id="buttons" className="flex-row flex justify-evenly gap-1 ">
-              <button className='size-fit py-5 px-15 bg-blue-600 rounded-lg font-medium text-xl shadow-xl/20 shadow-black'>DANE</button>
-              <button className='size-fit py-5 px-15 bg-blue-600 rounded-lg font-medium text-xl shadow-xl/20 shadow-black'>KONTO</button>  
+              <button className='size-fit py-5 px-15 bg-blue-600 rounded-lg font-medium text-xl shadow-xl/20 shadow-black'>PROFILE</button>
+              <button className='size-fit py-5 px-15 bg-blue-600 rounded-lg font-medium text-xl shadow-xl/20 shadow-black'>WATCHLIST</button>  
             </div>
             <form onSubmit={(e) => handleSubmit(e)} id="dane" className="flex flex-col items-center">
               <div className="grid grid-cols-2">
@@ -120,12 +121,14 @@ function Profile() {
                 <>
                 <div className="flex flex-col p-11 gap-6 text-2xl">
                   <label htmlFor="password" className='font-semibold'>Password</label>
-                  <input type="text" onChange={(e) => {handleChange({e, setSmth: setPassword}); setPasswdError(e.target.value !== secondPassword)}} value={password} name="password" id="password" className={`bg-[#D9D9D9] text-gray-600 rounded-xl flex-1 py-3 px-6 `}/>
+                  <InputText onChange={(e) => {handleChange({e, setSmth: setPassword}); setPasswdError(e.target.value !== secondPassword)}} value={password} name="password" id="password"></InputText>
+                  {/* <input type="text" onChange={(e) => {handleChange({e, setSmth: setPassword}); setPasswdError(e.target.value !== secondPassword)}} value={password} name="password" id="password" className={`bg-[#D9D9D9] text-gray-600 rounded-xl flex-1 py-3 px-6 `}/> */}
                 </div>
 
                 <div className="flex flex-col p-11 gap-6 text-2xl">
                   <label htmlFor="secondPassword" className='font-semibold'>Confirm your Password</label>
-                  <input type="text" onChange={(e) => {handleChange({e, setSmth: setSecondPassword}); setPasswdError(e.target.value !== password)}} value={secondPassword} name="secondPassword" id="secondPassword" className={`bg-[#D9D9D9] text-gray-600 rounded-xl flex-1 py-3 px-6 `} />
+                  <InputText onChange={(e) => {handleChange({e, setSmth: setPassword}); setPasswdError(e.target.value !== secondPassword)}} value={password} name="secondPassword" id="secondPassword"></InputText>
+                  {/* <input type="text" onChange={(e) => {handleChange({e, setSmth: setSecondPassword}); setPasswdError(e.target.value !== password)}} value={secondPassword} name="secondPassword" id="secondPassword" className={`bg-[#D9D9D9] text-gray-600 rounded-xl flex-1 py-3 px-6 `} /> */}
                 </div>
                   {passwdError ? 
                 <div className='flex justify-center col-span-2'>
