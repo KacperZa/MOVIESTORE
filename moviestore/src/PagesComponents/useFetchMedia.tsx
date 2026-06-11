@@ -31,7 +31,14 @@ import { useParams, useSearchParams } from 'react-router-dom'
     name: string
   }
 
-export default function useFetchMedia(search: string, page: number) {
+  interface Props {
+    search: string,
+    page: number, 
+    id_genre?: string,
+    setPage: (page: number) => void
+  }
+
+export default function useFetchMedia({search, page, id_genre, setPage} : Props ) {
     const [films, setFilms] = useState<any[]>([])
     const [hasMore, setHasMore] = useState(false)
     const [loading, setLoading] = useState(true)
@@ -47,14 +54,17 @@ export default function useFetchMedia(search: string, page: number) {
 
     const genreHolder = type === "tv" ? tvGenreHolder : movieGenreHolder
 
-    // useEffect(() => {
-    //   setFilms([])
-    // },[search])
+    useEffect(() => {
+      setPage(1)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[type, id_genre])
     
       useEffect(() => {
 
-        const controller = new AbortController() 
+        if(page === 1) setFilms([])
         setSearchParams({query: search, page: `${page}`});
+
+        const controller = new AbortController() 
 
 
         if (!genreHolder || (genreHolder as Genres[]).length === 0) return;
@@ -63,10 +73,22 @@ export default function useFetchMedia(search: string, page: number) {
         setError(false)
     
           try {
-            const { data } = await axios.get(
-              `${type === 'tv' ? '/api/tv' : '/api'}?keywords=${search}&page=${page}`,
-              { signal: controller.signal }
-            )
+
+            let data;
+
+            if(id_genre){
+              const res = await axios.get(
+                `/api/${type}/${id_genre}?keywords=${search}&page=${page}`,
+                { signal: controller.signal }
+              )  
+              data = res.data            
+            }else {
+              const res = await axios.get(
+                `${type === 'tv' ? '/api/tv' : '/api'}?keywords=${search}&page=${page}`,
+                { signal: controller.signal }
+              )
+              data = res.data
+            }
     
             const filmy = data.results
             console.log(filmy)
@@ -99,7 +121,7 @@ export default function useFetchMedia(search: string, page: number) {
         pobierz()
 
         return () => controller.abort()
-      },[search, page])
+      },[search, page, type, genreHolder, id_genre])
 
   return { films, loading, error, hasMore }
 }
