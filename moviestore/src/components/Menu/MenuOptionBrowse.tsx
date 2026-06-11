@@ -52,10 +52,11 @@ function MenuOption({ text, icon}: MenuOptionsProps) {
       {isOpen && 
         <motion.div 
         className={`flex flex-col absolute z-20 bg-blue-300 px-3 py-1.5 mt-2 rounded-2xl w-full `}
-        initial={{x:-100, opacity: 0}}
-        animate={{x:0, opacity: 1}}
-        exit={{x:100, opacity:0}}
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1}}
+        exit={{ opacity:0}}
         transition={{duration: 0.3}}
+        
         >
         <div className="flex flex-row gap-1 ">
           <ul className="flex flex-col gap-1 p-2 py-1 font-medium border-r-amber-700"> {/* List of movie genres */}
@@ -65,24 +66,23 @@ function MenuOption({ text, icon}: MenuOptionsProps) {
                 hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10 "> MOVIES</div>
               </Link> 
             {movieGenres?.map((genres, id) => (
-              <Link to={`movie/genre/${genres.id}/${genres.name}`} key={id}>
-                <div className="relative w-fit
+              <Link to={`movie/genre/${genres.id}/${genres.name}`} key={id} className="relative w-fit
                 after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
-                hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10" key={id}> {genres.name}</div>
+                hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10">
+                {genres.name}
               </Link> 
             ))}
           </ul>
           <ul className="flex flex-col gap-1 p-2 py-1 font-medium"> {/* List of tv genres */}
-              <Link to={`/browse/tv`}>
-                <div className="relative font-bold w-full pb-1
+              <Link to={`/browse/tv`} className="relative font-bold w-full pb-1
                 after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
-                hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10 "> TV SERIES</div>
+                hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10">
+                <div > TV SERIES</div>
               </Link> 
             {tvGenres?.map((genres, id) => (
-              <Link to={`tv/genre/${genres.id}/${genres.name}`} key={id}>
-                <div className="relative w-fit
+              <Link to={`tv/genre/${genres.id}/${genres.name}`} key={id} className="relative w-fit
                 after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
-                hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10" key={id}> {genres.name}</div>
+                hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10"> {genres.name}
               </Link> 
             ))}
           </ul>
