@@ -1,6 +1,6 @@
 import { createContext, useState, type ReactNode } from "react";
 
-type User = {
+export type User = {
     creationDate: string
     dateOfBirth: string
     email: string
