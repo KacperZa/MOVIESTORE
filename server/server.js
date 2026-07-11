@@ -57,13 +57,13 @@ const tmdbFetch = async (endpoint, params = {}) => {
 
 
 app.get('/api', async (req, res) => {
-    const { page = '1', keywords, sort} = req.query;
+    const { page = '1', keywords, sort, filters = 'popularity.desc', adult} = req.query;
     let data;
     // Checking if user used search bar
     if(keywords){
         data = await tmdbFetch('/search/movie', { page, query: keywords});
     }else{
-        data = await tmdbFetch('/discover/movie', { page });
+        data = await tmdbFetch('/discover/movie', { page, sort_by: filters, include_adult: adult });
     }
 
     res.json(data)
@@ -86,9 +86,15 @@ app.get('/api/movie/genres', async (req, res) => {
 })
 // MOVIE WITH SPEFICIC GENRE
 app.get('/api/movie/:genre_id', async (req, res) => {
-    const { page } = req.query
+    const { page = '1', keywords, filters = 'popularity.desc', adult } = req.query;
     const genreId = req.params.genre_id;
-    const data = await tmdbFetch(`/discover/movie?with_genres=${genreId}`, {page})
+    
+    let data;
+    if(keywords){
+        data = await tmdbFetch('/search/tv', { page, query: keywords });
+    } else {
+        data = await tmdbFetch(`/discover/movie`, { with_genres: genreId, page, sort_by: filters, include_adult: adult })
+    }
     res.json(data)
 })
 
@@ -98,23 +104,37 @@ app.get('/api/tv/genres', async (req, res) => {
     const data = await tmdbFetch('/genre/tv/list')
     res.json(data.genres)
 })
+
 // SHOWS WITH SPEFICIC GENRE
 app.get('/api/tv/:genre_id', async (req, res) => {
+    const { page = '1', keywords, filters = 'popularity.desc', adult } = req.query;
     const genreId = req.params.genre_id;
-    const data = await tmdbFetch(`/discover/tv?with_genres=${genreId}`)
+
+    let data;
+    if(keywords){
+        data = await tmdbFetch('/search/tv', { page, query: keywords });
+    }else{
+        data = await tmdbFetch(`/discover/tv`, { with_genres: genreId, page, sort_by: filters, include_adult: adult } )
+    }
+
     res.json(data)
 })
 
 
 // TV SHOWS
 app.get('/api/tv', async (req, res) => {
-    const { page = '1', keywords} = req.query;
+    const { page = '1', keywords, filters = 'popularity.desc', adult } = req.query;
     let data;
-
-    if(keywords){
-        data = await tmdbFetch('/search/tv', { page, query: keywords});
-    }else{
-        data = await tmdbFetch('/discover/tv', { page });
+    try{
+    
+        if(keywords){
+            data = await tmdbFetch('/search/tv', { page, query: keywords });
+        }else{
+            data = await tmdbFetch('/discover/tv', { page, sort_by: filters, include_adult: adult });
+        }
+    } catch(err){
+        console.error(err)
+        return res.status(500).json({error: 'Failed to fetch TV shows.'})
     }
 
     res.json(data)
