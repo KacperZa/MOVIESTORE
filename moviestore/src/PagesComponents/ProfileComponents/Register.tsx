@@ -2,9 +2,9 @@ import { motion } from "framer-motion"
 import React, { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { calculateAge } from "../UsefulFunctions"
-import { Password } from 'primereact/password';
-import { InputText } from "primereact/inputtext";
-import { Calendar } from "primereact/calendar";
+// import { Password } from 'primereact/password';
+// import { InputText } from "primereact/inputtext";
+// import { Calendar } from "primereact/calendar";
 
 
 

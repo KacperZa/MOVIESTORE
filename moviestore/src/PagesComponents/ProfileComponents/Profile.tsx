@@ -1,11 +1,11 @@
 import { motion } from 'motion/react'
 import React, { useState } from 'react'
-import { EditIcon } from '../../components/Icons'
+import { EditIcon } from '../../components-folder/Icons'
 import { useUser } from '../../context/useUser'
-import { Button } from 'primereact/button';
-import { Dialog } from 'primereact/dialog';
+// import { Button } from 'primereact/button';
+// import { Dialog } from 'primereact/dialog';
 import { useNavigate } from 'react-router-dom'
-import { InputText } from 'primereact/inputtext';
+// import { InputText } from 'primereact/inputtext';
 
 
 function Profile() {
