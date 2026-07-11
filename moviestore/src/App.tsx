@@ -1,6 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
-import Menu from './components/Menu/Menu'
+import Menu from './components-folder/Menu/Menu'
 import HomePage from './PagesComponents/HomePage'
 import BrowsePage from './PagesComponents/BrowsePage'
 import { useEffect, useState } from 'react'
@@ -11,11 +11,14 @@ import SpecificGenre from './PagesComponents/SpecificGenre'
 import Login from './PagesComponents/ProfileComponents/Login'
 import Register from './PagesComponents/ProfileComponents/Register'
 import Profile from './PagesComponents/ProfileComponents/Profile'
-import { PrimeReactProvider } from 'primereact/api';
-import Favourites from './PagesComponents/Favourites'
 import WatchedFilms from './PagesComponents/WatchedFilms'
-        
+import FavouritesPage from './PagesComponents/FavouritesPage'
 
+import '@mantine/core/styles.css';
+import '@mantine/carousel/styles.css';
+
+
+import { MantineProvider } from '@mantine/core';
 
 function App() {
 
@@ -56,7 +59,7 @@ function App() {
   // bg-gray-700 PANELE
   return (
   <>
-    <PrimeReactProvider>
+  <MantineProvider>
       <UserProvider>
         <TvGenreContext.Provider value={tvGenre}>
           <MovieGenreContext.Provider value={genre}>
@@ -64,7 +67,7 @@ function App() {
               <Route element={<Menu />}>
                 <Route path="/" element={<HomePage />}></Route>
                 <Route path="/browse/:type" element={<BrowsePage />}></Route>
-                <Route path='/favourites' element={<Favourites />}></Route>
+                <Route path='/favourites' element={<FavouritesPage />}></Route>
                 <Route path='/watch-history' element={<WatchedFilms />}></Route>
                 <Route path='/:type/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
                 <Route path='/profile' element={<Profile />}></Route>
@@ -75,7 +78,7 @@ function App() {
           </MovieGenreContext.Provider>
         </TvGenreContext.Provider>
       </UserProvider>
-    </PrimeReactProvider>
+    </MantineProvider>
   </>
 )
 }
