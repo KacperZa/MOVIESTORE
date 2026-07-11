@@ -34,7 +34,15 @@ router.get('/me/:id', authMiddleware, async (req,res) => {
 
 // Adding the history record
 router.post('/add/:id', authMiddleware, async (req, res) => {
+
     try{
+        const exists =  await History.findOne({
+            userId: req.user._id,
+            tmdbId: req.body.tmdbId,
+        })
+        if(exists){
+            return res.status(409).json({message: 'Already in history.'})
+        }
         const history = new History({
             userId: req.user._id,            
             mediaType: req.body.mediaType,
