@@ -49,6 +49,9 @@ const mediaSchema = new mongoose.Schema({
     },
     vote_count: {
         type: Number
+    },
+    type: {
+        type: String
     }
     
 })
