@@ -35,8 +35,7 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
     const [searchParams, setSearchParams] = useSearchParams();
 
 
-    const { type: paramType } = useParams<{ type: MediaType}>()
-    const [type, setType] = useState(paramType ?? customType)
+    const { type } = useParams()
 
     const movieGenreHolder = useContext(MovieGenreContext)
     const tvGenreHolder = useContext(TvGenreContext)
