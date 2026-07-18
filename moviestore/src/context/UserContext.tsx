@@ -2,7 +2,7 @@ import { createContext, useState, type ReactNode } from "react";
 
 export type User = {
     creationDate: string
-    dateOfBirth: string
+    age: number
     email: string
     password: string
     username: string
