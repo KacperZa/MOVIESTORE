@@ -1,13 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Istok+Web:wght@400;700&display=swap');
 @import "tailwindcss";
 
+
 @theme {
   --font-istok-web: 'Istok Web', sans-serif;
-  --color-gray-450: oklch(0.6425 0.027 264.36)
+  --color-gray-450: oklch(0.6425 0.027 264.36);
+  --color-blue-450: oklch(0.6653 0.214 259.81);
 }
 
 @layer components{
-  .underline{
+  .underline-animate{
     @apply relative w-1/2
           after:absolute after:h-0.5 after:w-full after:bg-black after:left-0 after:bottom-0 after:scale-x-0 after:origin-right after:transition-transform after:duration-300 after:ease-in-out
           hover:after:scale-x-100 hover:after:origin-left hover:text-shadow-md/10;
