@@ -1,6 +1,6 @@
 import { useUser } from '@/context/useUser';
+import type { Films } from '@/ui/MediaCard';
 import React from 'react'
-import type { Films } from './MediaCard';
 import { useNavigate } from 'react-router-dom';
 
 export interface FavouriteProps {

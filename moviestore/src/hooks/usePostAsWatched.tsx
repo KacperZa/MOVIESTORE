@@ -1,5 +1,5 @@
-import type { Films, FilmsWithGenres } from '../PagesComponents/MediaCard'
 import { useUser } from '@/context/useUser'
+import type { FilmsWithGenres } from '@/ui/MediaCard'
 
 interface functionProps {
     movie: FilmsWithGenres
@@ -46,7 +46,6 @@ function usePostAsWatched({movie, type} : functionProps) {
             }
             }
         }
-        postAsWatched()
   return { postAsWatched }
 }
 

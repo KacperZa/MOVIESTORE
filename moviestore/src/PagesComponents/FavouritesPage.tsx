@@ -1,12 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useUser } from '../context/useUser'
-import { motion, spring } from 'motion/react'
-import { NoImageIcon } from '../components-folder/Icons'
-import { Link, useSearchParams } from 'react-router-dom'
-import MediaCard, { type FilmsWithGenres } from './MediaCard'
-import useInfiniteScroll from '../hooks/useInfiniteScroll'
 import useFetchFavourites from '../hooks/useFetchFavourites'
-import FavouriteToggle from './favouriteToggle'
+import FavouriteToggle from './FavouriteToggle'
+import MediaCard, { type FilmsWithGenres } from '@/ui/MediaCard'
 
 export interface MediaWithUser extends FilmsWithGenres {
   userId: string
@@ -30,7 +26,6 @@ export interface MediaWithUser extends FilmsWithGenres {
 }
 
 function Favourites() {
-  const [mediaVisibleId, setMediaVisibleId] = useState<number | null>(null)
   const [favouriteIds, setFavouriteIds] = useState<Set<number>>(new Set())
 
   const { user } = useUser()
@@ -48,7 +43,7 @@ function Favourites() {
             <div className='text-6xl p-5 font-bold tracking-wide'>Favourites</div>
             <div className='grid grid-cols-4 gap-y-5 overflow-auto'>
                 {filteredData?.map((media, i) =>{
-                  return <MediaCard<MediaWithUser> key={i} setMediaVisibleId={setMediaVisibleId} media={media} type={media.type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory/>
+                  return <MediaCard<MediaWithUser> key={i} media={media} type={media.type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory/>
                 }
                 )}
     

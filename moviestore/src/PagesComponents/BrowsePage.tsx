@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState, type ChangeEvent } from "react"
-import { Link, useParams, useSearchParams } from "react-router-dom"
+import { useParams, useSearchParams } from "react-router-dom"
 // import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
-import { motion, AnimatePresence, spring } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 
 
 
@@ -11,31 +11,19 @@ import { motion, AnimatePresence, spring } from "motion/react";
 
 import useFetchMedia from "../hooks/useFetchMedia";
 import { useDebounce } from "use-debounce";
-import Filters, { type FilterItem } from "./Filters";
-import type { FilmsWithGenres } from "./MediaCard";
-import MediaCard from "./MediaCard";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import FavouriteToggle from "./FavouriteToggle";
 import useFetchFavouritesIds from "../hooks/useFetchFavouritesIds";
 import { useUser } from "@/context/useUser";
 import type { ComboboxItem } from "@mantine/core";
+import Filters from "@/ui/Filters";
+import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 
 
-  interface FilterGroup {
-    label: string
-    items: FilterItem[]
-  }
-
-  interface FilterItemTemplateProps {
-    label: string;
-    icon: string;
-  }
 
 function BrowsePage() {
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounce(search, 400)
-  const [isTv, setIsTv] = useState(false)
-  const [mediaVisibleId, setMediaVisibleId] = useState<number | null>(null)
   const [searchParams, setSearchParams] = useSearchParams();
 
   const [selectedFilter, setSelectedFilter] = useState<ComboboxItem | undefined>()
@@ -64,7 +52,7 @@ function BrowsePage() {
   // prevScrollHeight.current = containerRef.current?.scrollHeight ?? 0;
   
   // fetching data API
-  const { films, loading, error, hasMore } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms})
+  const { films, loading, hasMore } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms})
 
   const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
   
@@ -168,9 +156,9 @@ useEffect(() => {
           (
             films.map((film, i) => {
               if(films.length === i + 1) {
-                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef} setMediaVisibleId={setMediaVisibleId} media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory showGenres isRef/>
+                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef} media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory showGenres isRef showLightBox/>
               } else {
-                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef} setMediaVisibleId={setMediaVisibleId} media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite}  addToHistory showGenres/>
+                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef} media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite}  addToHistory showGenres showLightBox />
 
               } 
               })
