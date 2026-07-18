@@ -2,17 +2,16 @@ import { useEffect, useMemo, useRef, useState, type ChangeEvent } from "react"
 import { Link, useParams, useSearchParams } from "react-router-dom"
 
 import 'react-loading-skeleton/dist/skeleton.css'
-import { motion, AnimatePresence, spring } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { useUser } from "../context/useUser";
 
 import { useDebounce } from "use-debounce";
 import useFetchMedia from "../hooks/useFetchMedia";
-import Filters from "./Filters";
-import type { FilmsWithGenres } from "./MediaCard";
-import MediaCard from "./MediaCard";
 import FavouriteToggle from "./FavouriteToggle";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import useFetchFavouritesIds from "../hooks/useFetchFavouritesIds";
+import Filters, { type FilterItem } from "@/ui/Filters";
+import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 
 // shadcn ui 
 
@@ -20,10 +19,8 @@ import useFetchFavouritesIds from "../hooks/useFetchFavouritesIds";
 
 function SpecificGenre() {
     const { type, id_genre, name_genre } = useParams()
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounce(search, 400)
-  const [mediaVisibleId, setMediaVisibleId] = useState<number | null>(null)
 
   const [searchParams, setSearchParams] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get('page') || 1));
@@ -113,9 +110,9 @@ function SpecificGenre() {
           (
             sortedFilms.map((film, i) => {
               if(films.length === i + 1) {
-                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef} setMediaVisibleId={setMediaVisibleId} media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory showGenres isRef/>
+                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory showGenres isRef/>
               } else {
-                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef} setMediaVisibleId={setMediaVisibleId} media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory showGenres/>
+                return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory showGenres/>
               } })
           )
           }
