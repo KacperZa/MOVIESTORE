@@ -3,13 +3,13 @@ import axios from 'axios';
 import { MovieGenreContext } from '../context/MovieGenreContext'
 import { TvGenreContext } from '../context/TvMovieGenreContext'
 import { useParams, useSearchParams } from 'react-router-dom'
-import type { Films, FilmsWithGenres } from '../PagesComponents/MediaCard';
 import type { ComboboxItem } from "@mantine/core";
+import type { Films, FilmsWithGenres } from '@/ui/MediaCard';
 
 
 
 
-  interface Genres {
+  export interface Genres {
     id: number
     name: string
   }
@@ -24,7 +24,6 @@ import type { ComboboxItem } from "@mantine/core";
     customType?: string
   }
 
-  type MediaType = "movie" | "tv"
 
 export default function useFetchMedia({search, page, id_genre, filters, adultFilms, setPage, customType} : Props ) {
     const [films, setFilms] = useState<FilmsWithGenres[]>([])
@@ -36,7 +35,7 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
 
 
     const { type } = useParams()
-
+ 
     const movieGenreHolder = useContext(MovieGenreContext)
     const tvGenreHolder = useContext(TvGenreContext)
 
