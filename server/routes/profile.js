@@ -25,7 +25,7 @@ router.post('/register', async (req, res) =>{
             const user = new User({
                 username: req.body.username,
                 email: req.body.email,
-                dateOfBirth: req.body.dateOfBirth,
+                age: req.body.age,
                 password: hashedPassword
             })
         const newUser = await user.save()
@@ -42,8 +42,8 @@ router.patch('/:id', getUser, async (req, res) =>{
     if(req.body.email != null){
         req.user.email = req.body.email
     }
-    if(req.body.dateOfBirth != null){
-        req.user.dateOfBirth = req.body.dateOfBirth
+    if(req.body.age != null){
+        req.user.age = req.body.age
     }
     if(req.body.password != null){
         try {
