@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Menu from './components-folder/Menu/Menu'
-import HomePage from './PagesComponents/HomePage'
 import BrowsePage from './PagesComponents/BrowsePage'
 import { useEffect, useState } from 'react'
 import { MovieGenreContext } from './context/MovieGenreContext'
@@ -16,9 +15,11 @@ import FavouritesPage from './PagesComponents/FavouritesPage'
 
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
+import '@mantine/dates/styles.css';
 
 
 import { MantineProvider } from '@mantine/core';
+import HomePage from './PagesComponents/HomePageComponents/HomePage'
 
 function App() {
 
