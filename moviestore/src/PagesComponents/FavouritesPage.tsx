@@ -39,9 +39,9 @@ function Favourites() {
 
     return (
     <>
-        <div className='flex flex-col ml-5 flex-8 g-4 rounded-2xl w-screen bg-amber-300 p-2 items-center'>
-            <div className='text-6xl p-5 font-bold tracking-wide'>Favourites</div>
-            <div className='grid grid-cols-4 gap-y-5 overflow-auto'>
+        <div className='flex flex-col w-full h-full rounded-2xl bg-amber-300 p-2 items-center scrollbar-thumb-amber-700 scrollbar-gutter-stable'>
+            <div className='text-3xl p-5 font-bold tracking-wide'>Favourites</div>
+            <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full h-full'>
                 {filteredData?.map((media, i) =>{
                   return <MediaCard<MediaWithUser> key={i} media={media} type={media.type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory/>
                 }

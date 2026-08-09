@@ -16,7 +16,7 @@ import GenreSection from './GenreSection'
 function App() {
   const [search, setSearch] = useState("")
   const [debouncedSearch] = useDebounce(search, 400)
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, ] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get('page') || 1))
   const [selectedGenre, setSelectedGenre] = useState("movie")
 
@@ -51,12 +51,11 @@ function App() {
   <>
 
     {/* MAIN PANEL  */}
-    <div className="flex flex-col flex-6 content-center items-center gap-5 ml-5 rounded-2xl bg-gray-400 p-6 min-h-full max-w-full overflow-y-auto overflow-x-hidden">
+    <div className="flex flex-col w-full h-full content-center items-center gap-5 rounded-2xl bg-gray-400 p-6 max-w-full overflow-y-auto overflow-x-hidden scrollbar-thumb-gray-600  scrollbar-gutter-stable">
       <div className='w-full flex justify-center p-5'>
         <input list="media" onChange={(e) => setSearch(e.target.value)} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="search" id="input" placeholder='Szukaj filmów...' />
       </div>
       <div className="flex flex-row gap-16 items-center w-full">
-        {/* <ChevronLeft size={40}/> */}
 
         {/* OBRAZEK */}
         {movies.length > 0 && (
@@ -85,7 +84,7 @@ function App() {
               <motion.div className='relative inline-block'>
 
                 <motion.img src={`https://image.tmdb.org/t/p/w1280/${media.backdrop_path}`} alt="" className='rounded-lg w-full h-auto select-none shadow-lg'/>
-                <motion.div className="absolute inset-0 rounded-lg flex px-7 py-10 gap-2 justify-end flex-col text-white bg-linear-to-b to-gray-800/80 from-gray-500/0"
+                <motion.div className="absolute inset-0 rounded-lg flex px-7 py-10 gap-2 justify-end flex-col text-white bg-linear-to-b to-gray-800/80 from-gray-500/0 cursor-pointer"
                 initial={{ opacity: 0}}
                 whileHover={{ opacity: 1}}
                 transition={{ duration: 0.3}}>

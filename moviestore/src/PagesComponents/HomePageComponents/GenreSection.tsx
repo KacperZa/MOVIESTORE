@@ -73,7 +73,6 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                             <Carousel.Slide key={movie.id}>
                                 {movie.backdrop_path ? 
                                     <motion.img className="w-full h-auto rounded-lg  select-none cursor-pointer" src={`https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`} alt="" 
-                                    whileHover={{scale: 1.02}}
                                     transition={{type: spring, stiffness: 120, damping: 8, mass: 1 }} />
                                 :
                                 <div className='w-full aspect-video bg-gray-500 rounded-lg shadow-xl flex justify-center items-center select-none'>
