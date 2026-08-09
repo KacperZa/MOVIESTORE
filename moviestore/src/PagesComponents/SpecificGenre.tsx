@@ -67,7 +67,7 @@ function SpecificGenre() {
 
           <div className="bg-green-500 py-3 rounded-2xl w-full flex justify-around">
             {/* // SPACE FOR FILTERS ETC */}
-            <Filters type={type} name_genre={name_genre} search={search} selectedFilter={selectedFilter} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
+            <Filters type={type} name_genre={name_genre} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
 
             {/* Search bar */}
             <form action="" onSubmit={(e) => {e.preventDefault()}}>
