@@ -1,45 +1,26 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
-// shadcn ui
-
-// lucide-react 
-import type { IconName } from 'lucide-react/dynamic';
-
+// mantine ui
 import { Select } from '@mantine/core';
-import type { ComboboxItem } from '@mantine/core';
-
-
-
-
 export interface FilterItem {
-    enumValue: string
-    groupLabel: string
-    icon: IconName
+  value: string
+  label: string
 }
 
 interface FiltersProps {
-    search: string
-    selectedFilter: ComboboxItem | undefined
-    type: string | undefined
-    setPosition:  React.Dispatch<React.SetStateAction<undefined>>
-    setSelectedFilter: React.Dispatch<React.SetStateAction<ComboboxItem<string> | undefined>>
-    setAdultFilms: React.Dispatch<React.SetStateAction<boolean>>
-    adultFilms: boolean
-    name_genre?: string
+  search: string
+  type: string | undefined
+  setSelectedFilter: React.Dispatch<React.SetStateAction<FilterItem | undefined>>
+  setAdultFilms: React.Dispatch<React.SetStateAction<boolean>>
+  adultFilms: boolean
+  name_genre?: string
 }
 
 import { motion } from 'motion/react';
 import Switch from './Switch';
 
-function Filters({search, selectedFilter, type, setSelectedFilter, setAdultFilms, adultFilms, name_genre} : FiltersProps) {
-  const [value, setValue] = useState<ComboboxItem | null>();
+function Filters({search, type, setSelectedFilter, setAdultFilms, adultFilms, name_genre} : FiltersProps) {
 
-
-
-  useEffect(() => {
-    console.log(value)
-    console.log(selectedFilter)
-  },[value, selectedFilter])
 
   const selectData = [
     { group: 'Popularity', items: [
@@ -66,7 +47,7 @@ function Filters({search, selectedFilter, type, setSelectedFilter, setAdultFilms
       {name_genre && type === "movie" ? <motion.div layout className="flex justify-start font-bold text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} movies: </motion.div> : null}
       {name_genre && type === "tv" ? <motion.div layout className="flex justify-start font-bold text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} shows: </motion.div> : null}
       
-        {search ? <motion.div  className="flex justify-start text- font-medium text-lg p-1 px-2 rounded-xl bg-green-300">Search results for: {search}</motion.div> : 
+        {search ? <motion.div  className="flex justify-start text- font-medium text-lg p-1 px-2 rounded-xl bg-green-300 items-center">Search results for: {}</motion.div> : 
         <>
         {/* {selectedFilter ? <motion.div layout className=" flex justify-start items-center font-medium text-xl p-2 px-3  rounded-xl bg-green-300">Filtering {selectedFilter?.label} by {selectedFilter?.groupLabel}</motion.div> : null} */}
       <div className="h-full flex justify-center items-center">
@@ -88,6 +69,7 @@ function Filters({search, selectedFilter, type, setSelectedFilter, setAdultFilms
         <p className="font-medium text-lg px-2">Enable adult films</p>
         {/* <Switch className='cursor-pointer' color="rgba(150, 27, 27, 1)" onChange={(e) => setAdultFilms(e.currentTarget.checked)}/> */}
         <Switch value={adultFilms} setValue={setAdultFilms} />
+        
           {/* <Switch id="switch-focus-mode" className={'flex items-center cursor-pointer'} onCheckedChange={setAdultFilms}></Switch> */}
       </div>
         </>
