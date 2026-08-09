@@ -3,8 +3,8 @@ import axios from 'axios';
 import { MovieGenreContext } from '../context/MovieGenreContext'
 import { TvGenreContext } from '../context/TvMovieGenreContext'
 import { useParams, useSearchParams } from 'react-router-dom'
-import type { ComboboxItem } from "@mantine/core";
 import type { Films, FilmsWithGenres } from '@/ui/MediaCard';
+import type { FilterItem } from '@/ui/Filters';
 
 
 
@@ -18,7 +18,7 @@ import type { Films, FilmsWithGenres } from '@/ui/MediaCard';
     search?: string,
     page?: number, 
     id_genre?: string,
-    filters?: ComboboxItem | undefined,
+    filters?: FilterItem | undefined,
     adultFilms?: boolean
     setPage?: (page: number) => void
     customType?: string
@@ -91,7 +91,7 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
             }
     
             const filmy = data.results
-            console.log(filmy)
+            // console.log(filmy)
           
             const genreMap: Record<number, string> = {};
             (genreHolder as Genres[]).forEach(g => genreMap[g.id] = g.name);
