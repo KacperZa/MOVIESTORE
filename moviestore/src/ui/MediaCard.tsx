@@ -1,6 +1,6 @@
 import { motion, spring } from 'motion/react'
 import React from 'react'
-import { NoImageIcon } from "../components-folder/Icons";
+import { NoImageIcon } from "./Icons";
 import { Star } from "lucide-react";
 import { Heart } from 'lucide-react';
 import { useDisclosure } from '@mantine/hooks';
