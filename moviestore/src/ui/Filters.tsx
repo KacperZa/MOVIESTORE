@@ -8,7 +8,7 @@ export interface FilterItem {
 }
 
 interface FiltersProps {
-  search: string
+  search?: string
   type: string | undefined
   setSelectedFilter: React.Dispatch<React.SetStateAction<FilterItem | undefined>>
   setAdultFilms: React.Dispatch<React.SetStateAction<boolean>>
