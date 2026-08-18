@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
-import type { Films } from '../PagesComponents/MediaCard'
-import type { GenreSectionProps } from '../PagesComponents/GenreSection'
+import { useEffect, useRef, useState } from 'react'
+import type { GenreSectionProps } from '@/PagesComponents/HomePageComponents/GenreSection'
+import type { Films } from '@/ui/MediaCard'
 
 
 function useGenreSection({genreId, type} : GenreSectionProps) {
