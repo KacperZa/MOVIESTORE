@@ -1,11 +1,10 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence } from "motion/react";
 import { useUser } from "../context/useUser";
 
-import { useDebounce } from "use-debounce";
 import useFetchMedia from "../hooks/useFetchMedia";
 import FavouriteToggle from "./FavouriteToggle";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
@@ -15,11 +14,9 @@ import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
 
 function SpecificGenre() {
-    const { type, id_genre, name_genre } = useParams()
-  const [search, setSearch] = useState("")
-  const [debouncedSearch] = useDebounce(search, 400)
+  const { type, id_genre, name_genre } = useParams()
 
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams,] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get('page') || 1));
 
   const [selectedFilter, setSelectedFilter] = useState<FilterItem | undefined>()
@@ -30,12 +27,6 @@ function SpecificGenre() {
   const pastScrollHeight = useRef<number>(0)
 
 
-  const changeSearch = (e:ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    setSearch(val)
-    setSearchParams({query: val, page: '1'})
-  }
-
   const { user } = useUser()
     
   const { addFavourite, removeFavourite } = FavouriteToggle()
@@ -43,7 +34,7 @@ function SpecificGenre() {
 
   
   // fetching data from backend
-  const { films, loading, hasMore } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms, id_genre})
+  const { films, loading, hasMore } = useFetchMedia({ page, filters: selectedFilter, setPage, adultFilms, id_genre})
   
   
   const lastMediaElementRef = useInfiniteScroll({loading: loading, pastScrollHeight: pastScrollHeight, setPage: setPage,  topDiv: topDiv, hasMore: hasMore})
@@ -61,22 +52,15 @@ function SpecificGenre() {
       {/* Genres Sidebar */}
       <GenreSidebar />
 
-      <div className="h-full flex-1 overflow-auto">
+      <div className="h-full flex-1 overflow-auto scrollbar-thumb-secondary scrollbar-gutter-stable scroll-smooth">
         <div className="flex flex-row gap-2 w-full">
 
           <div className="bg-secondary py-3 rounded-2xl w-full flex justify-around">
             {/* // SPACE FOR FILTERS ETC */}
-            <Filters type={type} name_genre={name_genre} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
-
-            {/* Search bar */}
-            <form action="" onSubmit={(e) => {e.preventDefault()}}>
-              <input onChange={changeSearch} className=" px-4 py-2 rounded-lg select-none border-gray-300 bg-white focus:outline-none" type="text" name="search" id="input" placeholder='Szukaj filmów...' />
-              <button type="submit" id="btn" className="hidden">Send</button>
-            </form>
+            <Filters type={type} name_genre={name_genre} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
 
           </div>
         </div>
-        {/* Displaying the search value */}
         <motion.div  className="flex flex-8 flex-row rounded-2xl justify-center items-center ">
 
 
