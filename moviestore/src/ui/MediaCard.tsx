@@ -4,6 +4,7 @@ import { NoImageIcon } from "./Icons";
 import { Star } from "lucide-react";
 import { Heart } from 'lucide-react';
 import type { FavouriteProps } from '@/PagesComponents/FavouriteToggle';
+import { useNavigate } from 'react-router-dom';
 
 
 export interface Films {
@@ -33,7 +34,7 @@ interface MediaCardProps<T extends FilmsWithGenres> {
     setFavouriteIds: React.Dispatch<React.SetStateAction<Set<number>>>
     favouriteIds: Set<number>
     media: T
-    type: string | undefined
+    type?: string | undefined
     addFavourite: (props: FavouriteProps) => void
     removeFavourite: (props: FavouriteProps) => void
     isRef?: boolean
@@ -54,7 +55,7 @@ function MediaCard<T extends FilmsWithGenres>({ showGenres, lastMediaElementRef,
             whileHover={{scale: 1.02}}
             transition={{type: spring, stiffness: 100, damping: 10, mass: 1 }}
             className="aspect-2/3 m-0 relative w-7/10 mx-auto"
-            onClick={open}
+            onClick={() => navigate(`/detail/${type}/${media.id}`)}
             >
             <div  className="cursor-pointer">
             <motion.div className="" initial="hidden" whileHover="visible" transition={{ duration: 0.3, staggerChildren: 0, when: "beforeChildren"}}>
