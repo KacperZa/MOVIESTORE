@@ -29,7 +29,7 @@ function MenuOptionLogout() {
                 {user !== null ? 
                 <LogOut data-test size={30}  data-testid="logout-icon" /> 
                 : 
-                <LogIn size={40} color="white" data-testid="login-icon"/>}
+                <LogIn size={30} data-testid="login-icon"/>}
                 <div className='text-lg font-medium'>
                   {user !== null ? 'Logout' : 'Login' }
                   </div>
