@@ -1,7 +1,6 @@
 import '../.././App.css'
 import { motion } from 'motion/react'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { useDebounce } from 'use-debounce'
 import { useSearchParams } from "react-router-dom"
 import Autoplay from 'embla-carousel-autoplay';
 
@@ -14,27 +13,25 @@ import GenreSection from './GenreSection'
 
 
 function App() {
-  const [search, setSearch] = useState("")
-  const [debouncedSearch] = useDebounce(search, 400)
   const [searchParams, ] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get('page') || 1))
   const [selectedGenre, setSelectedGenre] = useState("movie")
 
-  // embla plugins
-
+  
   const { films: movies } = useFetchMedia({page, setPage, customType: "movie"})
   const { films: shows } = useFetchMedia({page, setPage, customType: "tv"})
-
+  
   const movieGenreHolder = useContext(MovieGenreContext)
   const tvGenreHolder = useContext(TvGenreContext)
-
+  
   const popularShows = shows.slice(0,5)
   const popularFilms = movies.slice(0,5)
-
+  
   const topMedias = [...popularFilms, ...popularShows]
-
+  
   console.log("Dlugosc films to: ", movies.length)
-
+  
+  // embla plugins
   // eslint-disable-next-line react-hooks/refs
   const autoplay = useRef(
     Autoplay({ delay: 3000})
