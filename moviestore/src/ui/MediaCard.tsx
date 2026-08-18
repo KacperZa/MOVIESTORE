@@ -3,8 +3,6 @@ import React from 'react'
 import { NoImageIcon } from "./Icons";
 import { Star } from "lucide-react";
 import { Heart } from 'lucide-react';
-import { useDisclosure } from '@mantine/hooks';
-import LightBox from './LightBox';
 import type { FavouriteProps } from '@/PagesComponents/FavouriteToggle';
 
 
@@ -41,14 +39,12 @@ interface MediaCardProps<T extends FilmsWithGenres> {
     isRef?: boolean
     addToHistory?: boolean
     showGenres?: boolean
-    showLightBox?: boolean
 }
 
 
-function MediaCard<T extends FilmsWithGenres>({showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef, setFavouriteIds, showLightBox} : MediaCardProps<T>) {
-    const [opened, { open, close }] = useDisclosure(false)
+function MediaCard<T extends FilmsWithGenres>({ showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef, setFavouriteIds} : MediaCardProps<T>) {
 
-
+    const navigate = useNavigate()
   return (
     <>
         <motion.div
@@ -124,11 +120,6 @@ function MediaCard<T extends FilmsWithGenres>({showGenres, lastMediaElementRef, 
             </motion.div>
             </motion.div>
             </div>
-            {showLightBox ? 
-            <LightBox opened={opened} close={close} type={type} media={media}/>
-            :
-            null
-            }
         </motion.div>
 
           
