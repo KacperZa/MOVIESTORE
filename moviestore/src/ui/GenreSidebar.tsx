@@ -18,8 +18,8 @@ const GenreSidebar = () => {
             <div className="flex gap-1 flex-col">
               <p className="font-semibold text-lg">MOVIES</p>
                 {movieGenres?.map((movieGenre, id) => (
-                  <Link to={`/movie/genre/${movieGenre.id}/${movieGenre.name}`} className="w-fit">
-                    <p key={id} className="underline-animate w-fit cursor-pointer">{movieGenre.name}</p>
+                  <Link key={id} to={`/movie/genre/${movieGenre.id}/${movieGenre.name}`} className="w-fit">
+                    <p className="underline-animate w-fit cursor-pointer">{movieGenre.name}</p>
                   </Link>
                 ))}
             </div>
@@ -29,8 +29,8 @@ const GenreSidebar = () => {
             <div className="flex gap-1 flex-col">
             <p className="font-semibold text-lg">TV SHOWS</p>
               {tvGenres?.map((tvGenre, id) => (
-                <Link to={`/tv/genre/${tvGenre.id}/${tvGenre.name}`} className="w-fit">
-                  <p key={id} className="underline-animate w-fit cursor-pointer">{tvGenre.name}</p>
+                <Link key={id} to={`/tv/genre/${tvGenre.id}/${tvGenre.name}`} className="w-fit">
+                  <p  className="underline-animate w-fit cursor-pointer">{tvGenre.name}</p>
                 </Link>
               ))}
             </div>
