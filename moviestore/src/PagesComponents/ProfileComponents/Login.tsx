@@ -4,6 +4,7 @@ import { useUser } from "../../context/useUser"
 import { motion } from "motion/react"
 import { Button, PasswordInput, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
+import ThemeSwitch from "@/ui/ThemeSwitch"
 
 interface HandleSubmitProps {
   username: string
@@ -84,12 +85,17 @@ function Login() {
                 {...form.getInputProps('password')} />
               </div>
 
-                {dataError ? <p className="text-red-500">Credentials are invalid or user doesn't exist.</p> : null}
-                <Button color="green" size="md" className="self-center!" type="submit">Log in</Button>
+                {dataError && <p className="text-red-500">Credentials are invalid or user doesn't exist.</p>}
+                <div className="w-full flex flex-row justify-between">
+                  <div className="font-medium font-inter">You don't have an account? Create one <Link to={'/register'} className="underline-animate text-primary">here</Link>! </div>
+                  <Button color="green" size="md" className="shadow-lg/15" type="submit">Log in</Button>
+                </div>
 
             </form>
-            <div className="font-medium">You don't have an account? Create one <Link to={'/register'} className="underline-animate">here</Link>! </div>
         </motion.div>
+
+        <ThemeSwitch />
+
     </div>
     </>
   )
