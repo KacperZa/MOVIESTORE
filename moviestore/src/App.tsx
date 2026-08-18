@@ -20,6 +20,11 @@ import '@mantine/dates/styles.css';
 import { MantineProvider } from '@mantine/core';
 import HomePage from './PagesComponents/HomePageComponents/HomePage'
 import Menu from './MenuComponents/Menu'
+import { ThemeProvider } from './context/ThemeContext'
+import ThemeApplier from './PagesComponents/ThemeApplier'
+import SearchPage from './PagesComponents/SearchPage'
+import MovieDetailPage from './PagesComponents/MovieDetailPage'
+import TvDetailPage from './PagesComponents/TvDetailPage'
 
 function App() {
 
@@ -56,30 +61,37 @@ function App() {
     fetchTvGenres()
   },[])
 
+
   // bg-[#141414] TŁO
   // bg-gray-700 PANELE
   return (
   <>
   <MantineProvider>
-      <UserProvider>
-        <TvGenreContext.Provider value={tvGenre}>
-          <MovieGenreContext.Provider value={genre}>
-            <Routes>
-              <Route element={<Menu />}>
-                <Route path="/" element={<HomePage />}></Route>
-                <Route path="/browse/:type" element={<BrowsePage />}></Route>
-                <Route path='/favourites' element={<FavouritesPage />}></Route>
-                <Route path='/watch-history' element={<WatchedFilms />}></Route>
-                <Route path='/:type/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
-                <Route path='/profile' element={<Profile />}></Route>
-              </Route>
-              <Route path='/login' element={<Login />}></Route>
-              <Route path='/register' element={<Register />}></Route>
-            </Routes>
-          </MovieGenreContext.Provider>
-        </TvGenreContext.Provider>
-      </UserProvider>
-    </MantineProvider>
+    <ThemeProvider>
+      <ThemeApplier />
+        <UserProvider>
+          <TvGenreContext.Provider value={tvGenre}>
+            <MovieGenreContext.Provider value={genre}>
+              <Routes>
+                <Route element={<Menu />}>
+                  <Route path="/" element={<HomePage />}></Route>
+                  <Route path="/detail/movie/:id" element={<MovieDetailPage />}></Route>
+                  <Route path="/detail/tv/:id" element={<TvDetailPage />}></Route>
+                  <Route path="/search" element={<SearchPage />}></Route>
+                  <Route path="/browse/:type" element={<BrowsePage />}></Route>
+                  <Route path='/favourites' element={<FavouritesPage />}></Route>
+                  <Route path='/watch-history' element={<WatchedFilms />}></Route>
+                  <Route path='/:type/genre/:id_genre/:name_genre' element={<SpecificGenre />}></Route>
+                  <Route path='/profile' element={<Profile />}></Route>
+                </Route>
+                <Route path='/login' element={<Login />}></Route>
+                <Route path='/register' element={<Register />}></Route>
+              </Routes>
+            </MovieGenreContext.Provider>
+          </TvGenreContext.Provider>
+        </UserProvider>
+    </ThemeProvider>
+  </MantineProvider>
   </>
 )
 }
