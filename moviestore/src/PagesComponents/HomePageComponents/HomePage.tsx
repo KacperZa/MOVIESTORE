@@ -71,7 +71,8 @@ function App() {
           className='group'
           classNames={{
             viewport: 'overflow-visible! mask-x-from-80% mask-x-to-100%',
-            controls: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+            controls: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+            indicators: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
           }}
           >
             {topMedias.map((media, i) => (
