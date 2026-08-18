@@ -3,7 +3,7 @@ import { motion } from "motion/react"
 import { Link } from "react-router-dom"
 
 interface MenuOptionsProps {
-  text: string
+  text?: string
   icon: React.ReactNode
   url: string
 }
