@@ -74,10 +74,40 @@ app.get('/popular', async (req, res) => {
     res.json(data.results)
 })
 // MOVIE DETAILS
-app.get('/api/movie/details/:movieId', async (req, res) => {
-    const movieId = req.params['movieId']
+app.get('/details/movie/:id', async (req, res) => {
+    const movieId = req.params.id
     const data = await tmdbFetch(`/movie/${movieId}`)
-    res.json(data.genres)
+    res.json(data)
+})
+// MOVIE VIDEOS
+app.get('/movie/videos/:id',  async (req, res) => {
+    const movieId = req.params.id
+    const data = await tmdbFetch(`/movie/${movieId}/videos`)
+    res.json(data.results)
+})
+// TV SHOWS VIDEOS
+app.get('/tv/videos/:id',  async (req, res) => {
+    const movieId = req.params.id
+    const data = await tmdbFetch(`/tv/${movieId}/videos`)
+    res.json(data.results)
+})
+// TV SHOWS DETAILS
+app.get('/details/tv/:id', async (req, res) => {
+    const tvId = req.params.id
+    const data = await tmdbFetch(`/tv/${tvId}`)
+    res.json(data)
+})
+// MOVIE REVIEWS
+app.get('/reviews/movie/:id', async (req, res) => {
+    const movieId = req.params.id
+    const data = await tmdbFetch(`/movie/${movieId}/reviews`)
+    res.json(data.results)
+})
+// TV REVIEWS
+app.get('/reviews/tv/:id', async (req, res) => {
+    const tvId = req.params.id
+    const data = await tmdbFetch(`/tv/${tvId}/reviews`)
+    res.json(data.results)
 })
 // MOVIE GENRES
 app.get('/api/movie/genres', async (req, res) => {
