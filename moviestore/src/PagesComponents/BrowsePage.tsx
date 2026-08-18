@@ -101,12 +101,6 @@ function BrowsePage() {
             {/* // SPACE FOR FILTERS ETC */}
             <Filters type={type} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms}  adultFilms={adultFilms}/>
 
-            {/* Search bar */}
-            <form action="" onSubmit={(e) => {e.preventDefault()}}>
-              <input onChange={changeSearch} className=" px-4 py-2 rounded-lg select-none border-gray-300 bg-white focus:outline-none" type="text" name="search" id="input" placeholder='Szukaj filmów...' />
-              <button type="submit" id="btn" className="hidden">Send</button>
-            </form>
-
           </div>
         </div>
         {/* Displaying the search value */}
