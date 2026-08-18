@@ -51,10 +51,8 @@ function App() {
   <>
 
     {/* MAIN PANEL  */}
-    <div className="flex flex-col w-full h-full content-center items-center gap-5 rounded-2xl bg-gray-400 p-6 max-w-full overflow-y-auto overflow-x-hidden scrollbar-thumb-gray-600  scrollbar-gutter-stable">
-      <div className='w-full flex justify-center p-5'>
-        <input list="media" onChange={(e) => setSearch(e.target.value)} className="w-4xl h-12 px-4 py-2 rounded-lg select-none border-gray-300 bg-white" type="text" name="search" id="input" placeholder='Szukaj filmów...' />
-      </div>
+    <div className="flex flex-col w-full h-full items-center gap-5 rounded-2xl bg-background pb-6 max-w-full overflow-y-auto overflow-x-hidden scrollbar-thumb-gray-600  scrollbar-gutter-stable">
+
       <div className="flex flex-row gap-16 items-center w-full">
 
         {/* OBRAZEK */}

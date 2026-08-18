@@ -43,11 +43,11 @@ function Filters({search, type, setSelectedFilter, setAdultFilms, adultFilms, na
 
   return (
     <>
-      {!name_genre && <motion.div layout className=" flex justify-start items-center font-medium text-lg  px-3 rounded-xl bg-green-300">All {type === 'tv' ? 'TV shows: ' : 'movies: '}</motion.div>}
-      {name_genre && type === "movie" ? <motion.div layout className="flex justify-start font-bold text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} movies: </motion.div> : null}
-      {name_genre && type === "tv" ? <motion.div layout className="flex justify-start font-bold text-xl p-2 px-3 rounded-xl bg-green-300">{name_genre} shows: </motion.div> : null}
+      {!name_genre && <motion.div className=" flex justify-start items-center font-medium text-lg  px-3 rounded-xl bg-primary text-white">All {type === 'tv' ? 'TV shows: ' : 'movies: '}</motion.div>}
+      {name_genre && type === "movie" ? <motion.div className="flex justify-start font-bold text-xl p-2 px-3 rounded-xl bg-primary text-white">{name_genre} movies: </motion.div> : null}
+      {name_genre && type === "tv" ? <motion.div className="flex justify-start font-bold text-xl p-2 px-3 rounded-xl bg-primary text-white">{name_genre} shows: </motion.div> : null}
       
-        {search ? <motion.div  className="flex justify-start text- font-medium text-lg p-1 px-2 rounded-xl bg-green-300 items-center">Search results for: {}</motion.div> : 
+        {search ? <motion.div  className="flex justify-start text- font-medium text-lg p-1 px-2 rounded-xl bg-primary text-white items-center">Search results for: {search}</motion.div> : 
         <>
         {/* {selectedFilter ? <motion.div layout className=" flex justify-start items-center font-medium text-xl p-2 px-3  rounded-xl bg-green-300">Filtering {selectedFilter?.label} by {selectedFilter?.groupLabel}</motion.div> : null} */}
       <div className="h-full flex justify-center items-center">
@@ -65,7 +65,7 @@ function Filters({search, type, setSelectedFilter, setAdultFilms, adultFilms, na
 
       </div>
         
-      <div className="flex gap-2 flex-row items-center bg-green-300  rounded-xl p-2">
+      <div className="flex gap-2 flex-row items-center bg-primary text-white  rounded-xl p-2">
         <p className="font-medium text-lg px-2">Enable adult films</p>
         {/* <Switch className='cursor-pointer' color="rgba(150, 27, 27, 1)" onChange={(e) => setAdultFilms(e.currentTarget.checked)}/> */}
         <Switch value={adultFilms} setValue={setAdultFilms} />

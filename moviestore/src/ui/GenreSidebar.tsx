@@ -10,7 +10,7 @@ const GenreSidebar = () => {
   const tvGenres = useContext(TvGenreContext);
 
   return (
-      <div className="h-fit w-72 shrink-0 bg-green-500 rounded-2xl flex flex-col items-center py-3">
+      <div className="h-fit w-72 shrink-0 bg-secondary rounded-2xl flex flex-col items-center py-3">
         <p className="font-bold text-3xl">GENRES</p>
         <div className="flex flex-row w-full p-4 gap-5">
 

@@ -17,8 +17,8 @@ function WatchedFilms() {
     
     return (
       <>
-        <div className='flex flex-col w-full h-full rounded-2xl bg-indigo-400 p-2 items-center'>
-            <div className='text-3xl p-5 font-bold tracking-wide'>Watched films</div>
+        <div className='flex flex-col w-full h-full border-t border-card p-2 items-center'>
+            <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Watched films</div>
             <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full'>
               {[...watchedFilms].map((media, i) => {
                   return <MediaCard<MediaWithUser> key={i}  media={media} type={media.type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory/>

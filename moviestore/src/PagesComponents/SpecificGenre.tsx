@@ -57,15 +57,14 @@ function SpecificGenre() {
   
   return (
   <>
-
-    <motion.div className=" flex w-full h-full flex-row bg-green-400 rounded-2xl p-2  scrollbar-thumb-green-700 scrollbar-gutter-stable gap-2">
+    <motion.div className=" flex w-full min-h-full flex-row bg-card rounded-2xl p-2 gap-2">
       {/* Genres Sidebar */}
       <GenreSidebar />
 
       <div className="h-full flex-1 overflow-auto">
         <div className="flex flex-row gap-2 w-full">
 
-          <div className="bg-green-500 py-3 rounded-2xl w-full flex justify-around">
+          <div className="bg-secondary py-3 rounded-2xl w-full flex justify-around">
             {/* // SPACE FOR FILTERS ETC */}
             <Filters type={type} name_genre={name_genre} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
 

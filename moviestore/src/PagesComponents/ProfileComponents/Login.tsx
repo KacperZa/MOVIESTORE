@@ -62,8 +62,9 @@ function Login() {
 
   return (
     <>
-    <div className="bg-gray-200 p-6 flex justify-center items-center w-screen h-screen">
-        <motion.div className="bg-gray-400 w-1/3 rounded-2xl p-7 flex flex-col gap-4 justify-center">
+    <div className="bg-background p-6 flex flex-col justify-center gap-10 items-center w-screen h-screen text-text">
+
+        <motion.div className="bg-secondary w-1/3 rounded-2xl p-7 flex flex-col gap-2 justify-center shadow-text shadow-md/15">
             <div className="text-3xl w-full font-bold flex justify-center">Login</div>
             <form 
             onSubmit={form.onSubmit((values) => HandleSubmit({username: values.username, password: values.password}))} 

@@ -90,14 +90,14 @@ function BrowsePage() {
   return (
   <>
 
-    <motion.div className=" flex w-full h-full flex-row bg-green-400 rounded-2xl p-2  scrollbar-thumb-green-700 scrollbar-gutter-stable gap-2">
-      {/* Genre Sidebar */}
+    <motion.div className=" flex w-full h-full flex-row bg-card rounded-2xl p-2  scrollbar-thumb-primary scrollbar-gutter-stable gap-2">
+
       <GenreSidebar />
 
       <div className="h-full flex-1 overflow-auto">
         <div className="flex flex-row gap-2 w-full">
 
-          <div className="bg-green-500 py-3 rounded-2xl w-full flex justify-around">
+          <div className="bg-secondary py-3 rounded-2xl w-full flex justify-around">
             {/* // SPACE FOR FILTERS ETC */}
             <Filters type={type} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms}  adultFilms={adultFilms}/>
 

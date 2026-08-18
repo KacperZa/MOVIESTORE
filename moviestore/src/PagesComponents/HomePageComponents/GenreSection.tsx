@@ -18,11 +18,11 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
   return (
     <>
     <AnimatePresence>
-        <motion.div className="flex flex-col gap-3 font-bold p-4 py-7 rounded-2xl bg-gray-450"
+        <motion.div className="flex flex-col gap-3 font-bold p-4 py-7 rounded-2xl bg-card"
         exit={{opacity: 0}}>
             <div className='flex flex-row justify-between items-center'>
                 <p className='text-3xl px-2'>{genreName}</p>
-                <motion.button className=' select-none p-2 px-4 rounded-lg bg-blue-400 text-white shadow-sm text-xl! cursor-pointer'
+                <motion.button className=' select-none p-2 px-4 rounded-lg border-2 border-primary bg-accent  shadow-sm text-xl! cursor-pointer'
                 onClick={() => navigate(`${type}/genre/${genreId}/${genreName}`)}
                 whileHover={{scale: 1.02}}
                 transition={{type: spring, stiffness: 150, damping: 8, mass: 1 }} 

@@ -137,15 +137,15 @@ function Profile() {
 
   return (
   <>
-    <motion.div layout className=" ml-5 flex flex-8 flex-col bg-blue-400 rounded-2xl p-2 w-screen max-h-screen justify-center items-center overflow-auto">
+    <motion.div layout className="flex flex-col bg-background border-t border-card rounded-2xl p-2 w-screen max-h-screen justify-center items-center overflow-auto">
       <div className="flex min-w-full h-full flex-col p-3 gap-3">
-        <div className='flex flex-row items-center justify-between min-w-full h-fit bg-blue-500 rounded-xl p-2 font-medium  '>
-          <p className='flex font-bold text-5xl text-white p-4'>{user ? user?.username.toUpperCase() : 'Loading'}</p>
+        <div className='flex flex-row items-center justify-between min-w-full h-fit bg-secondary rounded-xl p-2 font-medium  '>
+          <p className='flex font-bold text-5xl  p-4'>{user ? user?.username.toUpperCase() : 'Loading'}</p>
           <Button color='red' onClick={openDeleteModal} rightSection={<Trash />}> Delete Account</Button>
         </div>
 
-        <div className='min-w-full h-fit  bg-blue-500 rounded-xl p-2'>
-          <p className='text-4xl font-bold text-white px-2'>PERSONAL INFORMATION</p>
+        <div className='min-w-full h-fit  bg-secondary rounded-xl p-2'>
+          <p className='text-4xl font-bold px-2'>PERSONAL INFORMATION</p>
           <div className='flex flex-row gap-5 justify-evenly p-4 font-medium items-center '>
             <p>E-mail: {user?.email}</p>
             <p>Age: {user?.age ?? 'Not specified'}.</p>

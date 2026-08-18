@@ -14,7 +14,7 @@ function Menu() {
 
   return (
   <>
-    <motion.div className="flex flex-col font-inter bg-gray-200 max-w-screen h-screen w-full overflow-hidden gap-1 p-1">  {/* OPAKOWANIE CALEJ STRONY */}
+    <motion.div className="flex flex-col font-inter bg-background max-w-screen h-screen w-full overflow-hidden gap-1 text-text">  {/* OPAKOWANIE CALEJ STRONY */}
       {/* MENU */}
       <motion.div className="group/item flex h-[10dvh] w-full flex-row gap-7 bg-blue-400 p-4 justify-between rounded-xl justify- items-center scrollbar-thumb-blue-300 scrollbar-gutter-stable "
       layout> 

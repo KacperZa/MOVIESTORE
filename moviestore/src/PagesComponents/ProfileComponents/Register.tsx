@@ -73,8 +73,8 @@ function Login() {
 
   return (
     <>
-    <div className="bg-gray-200 p-6 flex justify-center items-center w-screen h-screen">
-        <motion.div layout className="bg-gray-400 w-1/4 rounded-2xl p-7 flex flex-col gap-4 shadow-lg">
+    <div className="bg-background p-6 flex flex-col gap-10 justify-center items-center w-screen h-screen text-text">
+        <motion.div className="bg-secondary w-1/4 rounded-2xl p-7 flex flex-col gap-4 shadow-lg">
             <div className="text-3xl  w-full font-medium justify-self-center">Register</div>
             <form onSubmit={form.onSubmit((values) => {
               HandleRegister({username: values.username, email: values.email, age: values.age, password: values.password})
