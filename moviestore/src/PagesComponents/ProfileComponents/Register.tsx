@@ -4,6 +4,7 @@ import { Button, NumberInput, PasswordInput, TextInput } from "@mantine/core"
 import { AtSignIcon, Calendar, User, Lock } from "lucide-react"
 import { useDisclosure } from "@mantine/hooks"
 import { useForm } from "@mantine/form"
+import ThemeSwitch from "@/ui/ThemeSwitch"
 // import { Password } from 'primereact/password';
 // import { InputText } from "primereact/inputtext";
 // import { Calendar } from "primereact/calendar";
@@ -136,6 +137,8 @@ function Login() {
 
             </form>
         </motion.div>
+        
+        <ThemeSwitch />
     </div>
     </>
   )
