@@ -44,7 +44,7 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
     useEffect(() => {
       if (setPage) setPage(1)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[type, id_genre, filters?.value, adultFilms])
+    },[type, id_genre, filters?.value, adultFilms, search])
 
 
     
@@ -131,5 +131,3 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
 
   return { films, loading, error, hasMore }
 }
-
-
