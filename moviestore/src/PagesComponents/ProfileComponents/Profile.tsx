@@ -157,9 +157,9 @@ function Profile() {
         <div>
           <div className='text-2xl font-semibold p-3 flex flex-row gap-1 select-none'> Watched 
             <div className='flex flex-row gap-1'>
-              <div onClick={() => setSelectedGenre("movie")} className={`cursor-pointer px-1 ${selectedGenre === "movie" ? 'bg-blue-450 rounded-md flex-1' : null} `}>Movies </div>
+              <div onClick={() => setSelectedGenre("movie")} className={`cursor-pointer px-1 ${selectedGenre === "movie" ? 'bg-secondary rounded-md flex-1' : null} `}>Movies </div>
               / 
-              <div onClick={() => setSelectedGenre("tv")} className={`cursor-pointer px-1 ${selectedGenre === "tv" ? 'bg-blue-450 rounded-md flex-1' : null} `}>Tv shows </div>
+              <div onClick={() => setSelectedGenre("tv")} className={`cursor-pointer px-1 ${selectedGenre === "tv" ? 'bg-secondary rounded-md flex-1' : null} `}>Tv shows </div>
             </div>
              </div>
           <div className='grid grid-cols-4 gap-y-5 overflow-auto p-2'>
