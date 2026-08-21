@@ -10,9 +10,9 @@ import { useNavigate } from 'react-router-dom';
 export interface Films {
     adult: boolean
     backdrop_path: string
-    genre_ids: number[]
+    genre_ids?: number[]
     id: number
-    original_language: string
+    original_language?: string
     original_title?: string
     overview: string
     popularity: number
@@ -26,25 +26,29 @@ export interface Films {
 }
 
 export interface FilmsWithGenres extends Films{
-    gatunki: string[]
+    gatunki?: string[]
   }
 
 interface MediaCardProps<T extends FilmsWithGenres> {
     lastMediaElementRef?: (node: HTMLDivElement | null) => void
     setFavouriteIds: React.Dispatch<React.SetStateAction<Set<number>>>
-    favouriteIds: Set<number>
+    favouriteIds: Set<number | string>
     media: T
     type?: string | undefined
     addFavourite: (props: FavouriteProps) => void
     removeFavourite: (props: FavouriteProps) => void
     isRef?: boolean
     showGenres?: boolean
+    mediaId?: number // prop for defining tmdbId if it has name other than 'id'
 }
 
 
-function MediaCard<T extends FilmsWithGenres>({ showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef, setFavouriteIds} : MediaCardProps<T>) {
+function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef, setFavouriteIds} : MediaCardProps<T>) {
 
     const navigate = useNavigate()
+
+    const id = Number(mediaId ?? media.id)
+    const gatunki = media.gatunki ?? []
   return (
     <>
         <motion.div
@@ -54,7 +58,7 @@ function MediaCard<T extends FilmsWithGenres>({ showGenres, lastMediaElementRef,
             whileHover={{scale: 1.02}}
             transition={{type: spring, stiffness: 100, damping: 10, mass: 1 }}
             className="aspect-2/3 m-0 relative w-7/10 mx-auto"
-            onClick={() => navigate(`/detail/${type}/${media.id}`)}
+            onClick={() => navigate(`/detail/${type}/ ${id}`)}
             >
             <div  className="cursor-pointer">
             <motion.div className="" initial="hidden" whileHover="visible" transition={{ duration: 0.3, staggerChildren: 0, when: "beforeChildren"}}>
@@ -85,7 +89,7 @@ function MediaCard<T extends FilmsWithGenres>({ showGenres, lastMediaElementRef,
                 }}
                 transition={{duration: 0.3}}
                 >
-                <div className="text-xl font-bold text-center">{ type === "tv" ? media.name : media.title}</div>
+                <div className="text-xl font-bold text-center">{ media.name ?? media.title}</div>
                 <div className="flex flex-row text-sm w-full gap-2 mb-2">
                     <div className="flex flex-0.75 flex-row w-1/2 text-xs justify-center items-center gap-1.5">
                         <div className=""><Star color='transparent' fill='#FF0'/></div>
@@ -101,16 +105,16 @@ function MediaCard<T extends FilmsWithGenres>({ showGenres, lastMediaElementRef,
                     </div>
                     <div className="flex  flex-0.25 justify-center items-center">
                     <motion.button whileTap={{ scale: 1.2, rotate: -2 }}  whileHover={{ scale: 1.05}} onClick={(e) => {
-                        if(favouriteIds.has(media.id)){
-                            removeFavourite({e, media, setFavouriteIds})
+                        if(favouriteIds.has(id)){
+                            removeFavourite({e, id, setFavouriteIds})
                             console.log("Usuwamy")
                         } else {
-                            addFavourite({e, type, media, setFavouriteIds});
+                            addFavourite({e, type, id, setFavouriteIds});
                             console.log("Dodajemy")
                         }
                     }}
                         className="cursor-pointer">
-                        {favouriteIds.has(media.id) ? <Heart color='#F00' fill='#F00' /> :  <Heart color='#F00' />}
+                        {favouriteIds.has(id) ? <Heart color='#F00' fill='#F00' /> :  <Heart color='#F00' />}
                     </motion.button>
                     </div>
                     
