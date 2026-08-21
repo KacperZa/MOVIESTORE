@@ -1,17 +1,27 @@
 import useFetchMovieDetails from '@/hooks/useFetchMovieDetails'
 import { Link, useParams } from 'react-router-dom'
 import useRuntime from '@/utils/calculateRuntime'
-import { Clock, DollarSign, UserStar } from 'lucide-react'
+import { Clock, DollarSign, Heart, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
-import { animate, inView, stagger } from 'motion/react'
+import { animate, inView, motion, stagger } from 'motion/react'
+import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
+import { useUser } from '@/context/useUser'
+import FavouriteToggle from './FavouriteToggle'
 
 const MovieDetailPage = () => {
     const {id} = useParams()
 
+    const type = "movie"
+
     const { details } = useFetchMovieDetails({id})
     console.log(details)
 
+    const {user} = useUser()
+
     const { hoursRuntime, minutesRuntime } = useRuntime(details?.runtime)
+
+    const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
+    const { addFavourite, removeFavourite } = FavouriteToggle()
 
     const videos = useFetchVideo({type: "movie", id, enabled: !!id})
 
@@ -26,13 +36,14 @@ const MovieDetailPage = () => {
         }
     }
 
+    // Scroll animation for videos 
     inView('#trailer-container', () => {
         const trailer = document.querySelectorAll('.trailer-video')
 
         animate(
             trailer,
             { opacity: 1, filter: 'blur(0px)'},
-            {duration: 0.9, delay: stagger(0.1)}
+            {duration: 0.5, delay: stagger(0.1)}
         )
         return () => {
             animate(trailer,
@@ -47,15 +58,34 @@ const MovieDetailPage = () => {
         {/* IMAGE  SECTION*/}
         <div className='relative w-full h-full'> 
             <img src={`https://image.tmdb.org/t/p/w1280/${details?.backdrop_path}`} className='w-full h-full object-cover aspect-video' alt={details?.title} />
-            <div className='absolute left-0 bottom-0 w-full h-full bg-linear-to-b to-black/80 from-gray-500/0'>
-                <div className='h-full w-full flex flex-col flex-evenly justify-end p-7 gap-2'>
+            
+            {/* overlay  */}
+            <div className='absolute left-0 bottom-0 w-full h-full bg-linear-to-b to-black/80 from-gray-500/0 flex flex-row justify-between'>
+
+                <div className='h-full flex flex-col flex-evenly justify-end p-7 gap-2'>
                     {details?.adult && <div className='bg-red-500 w-fit text-xl py-1 px-2 rounded-lg font-bold'>18+</div>}
                     <div className='flex flex-col justify-end text-white  gap-2'>
                         <p className='text-6xl font-extrabold'>{details?.title}</p>
                         <p className='text-3xl font-semibold italic'>{details?.tagline}</p>
                     </div>
                 </div>
+                <div className='h-full p-7 gap-2 flex items-end'>
+                    <button className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'>MARK AS WATCHED</button>
+                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' onClick={(e) => {
+                        if(!id || !type) return
+                        if(favouriteIds.has(Number(id))){
+                            removeFavourite({e, id: Number(id), setFavouriteIds})
+                            console.log("Usuwamy")
+                        } else {
+                            addFavourite({e, type, id: Number(id), setFavouriteIds});
+                            console.log("Dodajemy")
+                        }
+                    }}>
+                        {details?.id  && favouriteIds.has(details?.id) ? <Heart color='#F00' fill='#F00' size={40}/> :  <Heart color='#F00' size={40}/>}
+                        </motion.button>
+                </div>
             </div>
+
         </div>
 
         {/* INFO SECTION  */}
@@ -103,7 +133,7 @@ const MovieDetailPage = () => {
                             const embedUrl = getEmbedUrl(video)
                             if(!embedUrl) return null
                             return (
-                            <div className='aspect-video h-full w-full justify-center trailer-video'>
+                            <div key={video.id} className='aspect-video h-full w-full justify-center trailer-video'>
                                 <iframe src={embedUrl} allowFullScreen className='w-full h-full rounded-lg' />
                             </div>
                             )

@@ -1,15 +1,21 @@
 import { Link, useParams } from 'react-router-dom'
-import { Star, UserStar } from 'lucide-react'
+import { Heart, Star, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import useFetchTvDetails from '@/hooks/useFetchTvDetails'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimation, useInView } from 'motion/react'
+import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
+import FavouriteToggle from './FavouriteToggle'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
     const {id} = useParams()
+    const type = "tv"
 
     const { details } = useFetchTvDetails({id})
+
+    const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds()
+    const { removeFavourite, addFavourite } = FavouriteToggle()
     console.log(details)
 
     const ref = useRef(null)
@@ -89,10 +95,27 @@ const MovieDetailPage = () => {
         {/* IMAGE SECTION*/}
         <div className='relative w-full h-full'> 
             <img src={`https://image.tmdb.org/t/p/original/${details?.backdrop_path}`} className='w-full h-full object-cover aspect-video' alt={details?.name} />
-            <div className='absolute left-0 bottom-0 w-full h-full bg-linear-to-b to-black/80 from-gray-500/0'>
-                <div className='h-full w-full flex flex-col justify-end text-white p-7 gap-2'>
+            <div className='absolute left-0 bottom-0 w-full h-full bg-linear-to-b to-black/80 from-gray-500/0 flex flex-row justify-between'>
+                {/* TEXT  */}
+                <div className='h-full flex flex-col justify-end text-white p-7 gap-2'>
                     <p className='text-6xl font-extrabold'>{details?.name}</p>
                     <p className='text-3xl font-semibold italic'>{details?.tagline}</p>
+                </div>
+                {/* BUTTONS  */}
+                <div className='h-full p-7 gap-2 flex items-end'>
+                    <button className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'>MARK AS WATCHED</button>
+                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' onClick={(e) => {
+                        if(!id || !type) return
+                        if(favouriteIds.has(Number(id))){
+                            removeFavourite({e, id: Number(id), setFavouriteIds})
+                            console.log("Usuwamy")
+                        } else {
+                            addFavourite({e, type, id: Number(id), setFavouriteIds});
+                            console.log("Dodajemy")
+                        }
+                    }}>
+                        {details?.id  && favouriteIds.has(details?.id) ? <Heart color='#F00' fill='#F00' size={40}/> :  <Heart color='#F00' size={40}/>}
+                        </motion.button>
                 </div>
             </div>
         </div>
@@ -141,7 +164,7 @@ const MovieDetailPage = () => {
                                 const embedUrl = getEmbedUrl(video)
                                 if(!embedUrl) return null
                                 return (
-                                <div className='aspect-video h-full w-full justify-center'>
+                                <div key={video.id} className='aspect-video h-full w-full justify-center'>
                                     <iframe src={embedUrl} allowFullScreen className='w-full h-full rounded-lg' />
                                 </div>
                                 )
