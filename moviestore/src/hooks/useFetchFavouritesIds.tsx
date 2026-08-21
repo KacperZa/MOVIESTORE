@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-function useFetchFavouritesIds(userId?: string | undefined) {
+function useFetchFavouritesIds(userId?: string) {
 
   const [favouriteIds, setFavouriteIds] = useState<Set<number>>(new Set())
 
@@ -19,7 +19,6 @@ function useFetchFavouritesIds(userId?: string | undefined) {
             console.error(err)
           }
         }
-        console.log('Pobieram favouriteIds')
 
         fetchFavouriteIds()
     },[userId])

@@ -2,7 +2,19 @@ const express = require('express')
 const router = express.Router()
 const Media = require('../model/media')
 
+
 const authMiddleware = require('../middleware/authMiddleware')
+const { getOrSetCache } = require('../redis/redisClient')
+const { tmdbFetch } = require('../utils/tmdbFetch')
+
+router.delete('/clear', async (req, res) => {
+    try{
+        await Media.deleteMany({});
+        res.status(200).json({message: 'Successfully deleted all data'})
+    }catch(err){
+        res.status(500).json({message: err.message})
+    }
+})
 
 // Getting all the data
 router.get('/', async (req, res) => {
@@ -14,20 +26,45 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/ids/:id', authMiddleware, async (req, res) => {
-    try{
-        const ids = await Media.find({ userId: req.user._id}).select('tmdbId -_id')
-        res.status(200).json(ids)
-    } catch(err) {
-        res.status(500).json({message: err.message})
-    }
+router.get('/:id', authMiddleware, async (req, res) => {
+    const favourites = await Media.find({ userId: req.user._id})
+    const detailed = await Promise.all(
+        favourites.map(fav => 
+            getOrSetCache(
+                `details:${fav.mediaType}:${fav.tmdbId}`,
+                async () => await tmdbFetch(`/${fav.mediaType}/${fav.tmdbId}`)
+            )
+        )
+    )
+
+    const result = detailed
+    .map((media, index) => {
+        if (!media) return null
+        const fav = favourites[index]
+        
+        return {
+            ...media,
+            userId: req.user_id,
+            mediaType: fav.mediaType
+        }
+    })
+    .filter(Boolean)
+    res.status(200).json(detailed)
 })
 
+router.get('/ids/:id', authMiddleware, async (req, res) => {
+    try {
+        const ids = await Media.find({ userId: req.user._id})
+        res.status(200).json(ids)
+    } catch (err) {
+        console.error(err)
+    }
+
+})
 
 // Adding the media record
-router.post('/add/:id', authMiddleware, async (req, res) => {
+router.post('/:id', authMiddleware, async (req, res) => {
     try{
-
         const exists =  await Media.findOne({
             userId: req.user._id,
             tmdbId: req.body.tmdbId,
@@ -40,22 +77,9 @@ router.post('/add/:id', authMiddleware, async (req, res) => {
             userId: req.user._id,
             mediaType: req.body.mediaType,
             tmdbId: req.body.tmdbId,
-            adult: req.body.adult,
-            backdrop_path: req.body.backdrop_path,
-            genre_ids: req.body.genre_ids,
-            original_language: req.body.original_language,
-            original_title: req.body.original_title,
-            overview: req.body.overview,
-            popularity: req.body.popularity,
-            poster_path: req.body.poster_path,
-            release_date: req.body.release_date,
-            title: req.body.title,
-            video: req.body.video,
-            vote_average: req.body.vote_average,
-            vote_count: req.body.vote_count,
         })
         const newMedia = await media.save()
-        res.status(201).json(newMedia)
+        res.status(201).json(`Added: ${newMedia}`)
     } catch(err) {
         res.status(400).json({message: err.message})
     }

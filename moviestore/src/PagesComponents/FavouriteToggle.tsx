@@ -1,12 +1,11 @@
 import { useUser } from '@/context/useUser';
-import type { Films } from '@/ui/MediaCard';
 import React from 'react'
 import { useNavigate } from 'react-router-dom';
 
 export interface FavouriteProps {
     e: React.MouseEvent<HTMLButtonElement>
-    media: Films
-    type?: string
+    id: number | undefined
+    type?: string | undefined
     setFavouriteIds: React.Dispatch<React.SetStateAction<Set<number>>>
 }
 
@@ -16,38 +15,30 @@ const navigate = useNavigate()
 
     const { user } =  useUser()
 
-      const addFavourite = async ({e, media, type, setFavouriteIds} : FavouriteProps) => {
+      const addFavourite = async ({e, id, type, setFavouriteIds} : FavouriteProps) => {
         e.preventDefault();
         e.stopPropagation();
+
+        if (!id || !type) return
+
         if(user !== null) {
           try {
-            const res = await fetch(`http://localhost:5000/favourite/add/${user._id}`, {
+            const res = await fetch(`http://localhost:5000/favourite/${user._id}`, {
               method: 'POST',
               headers: {'Content-Type': 'application/json'},
               body: JSON.stringify({
-                userId: user._id,
                 mediaType: type,
-                tmdbId: media.id,
-                adult: media.adult,
-                backdrop_path: media.backdrop_path,
-                genre_ids: media.genre_ids,
-                original_language: media.original_language,
-                original_title: media.original_title,
-                overview: media.overview,
-                popularity: media.popularity,
-                poster_path: media.poster_path,
-                release_date: media.release_date,
-                title: type === "tv" ? media.name : media.title,
-                video: media.video,
-                vote_average: media.vote_average,
-                vote_count: media.vote_count
+                tmdbId: id,
               })
             })
     
             const data = await res.json()
             if(res.ok) {
               console.log(data)
-              setFavouriteIds(prev => new Set([...prev, media.id]))
+              setFavouriteIds(prev => new Set([...prev, id]))
+            } else {
+              throw new Error(`HTTP error: ${res.status}`)
+
             }
           } catch(err) {
             console.error(err)
@@ -58,11 +49,14 @@ const navigate = useNavigate()
         }
       }
 
-      const removeFavourite = async ({e, media, setFavouriteIds}: FavouriteProps) => {
+      const removeFavourite = async ({e, id, setFavouriteIds}: FavouriteProps) => {
         e.preventDefault();
         e.stopPropagation();
+
+        if (!id) return
+
         try {
-        const resDelete = await fetch(`http://localhost:5000/favourite/${media.id}`, {
+        const resDelete = await fetch(`http://localhost:5000/favourite/${id}`, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'}
         })
@@ -74,7 +68,12 @@ const navigate = useNavigate()
             return
         }
 
-        setFavouriteIds(prev => new Set([...prev].filter(id => id !== media.id)))
+        setFavouriteIds(prev => {
+          const next = new Set(prev)
+          next.delete(id)
+          return next
+        
+        })
         
         } catch(err) {
         console.error(err)
