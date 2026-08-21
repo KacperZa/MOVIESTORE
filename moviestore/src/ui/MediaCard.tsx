@@ -97,10 +97,9 @@ function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaEle
                         <div>{Math.round(media.vote_average * 10)}%</div>
                     </div>
                     <div className="flex-wrap w-full flex-1 ">
-                        
-                    { showGenres && media.gatunki ? media.gatunki?.map((g:string, i:number) => (
-                    <span key={i} className="text-xs"> {i === media.gatunki.length - 1 ? g  : g+","}</span>
-                    )) : null }
+                    { showGenres && gatunki && gatunki.length !== 0 ? gatunki?.map((g:string, i:number) => 
+                    <span key={i} className="text-xs"> {i === gatunki.length - 1 ? g  : g+","}</span>
+                    ) : null }
                     
                     </div>
                     <div className="flex  flex-0.25 justify-center items-center">
