@@ -1,13 +1,7 @@
-import { useEffect, useRef, useState, type ChangeEvent } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
-// import SkeletonImage from "../components/SkeletonImage";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence } from "motion/react";
-
-
-
-// import type { SelectValueChangeEvent } from 'primereact/select';
-// import { ChevronDown } from '@primeicons/react/chevron-down';
 
 import useFetchMedia from "../hooks/useFetchMedia";
 import { useDebounce } from "use-debounce";
@@ -22,7 +16,7 @@ import GenreSidebar from "@/ui/GenreSidebar";
 
 
 function BrowsePage() {
-  const [search, setSearch] = useState("")
+  const [search] = useState("")
   const [debouncedSearch] = useDebounce(search, 400)
   const [searchParams,] = useSearchParams();
 
@@ -48,11 +42,6 @@ function BrowsePage() {
   
   const lastMediaElementRef = useInfiniteScroll({loading: loading, pastScrollHeight: pastScrollHeight, setPage: setPage,  topDiv: topDiv, hasMore: hasMore})
 
-
-  const changeSearch = (e:ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value
-    setSearch(val)
-  }
 
   // Disabling sending the data in forms
   useEffect(() => {

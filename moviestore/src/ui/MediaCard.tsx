@@ -82,7 +82,7 @@ function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaEle
 
                 {media.adult ? <div className="bg-red-500 px-2 py-1 rounded-lg">18+</div> : null }
 
-                <motion.div className="flex flex-col items-center"
+                <motion.div className="flex flex-col items-center gap-2"
                 variants={{
                 hidden: { opacity: 0, y: 10},
                 visible: { opacity: 1, y: 0, }  
