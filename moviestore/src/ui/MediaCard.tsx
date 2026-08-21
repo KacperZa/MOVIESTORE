@@ -38,7 +38,6 @@ interface MediaCardProps<T extends FilmsWithGenres> {
     addFavourite: (props: FavouriteProps) => void
     removeFavourite: (props: FavouriteProps) => void
     isRef?: boolean
-    addToHistory?: boolean
     showGenres?: boolean
 }
 
