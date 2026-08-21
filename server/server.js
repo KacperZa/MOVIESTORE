@@ -6,12 +6,12 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
 const { redisClient, getOrSetCache } = require('./redis/redisClient.js')
+const { tmdbFetch } = require('./utils/tmdbFetch.js')
 
 
 app.use(express.json())
 app.use(cors())
 
-const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 mongoose.connect(process.env.DATABASE_URL)
 const db = mongoose.connection
@@ -26,36 +26,6 @@ app.use('/favourite', mediasRouter)
 
 const historyRouter = require('./routes/history')
 app.use('/history', historyRouter)
-
-const tmdbFetch = async (endpoint, params = {}) => {
-    const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
-
-    url.searchParams.set('language', 'en-US')
-
-    Object.entries(params).forEach(([key, value]) => {
-        url.searchParams.set(key, value)
-    })
-
-    try{
-        const res = await fetch(url.toString(), {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization: `Bearer ${process.env.TMDB_TOKEN}`
-            },
-        });
-        if(!res.ok){
-            throw new Error (`HTTP: ${res.status}`)
-        }
-        return res.json();
-    } catch(err) {
-        console.error("Appeared an error: ", err)
-    }
-};
-
-
-
-
 
 app.get('/api', async (req, res) => {
 
