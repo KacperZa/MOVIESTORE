@@ -33,7 +33,7 @@ export interface SpokenLanguage {
     name: string
 }
 
-interface Details {
+export interface Details {
     adult: boolean,
     backdrop_path: string
     belong_to_collection: BelongsToCollection[]
