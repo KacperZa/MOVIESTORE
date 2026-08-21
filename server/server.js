@@ -5,12 +5,14 @@ const bcrypt = require('bcrypt')
 const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
+const rateLimitMiddleware = require('./middleware/RateLimiter')
 const { redisClient, getOrSetCache } = require('./redis/redisClient.js')
 const { tmdbFetch } = require('./utils/tmdbFetch.js')
 
 
 app.use(express.json())
 app.use(cors())
+app.use(rateLimitMiddleware)
 
 
 mongoose.connect(process.env.DATABASE_URL)
