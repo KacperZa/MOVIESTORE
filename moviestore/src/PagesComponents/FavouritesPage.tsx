@@ -1,7 +1,4 @@
-import { useState } from 'react'
-import { useUser } from '../context/useUser'
-import useFetchFavourites from '../hooks/useFetchFavourites'
-import FavouriteToggle from './FavouriteToggle'
+import useFetchFavourites, { type DetailsWithUser } from '../hooks/useFetchFavourites'
 import MediaCard, { type FilmsWithGenres } from '@/ui/MediaCard'
 import FavouriteToggle from './FavouriteToggle'
 import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
@@ -29,8 +26,6 @@ export interface MediaWithUser extends FilmsWithGenres {
 }
 
 function Favourites() {
-  const [favouriteIds, setFavouriteIds] = useState<Set<number>>(new Set())
-
   const { user } = useUser()
 
   // fetching data 
