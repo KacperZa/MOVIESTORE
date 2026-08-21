@@ -1,7 +1,6 @@
 const express = require('express')
 const app = express()
 const bcrypt = require('bcrypt')
-// const jwt = require('jsonwebtoken')
 const mongoose = require('mongoose')
 const cors = require('cors')
 require('dotenv').config()
@@ -191,7 +190,7 @@ app.get('/api/tv/:genre_id', async (req, res) => {
 // TV SHOWS
 app.get('/api/tv', async (req, res) => {
     const { page = '1', keywords, filters = 'popularity.desc', adult } = req.query;
-    let data;
+
     try{
         const tvShows = await getOrSetCache(`tvShows?page=${page}&keywords=${keywords}&filters=${filters}&adult=${adult}`, async () => {
             let data;
