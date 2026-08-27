@@ -1,11 +1,10 @@
 import { useEffect, useRef, useState } from "react"
-import { useParams, useSearchParams } from "react-router-dom"
+import { useSearchParams } from "react-router-dom"
 
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence } from "motion/react";
 import { useUser } from "../context/useUser";
 
-import { useDebounce } from "use-debounce";
 import useFetchMedia from "../hooks/useFetchMedia";
 import FavouriteToggle from "./FavouriteToggle";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
