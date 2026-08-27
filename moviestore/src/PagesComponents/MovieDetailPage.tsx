@@ -52,6 +52,30 @@ const MovieDetailPage = () => {
         }
     })
 
+    const heroPageItemVariants = {
+        hidden: {
+            opacity: 0,
+            x: -50,
+            filter: 'blur(10px)',
+        },
+        visible: {
+            opacity: 1,
+            x: 0,
+            filter: 'blur(0px)',
+            transition: {
+                duration: 0.7
+            }
+        }
+    }
+
+    const heroPageContainerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    }
 
   return (
     <div className='w-full h-full bg-card overflow-hidden overflow-y-auto scrollbar-thumb-primary scrollbar-gutter-stable pb-2'>
@@ -64,14 +88,28 @@ const MovieDetailPage = () => {
 
                 <div className='h-full flex flex-col flex-evenly justify-end p-7 gap-2'>
                     {details?.adult && <div className='bg-red-500 w-fit text-xl py-1 px-2 rounded-lg font-bold'>18+</div>}
-                    <div className='flex flex-col justify-end text-white  gap-2'>
-                        <p className='text-6xl font-extrabold'>{details?.title}</p>
-                        <p className='text-3xl font-semibold italic'>{details?.tagline}</p>
-                    </div>
+                    <motion.div 
+                    className='flex flex-col justify-end text-white gap-2'
+                    variants={heroPageContainerVariants}
+                    initial="hidden"
+                    animate="visible"
+                    >
+                        <motion.p 
+                        className='text-6xl font-extrabold'
+                        variants={heroPageItemVariants}>
+                            {details?.title}
+                        </motion.p>
+                        <motion.p 
+                        className='text-3xl font-semibold italic'
+                        variants={heroPageItemVariants}>
+                            {details?.tagline}
+                        </motion.p>
+                    </motion.div>
                 </div>
                 <div className='h-full p-7 gap-2 flex items-end'>
                     <button className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'>MARK AS WATCHED</button>
-                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' onClick={(e) => {
+                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
+                    onClick={(e) => {
                         if(!id || !type) return
                         if(favouriteIds.has(Number(id))){
                             removeFavourite({e, id: Number(id), setFavouriteIds})

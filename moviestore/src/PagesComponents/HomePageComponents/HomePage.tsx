@@ -24,8 +24,40 @@ function App() {
   const movieGenreHolder = useContext(MovieGenreContext)
   const tvGenreHolder = useContext(TvGenreContext)
   
-  const popularShows = shows.slice(0,5)
-  const popularFilms = movies.slice(0,5)
+  const slideItemVariants = {
+    hidden: {
+      y: 10,
+      opacity: 0
+    },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.4
+      }
+    }
+  }
+
+  const slideContainerVariants = {
+    hidden: {},
+    visible: {
+      transition: {
+        staggerChildren: 0.4
+      }
+    }
+  }
+
+  const slideOverlayVariants = {
+    hidden: {
+      opacity: 0
+    },
+    visible: {
+      opacity: 1,
+      transition: {
+        duration: 0.3
+      }
+    }
+  }
   
   const topMedias = [...popularFilms, ...popularShows]
   
@@ -77,26 +109,33 @@ function App() {
           >
             {topMedias.map(media => (
             <Carousel.Slide key={media.id} className='w-full h-full flex justify-center '>
+              <motion.div className='relative inline-block'
+              onClick={() => navigate(`/detail/${media.type}/${media.id}`)}
+              variants={slideContainerVariants} 
+              initial="hidden"
+              whileHover="visible"
+              >
 
                 <motion.img src={`https://image.tmdb.org/t/p/w1280/${media.backdrop_path}`} alt="" className='rounded-lg w-full h-auto select-none shadow-lg'/>
                 <motion.div className="absolute inset-0 rounded-lg flex px-7 py-10 gap-2 justify-end flex-col text-white bg-linear-to-b to-gray-800/80 from-gray-500/0 cursor-pointer"
-                initial={{ opacity: 0}}
-                whileHover={{ opacity: 1}}
-                transition={{ duration: 0.3}}>
-                    <div className='text-3xl font-bold'>{media.title ?? media.name}</div>
-                    <div className='flex gap-2 flex-col'>
+                variants={slideOverlayVariants}
+                initial="hidden"
+                whileHover="visible">
+                    <motion.div variants={slideItemVariants} className='text-3xl font-bold'>{media.title ?? media.name}</motion.div>
                       <div className='flex flex-col gap-0 font-medium'> 
-                        <div>{Math.round(media.vote_average * 10)}% Rating</div>
-                        <div>{media.gatunki.map((g:string, i:number) => (
-                          <span key={i} className=""> {i === media.gatunki.length - 1 ? g  : g+","}</span>
-                          ))}
-                        </div>
-                      </div>
-                      <motion.button className="w-20 h-9 rounded-2xl bg-red-500 cursor-pointer shadow-lg shadow-red-500/50 select-none"
-                      whileHover={{scale: 1.05}}
-                      >
-                        Watch
-                      </motion.button>
+                        <motion.div
+                        variants={slideItemVariants}
+                        >
+                          {Math.round(media.vote_average * 10)}% Rating</motion.div>
+                        <motion.div
+                        variants={slideItemVariants}
+                        >
+                          {(media.gatunki ?? [])
+                            .map((g, i, arr: string[]) => (
+                              <span key={i} className="font-semibold"> {i === arr.length - 1 ? g  : g+","}</span>
+                            )
+                          )}
+                        </motion.div>
                     </div>
                 </motion.div>
               </motion.div>
