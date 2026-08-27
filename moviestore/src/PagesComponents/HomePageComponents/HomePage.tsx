@@ -23,6 +23,22 @@ function App() {
   
   const movieGenreHolder = useContext(MovieGenreContext)
   const tvGenreHolder = useContext(TvGenreContext)
+
+  const navigate = useNavigate()
+
+  const moviesWithType = movies.map(movie => {
+    return {
+      ...movie,
+      type: "movie"
+    }
+  })
+
+  const showsWithType = shows.map(show => {
+    return {
+      ...show,
+      type: "tv"
+    }
+  })
   
   const slideItemVariants = {
     hidden: {
@@ -59,7 +75,10 @@ function App() {
     }
   }
   
-  const topMedias = [...popularFilms, ...popularShows]
+  const popularShows = showsWithType.slice(0,5)
+  const popularMovies = moviesWithType.slice(0,5)
+  
+  const topMedias = [...popularMovies, ...popularShows]
   
   console.log("Dlugosc films to: ", movies.length)
   
