@@ -1,7 +1,7 @@
 import '../.././App.css'
 import { motion } from 'motion/react'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { useSearchParams } from "react-router-dom"
+import { useNavigate, useSearchParams } from "react-router-dom"
 import Autoplay from 'embla-carousel-autoplay';
 
 
@@ -39,7 +39,7 @@ function App() {
       type: "tv"
     }
   })
-  
+
   const slideItemVariants = {
     hidden: {
       y: 10,
@@ -122,7 +122,7 @@ function App() {
           className='group'
           classNames={{
             viewport: 'overflow-visible! mask-x-from-80% mask-x-to-100%',
-            controls: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300',
+            controls: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300 !px-20',
             indicators: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
           }}
           >
