@@ -31,10 +31,13 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState(false)
 
-    const [searchParams, setSearchParams] = useSearchParams();
+    const [, setSearchParams] = useSearchParams();
 
 
-    const { type } = useParams()
+    
+    const { type: paramType } = useParams()
+
+    const type = paramType ?? customType
  
     const movieGenreHolder = useContext(MovieGenreContext)
     const tvGenreHolder = useContext(TvGenreContext)
@@ -98,7 +101,7 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
           
             const filmyZGatunkami: FilmsWithGenres[] = (filmy as Films[]).map(film => ({
               ...film, 
-              gatunki: film.genre_ids.map((id: number) => genreMap[id] ?? 'Unknown')
+              gatunki: film.genre_ids?.map((id: number) => genreMap[id] ?? 'Unknown')
             }));
 
             if(setPage && page) {
