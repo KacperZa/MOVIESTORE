@@ -48,11 +48,11 @@ function SpecificGenre() {
   
   return (
   <>
-    <motion.div className=" flex w-full min-h-full flex-row bg-card rounded-2xl p-2 gap-2">
+    <motion.div className=" flex w-full h-full flex-row bg-card rounded-t-2xl p-2 gap-2">
       {/* Genres Sidebar */}
       <GenreSidebar />
 
-      <div className="h-full flex-1 overflow-auto scrollbar-thumb-secondary scrollbar-gutter-stable scroll-smooth">
+      <div className="h-full flex-1 overflow-auto w-full scrollbar-thumb-primary scrollbar-gutter-stable scroll-smooth">
         <div className="flex flex-row gap-2 w-full">
 
           <div className="bg-secondary py-3 rounded-2xl w-full flex justify-around">
@@ -65,7 +65,7 @@ function SpecificGenre() {
 
 
           {/* Grid for posters  */}
-          <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
+          <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center w-full">
             <AnimatePresence>
             {loading ? (
               // <SkeletonImage cards={8}/>
