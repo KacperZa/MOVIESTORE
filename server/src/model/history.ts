@@ -1,8 +1,27 @@
-const mongoose = require('mongoose')
+import { model, Schema, Types } from 'mongoose'
 
-const historySchema = new mongoose.Schema({
+export interface IHistory {
+    userId: Types.ObjectId
+    mediaType: string
+    tmdbId: number
+    adult: boolean
+    backdrop_path: string
+    genre_ids: number[]
+    original_language: string
+    original_title: string
+    overview: string
+    popularity: number
+    poster_path: string
+    release_date: string
+    title: string
+    video: boolean
+    vote_average: number
+    vote_count: number
+}
+
+const historySchema = new Schema<IHistory>({
     userId: {
-        type: String,
+        type: Schema.Types.ObjectId,
         required: true,
     },   
     mediaType: {
@@ -53,4 +72,4 @@ const historySchema = new mongoose.Schema({
     
 })
 
-module.exports = mongoose.model('History', historySchema)
+export default model<IHistory>('History', historySchema)

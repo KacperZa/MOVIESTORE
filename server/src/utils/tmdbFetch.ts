@@ -1,6 +1,11 @@
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
-const tmdbFetch = async (endpoint, params = {}) => {
+interface FetchParams {
+    endpoint: string
+    params?: Record<string, string>
+}
+
+const tmdbFetch = async ({endpoint, params = {}} : FetchParams) => {
     const url = new URL(`${TMDB_BASE_URL}${endpoint}`);
 
     url.searchParams.set('language', 'en-US')
@@ -8,6 +13,7 @@ const tmdbFetch = async (endpoint, params = {}) => {
     Object.entries(params).forEach(([key, value]) => {
             url.searchParams.set(key, value)
     })
+    console.log(`TMDB URL: ${url.toString()}`)
         const res = await fetch(url.toString(), {
             method: 'GET',
             headers: {
@@ -21,4 +27,4 @@ const tmdbFetch = async (endpoint, params = {}) => {
         return res.json();
 };
 
-module.exports = { tmdbFetch }
+export { tmdbFetch }

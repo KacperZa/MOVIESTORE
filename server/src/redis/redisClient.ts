@@ -1,12 +1,12 @@
-const redis = require('redis')
-const redisClient = redis.createClient()
+import { createClient } from 'redis'
+const redisClient = createClient()
 
 const DEFAULT_EXPIRATION = 3600
 
-redisClient.on('error', (err) => console.error('Redis client Error', err))
+redisClient.on('error', (err: Error) => console.error('Redis client Error', err))
 redisClient.on('connect', () => console.error('Redis connected'))
 
-const getOrSetCache = async (key, callback) => {
+const getOrSetCache = async <T>(key: string , callback: () => Promise<T>) => {
     const cached = await redisClient.get(key)
     if (cached != null) {
         return JSON.parse(cached)
@@ -19,4 +19,4 @@ const getOrSetCache = async (key, callback) => {
     }
 } 
 
-module.exports = { redisClient, getOrSetCache }
+export { redisClient, getOrSetCache }

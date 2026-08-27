@@ -1,7 +1,12 @@
 // TOKEN BUCKET CLASS 
 
 class TokenBucket {
-    constructor(capacity, refillRate) {
+    private capacity: number; // Maximum tokens in the bucket
+    private tokens: number; // Current tokens in the bucket
+    private refillRate: number; // Tokens to add per second
+    private lastRefillTime: number; // Last time tokens were added
+
+    constructor(capacity : number, refillRate: number) {
         this.capacity = capacity;
         this.tokens = capacity; // Start full
         this.refillRate = refillRate;
@@ -24,4 +29,4 @@ class TokenBucket {
     }
 }
 
-module.exports = TokenBucket
+export default TokenBucket
