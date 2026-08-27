@@ -69,7 +69,7 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                     }}
                     className='group'
                     >
-                        {movies.map((movie) => (
+                        {movies && movies.map((movie) => (
                             <Carousel.Slide key={movie.id}>
                                 {movie.backdrop_path ? 
                                     <motion.img className="w-full h-auto rounded-lg  select-none cursor-pointer" src={`https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`} alt="" 

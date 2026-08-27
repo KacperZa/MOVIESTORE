@@ -52,8 +52,8 @@ function MenuOption({ text, icon}: MenuOptionsProps) {
                     <div className="font-bold w-full pb-1 underline-animate
                     "> MOVIES</div>
                   </Link> 
-                {movieGenres?.map((genres, id) => (
-                  <Link to={`movie/genre/${genres.id}/${genres.name}`} key={id} className="w-fit underline-animate
+                {movieGenres?.map(genres => (
+                  <Link to={`movie/genre/${genres.id}/${genres.name}`} key={genres.id} className="w-fit underline-animate
                     ">
                     {genres.name}
                   </Link> 
@@ -63,8 +63,8 @@ function MenuOption({ text, icon}: MenuOptionsProps) {
                   <Link to={`/browse/tv`}>
                     <div className="font-bold w-full pb-1 underline-animate"> TV SERIES</div>
                   </Link> 
-                {tvGenres?.map((genres, id) => (
-                  <Link to={`tv/genre/${genres.id}/${genres.name}`} key={id} className="w-fit underline-animate"> {genres.name}
+                {tvGenres?.map(genres => (
+                  <Link to={`tv/genre/${genres.id}/${genres.name}`} key={genres.id} className="w-fit underline-animate"> {genres.name}
                   </Link> 
                 ))}
               </ul>

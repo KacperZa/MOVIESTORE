@@ -56,7 +56,7 @@ function App() {
         {movies.length > 0 && (
           <Carousel withIndicators 
           height='100%' 
-          key={popularFilms.length}
+          key={popularShows.length}
           slideSize={{base: "80%", sm: "30%", md: "60%"}}
           slideGap={{ base: 'sm', sm: 'md', lg: 'lg' }}
           controlSize={30}
@@ -75,9 +75,8 @@ function App() {
             indicators: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
           }}
           >
-            {topMedias.map((media, i) => (
-            <Carousel.Slide key={i} className='w-full h-full flex justify-center '>
-              <motion.div className='relative inline-block'>
+            {topMedias.map(media => (
+            <Carousel.Slide key={media.id} className='w-full h-full flex justify-center '>
 
                 <motion.img src={`https://image.tmdb.org/t/p/w1280/${media.backdrop_path}`} alt="" className='rounded-lg w-full h-auto select-none shadow-lg'/>
                 <motion.div className="absolute inset-0 rounded-lg flex px-7 py-10 gap-2 justify-end flex-col text-white bg-linear-to-b to-gray-800/80 from-gray-500/0 cursor-pointer"
