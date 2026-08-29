@@ -67,7 +67,7 @@ router.get('/:id', authMiddleware, async (req, res) => {
 router.get('/ids/:id', authMiddleware, async (req, res) => {
 
     if(!req.user) {
-        return res.status(401).json({message: 'Unautorized'})
+        return res.status(401).json({message: 'Unauthorized'})
     }
     
     try {
