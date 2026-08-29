@@ -37,9 +37,9 @@ function BrowsePage() {
   // fetching data from backend
   const { films, fetchNextPage, isPending, isError, error, hasNextPage } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms})
   if(isError) console.log('An error occured during fetching Media', error?.message)
-  
+    
   const lastMediaElementRef = useInfiniteScroll({loading: isPending, fetch: fetchNextPage, hasMore: hasNextPage})
-
+  
   const { isError: isErrorIds, data: favouriteIds } = useFetchFavouritesIds(user?._id)
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
 
@@ -74,11 +74,11 @@ function BrowsePage() {
                 </div>
             ):
             (
-              films.map((film, i) => {
+              films?.map((film: FilmsWithGenres, i: number) => {
                 if(films.length === i + 1) {
-                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres isRef/>
+                  return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres isRef/>
                 } else {
-                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite}  showGenres/>
+                  return <MediaCard<FilmsWithGenres> key={i} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}  showGenres/>
                 } })
             )
             }
