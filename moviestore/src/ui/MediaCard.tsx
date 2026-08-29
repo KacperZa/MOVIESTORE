@@ -31,7 +31,6 @@ export interface FilmsWithGenres extends Films{
 
 interface MediaCardProps<T extends FilmsWithGenres> {
     lastMediaElementRef?: (node: HTMLDivElement | null) => void
-    setFavouriteIds: React.Dispatch<React.SetStateAction<Set<number>>>
     favouriteIds: Set<number | string>
     media: T
     type?: string | undefined
@@ -43,7 +42,7 @@ interface MediaCardProps<T extends FilmsWithGenres> {
 }
 
 
-function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef, setFavouriteIds} : MediaCardProps<T>) {
+function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef} : MediaCardProps<T>) {
 
     const navigate = useNavigate()
 
@@ -105,10 +104,10 @@ function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaEle
                     <div className="flex  flex-0.25 justify-center items-center">
                     <motion.button whileTap={{ scale: 1.2, rotate: -2 }}  whileHover={{ scale: 1.05}} onClick={(e) => {
                         if(favouriteIds.has(id)){
-                            removeFavourite({e, id, setFavouriteIds})
+                            removeFavourite({e, id})
                             console.log("Usuwamy")
                         } else {
-                            addFavourite({e, type, id, setFavouriteIds});
+                            addFavourite({e, type, id});
                             console.log("Dodajemy")
                         }
                     }}
