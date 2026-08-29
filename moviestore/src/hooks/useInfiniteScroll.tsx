@@ -1,30 +1,30 @@
-import React, { useCallback, useRef } from 'react'
+import type { FetchNextPageOptions, InfiniteData, InfiniteQueryObserverResult } from '@tanstack/react-query'
+import { useCallback, useRef } from 'react'
+import type { FetchMediaResults } from './useFetchMedia'
 
 interface InfinityScrollProps {
     loading: boolean
-    pastScrollHeight: React.RefObject<number>
-    setPage: (value: React.SetStateAction<number>) => void
-    topDiv: React.RefObject<HTMLDivElement | null>
+    fetch: (options?: FetchNextPageOptions | undefined) => Promise<InfiniteQueryObserverResult<InfiniteData<FetchMediaResults, unknown>, Error>>
     hasMore: boolean
 }
 
-function useInfiniteScroll({loading, pastScrollHeight, setPage, topDiv, hasMore} : InfinityScrollProps) {
+function useInfiniteScroll({loading, fetch, hasMore} : InfinityScrollProps) {
 
 const observer = useRef<IntersectionObserver | null>(null)
 
   const lastMediaElementRef = useCallback((node: HTMLDivElement | null)  => {
     if (loading) return;
     if (observer.current) observer.current.disconnect()
-    if (!pastScrollHeight) return;
 
       observer.current = new IntersectionObserver(entries =>  {
         if ( entries[0].isIntersecting && hasMore){
-          pastScrollHeight.current = topDiv.current?.scrollHeight ?? 0
-          setPage(prevPageNumber => prevPageNumber + 1)
+          fetch()
         }
-      })
+      },
+    {threshold: 1}
+    )
   if (node) observer.current.observe(node)
-  },[loading, hasMore, pastScrollHeight, topDiv])
+  },[loading, hasMore, fetch])
 
   return lastMediaElementRef
 }

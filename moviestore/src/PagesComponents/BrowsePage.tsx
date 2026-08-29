@@ -36,45 +36,10 @@ function BrowsePage() {
   const pastScrollHeight = useRef<number>(0)
   
   // fetching data from backend
-  const { films, loading, hasMore } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms})
-
-  const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { films, fetchNextPage, isPending, isError, error, hasNextPage } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms})
+  if(isError) console.log('An error occured during fetching Media', error?.message)
   
-  const lastMediaElementRef = useInfiniteScroll({loading: loading, pastScrollHeight: pastScrollHeight, setPage: setPage,  topDiv: topDiv, hasMore: hasMore})
-
-
-  // Disabling sending the data in forms
-  useEffect(() => {
-    const disableSubmit = (e: SubmitEvent) => {
-      e.preventDefault()
-      console.log('enter')
-    }
-    document.addEventListener('submit', disableSubmit)
-
-    return () => document.removeEventListener('submit', disableSubmit)
-  },[])
-
-
-  useEffect(() => {
-    if (!topDiv.current) return;
-    const currentScroll = topDiv.current.scrollHeight - pastScrollHeight.current;
-    topDiv.current.scrollTo(0, currentScroll)
-  },[films])
-
-  useEffect(() => {
-    const input = document.getElementById("input")
-    const press = (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
-        e.preventDefault()
-        const btn = document.getElementById("btn");
-        btn?.click();
-      }
-    }
-  
-    input?.addEventListener("keypress", press)
-      return () => input?.removeEventListener('keypress', press)
-
-  },[])
+  const lastMediaElementRef = useInfiniteScroll({loading: isPending, fetch: fetchNextPage, hasMore: hasNextPage})
 
   return (
   <>
