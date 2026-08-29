@@ -26,6 +26,7 @@
     "@primereact/core": "^11.0.0-alpha.1",
     "@primeuix/themes": "^2.0.3",
     "@tailwindcss/vite": "^4.2.2",
+    "@tanstack/react-query": "^5.102.7",
     "axios": "^1.17.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
