@@ -13,20 +13,47 @@ function WatchedFilms() {
   
   const { user } = useUser()
 
-  const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds(user?._id)
+  if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
+
   const { addFavourite, removeFavourite } = FavouriteToggle()
-  const { watchedFilms } = useFetchWatchedMedia()
+  const { isPending : isPendingWatchedMedia, isError: isErrorWatchedMedia, data: watchedFilms, error: errorWatchedMedia } = useFetchWatchedMedia()
+
+  if(isErrorWatchedMedia) console.log('An error occured during fetching watched media', errorWatchedMedia?.message)
 
   const navigate = useNavigate()
+
+
+  if (isPendingWatchedMedia) {
+    return (
+            <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
+              <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Watched films</div>
+                <div className='w-full h-full flex justify-center items-center'>
+                  <p className='text-2xl text-text font-bold tracking-wider'>Loading...</p>
+                </div>
+            </div>
+    )        
+  }
+
+  if (isErrorWatchedMedia) {
+    return (
+            <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
+              <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Watched films</div>
+                <div className='w-full h-full flex justify-center items-center'>
+                  <p className='text-2xl text-text font-bold tracking-wider'>An Error has occurred during fetching watched films, please reload the page.</p>
+                </div>
+            </div>
+    )        
+  }
     
     return (
       <>
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
             <p className='text-3xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary'>Watched films</p>
-              {watchedFilms.length !== 0 ?
+              {watchedFilms?.length !== 0 ?
             <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full'>
-              {watchedFilms.map(media => {
-                  return <MediaCard<MediaWithUser> key={media.id}  media={media} type={media.type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
+              {watchedFilms?.map((media: MediaWithUser) => {
+                  return <MediaCard<MediaWithUser> key={media.id}  media={media} type={media.type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
                 })}
             </div>
 
