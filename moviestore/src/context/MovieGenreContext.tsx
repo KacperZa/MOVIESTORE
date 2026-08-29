@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-  type MovieGenres = {
+  export type MovieGenres = {
     id: number
     name: string
   }
