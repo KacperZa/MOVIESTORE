@@ -1,9 +1,6 @@
 import { motion } from 'motion/react'
-import  { useState } from 'react'
+import { useState } from 'react'
 import { useUser } from '../../context/useUser'
-// import { Button } from 'primereact/button';
-// import { Dialog } from 'primereact/dialog';
-import { useNavigate } from 'react-router-dom'
 import { Button, Group, Modal, NumberInput, PasswordInput, TextInput } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import { useField, useForm } from '@mantine/form';
@@ -15,20 +12,17 @@ import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
 import FavouriteToggle from '../FavouriteToggle'
 import type { MediaWithUser } from '../FavouritesPage'
 import MediaCard from '@/ui/MediaCard'
+import useDeleteUser from '@/hooks/useDeleteUser'
+import useEditUser from '@/hooks/useEditUser'
 // import { InputText } from 'primereact/inputtext';
 
 
-interface handleSubmitProps {
-  username: string | null
-  email: string | null
-  age: number | null
-  password: string | null
-}
+
 
 function Profile() {
 
 
-  const {setUser, user} = useUser()
+  const { user } = useUser()
 
   const [selectedGenre, setSelectedGenre] = useState("movie")
   
@@ -36,73 +30,20 @@ function Profile() {
   const [opened, {open, close}] = useDisclosure(false)
   const [deleteModalOpened, {open: openDeleteModal, close: closeDeleteModal}] = useDisclosure(false)
 
-  const navigate = useNavigate()
 
   const { time, day, month, year } = useGetCreationDay(user?.creationDate ?? null)
-  const { watchedFilms } = useFetchWatchedMedia()
+  const { isPending: isPendingWatchedMedia, isError, data: watchedFilms, error: errorWatchedMedia } = useFetchWatchedMedia()
+  if(isError) console.log('An error occured during fetching favouriteIds', errorWatchedMedia?.message)
   
-  const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds(user?._id)
+  if(isErrorIds) console.log('An error occured during fetching favouriteIds', errorFavouriteIds?.message)
+
   const { addFavourite, removeFavourite } = FavouriteToggle()
 
-  // const handlePasswordSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
-  //   handleSubmit(e)
-  //   setPassword('')
-  //   setSecondPassword('')
-  // }
+  const {deleteUser, loading, error} = useDeleteUser()
 
-  const handleSubmit = async ({username, email, age, password} : handleSubmitProps) => {
-    // e.preventDefault()
-    try {
-      const res = await fetch(`http://localhost:5000/profile/${user?._id}`, {
-        method: 'PATCH',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({username, email, age, password})
-      })
-  
-      const data = await res.json()
-      
-      if(res.ok){
-        console.log("ITS OK")
-        setUser(data)
-        console.log("USER: ", user)
-        console.log(res.status, data)
-        close()
-      }
-      if(!res.ok){
-        console.error("ERROR: ", res.status)
-        console.log(res)
-      }
-      
-    } catch (err) {
-      console.error(err)
-    }
-  }
+  const { editUser } = useEditUser()
 
-  const handleDelete = async () => {
-    try {
-      const res = await fetch(`http://localhost:5000/profile/delete/${user?._id}`, {
-        method: 'DELETE',
-        headers: {'Content-Type': 'application/json'},
-      })
-
-      if(!res.ok){
-        console.error('Error', res.status)
-        return
-      }
-      if(res.ok){
-        console.log('Deleted an account')
-        navigate('/')
-        setUser(null)
-      }
-
-      const data = await res.json()
-      console.log(data)
-
-      
-    } catch (err){
-      console.error(err)
-    }
-  }
 
 
   const usernameField = useField({
@@ -133,7 +74,7 @@ function Profile() {
     }
   })
 
-  const sortedMedia = watchedFilms.filter((media) => media.mediaType === selectedGenre)
+  const sortedMedia = watchedFilms?.filter((media) => media.mediaType === selectedGenre)
 
   return (
   <>
@@ -145,7 +86,7 @@ function Profile() {
         </div>
 
         <div className='min-w-full h-fit  bg-secondary rounded-xl p-2'>
-          <p className='text-4xl font-bold px-2'>PERSONAL INFORMATION</p>
+          <p className='text-4xl font-bold p-2'>PERSONAL INFORMATION</p>
           <div className='flex flex-row gap-5 justify-evenly p-4 font-medium items-center '>
             <p>E-mail: {user?.email}</p>
             <p>Age: {user?.age ?? 'Not specified'}.</p>
@@ -157,16 +98,22 @@ function Profile() {
         <div>
           <div className='text-2xl font-semibold p-3 flex flex-row gap-1 select-none'> Watched 
             <div className='flex flex-row gap-1'>
-              <div onClick={() => setSelectedGenre("movie")} className={`cursor-pointer px-1 ${selectedGenre === "movie" ? 'bg-secondary rounded-md flex-1' : null} `}>Movies </div>
+              <div onClick={() => setSelectedGenre("movie")} className={`cursor-pointer px-1 ${selectedGenre === "movie" ? 'bg-accent rounded-md flex-1' : null} `}>Movies </div>
               / 
-              <div onClick={() => setSelectedGenre("tv")} className={`cursor-pointer px-1 ${selectedGenre === "tv" ? 'bg-secondary rounded-md flex-1' : null} `}>Tv shows </div>
+              <div onClick={() => setSelectedGenre("tv")} className={`cursor-pointer px-1 ${selectedGenre === "tv" ? 'bg-accent rounded-md flex-1' : null} `}>Tv shows </div>
             </div>
              </div>
-          <div className='grid grid-cols-4 gap-y-5 overflow-auto p-2'>
-              {sortedMedia.map((media, i) => {
-                  return  <MediaCard<MediaWithUser> key={i}  media={media} type={media.type} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} addToHistory/>
-                })}
-            </div>
+             {isPendingWatchedMedia ?
+                <div className='grid grid-cols-4 gap-y-5 overflow-auto p-2'>
+                  {sortedMedia?.map((media, i) => {
+                      return  <MediaCard<MediaWithUser> key={i}  media={media} type={media.type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
+                    })}
+                </div>
+            :
+            <div className='w-full h-full'>
+
+            </div> 
+            }
         </div>
       </div>
     </motion.div>
@@ -189,7 +136,7 @@ function Profile() {
                     <Button onClick={async () => {
                       const error = await usernameField.validate()
                         if(!error) {
-                          handleSubmit({
+                          editUser({
                             username: emailField.getValue(), 
                             email: user?.email ?? null, 
                             age: user?.age ?? null, 
@@ -212,7 +159,7 @@ function Profile() {
                     <Button onClick={async () => {
                       const error = await emailField.validate()
                         if(!error) {
-                          handleSubmit({
+                          editUser({
                             email: emailField.getValue(), 
                             username: user?.username ?? null, 
                             age: user?.age ?? null, 
@@ -235,7 +182,7 @@ function Profile() {
                     <Button onClick={async () => {
                       const error = await ageField.validate()
                         if(!error) {
-                          handleSubmit({
+                          editUser({
                             username: user?.username ?? null , 
                             email: user?.email ?? null, 
                             age: ageField.getValue(), 
@@ -247,11 +194,12 @@ function Profile() {
                   </div>
 
                   <form onSubmit={
-                          form.onSubmit((values) => {handleSubmit({
-                            username: user?.username ?? null , 
-                            email: user?.email ?? null, 
-                            age: user?.age ?? null, 
-                            password: values.password,
+                          form.onSubmit((values) => {
+                            editUser({
+                              username: user?.username ?? null , 
+                              email: user?.email ?? null, 
+                              age: user?.age ?? null, 
+                              password: values.password,
                           }); 
                           form.reset()})
                         } 
@@ -290,7 +238,7 @@ function Profile() {
             <p className='flex p-2 w-full justify-center'>Do you really want to delete an account?</p>
             <div className='flex flex-row gap-2 justify-evenly'>
               <Button className='shadow-lg/20' color='green' onClick={closeDeleteModal}>No, cancel it</Button>
-              <Button className='shadow-lg/20' color='red' onClick={() => handleDelete()}>Yes, delete it</Button>
+              <Button className='shadow-lg/20' color='red' onClick={deleteUser}>Yes, delete it</Button>
             </div>
           </div>
         </Modal>

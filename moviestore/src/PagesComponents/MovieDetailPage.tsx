@@ -13,14 +13,21 @@ const MovieDetailPage = () => {
 
     const type = "movie"
 
-    const { details } = useFetchMovieDetails({id})
+    const { isError, isPending, data: details, error } = useFetchMovieDetails({id})
+
+    if(isError) console.log('An error occured during fetching movie details', error?.message)
+
     console.log(details)
 
     const {user} = useUser()
 
     const { hoursRuntime, minutesRuntime } = useRuntime(details?.runtime)
 
-    const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
+    const { isError: isErrorIds, data } = useFetchFavouritesIds(user?._id)
+    if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
+
+    const favouriteIds = data ?? new Set()
+
     const { addFavourite, removeFavourite } = FavouriteToggle()
 
     const videos = useFetchVideo({type: "movie", id, enabled: !!id})
@@ -52,6 +59,8 @@ const MovieDetailPage = () => {
         }
     })
 
+    // Variants for 
+
     const heroPageItemVariants = {
         hidden: {
             opacity: 0,
@@ -77,7 +86,10 @@ const MovieDetailPage = () => {
         }
     }
 
-  return (
+    console.log('user._id in component:', user?._id)
+
+  
+return (
     <div className='w-full h-full bg-card overflow-hidden overflow-y-auto scrollbar-thumb-primary scrollbar-gutter-stable pb-2'>
         {/* IMAGE  SECTION*/}
         <div className='relative w-full h-full'> 
@@ -107,15 +119,21 @@ const MovieDetailPage = () => {
                     </motion.div>
                 </div>
                 <div className='h-full p-7 gap-2 flex items-end'>
-                    <button className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'>MARK AS WATCHED</button>
-                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
+                    <motion.button 
+                    className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'
+                    >
+                        MARK AS WATCHED
+                    </motion.button>
+                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
+                    className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
                     onClick={(e) => {
+                        console.log("favouriteIds.has:", favouriteIds.has(Number(id)))
                         if(!id || !type) return
                         if(favouriteIds.has(Number(id))){
-                            removeFavourite({e, id: Number(id), setFavouriteIds})
+                            removeFavourite({e, id: Number(id)})
                             console.log("Usuwamy")
                         } else {
-                            addFavourite({e, type, id: Number(id), setFavouriteIds});
+                            addFavourite({e, type, id: Number(id)});
                             console.log("Dodajemy")
                         }
                     }}>
@@ -190,7 +208,8 @@ const MovieDetailPage = () => {
                     </div>
             </div> */}
     </div>
-  )
-}
+    )
+  }
+
 
 export default MovieDetailPage

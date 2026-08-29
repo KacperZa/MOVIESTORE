@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { useSearchParams } from "react-router-dom"
 
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -16,30 +16,21 @@ function SpecificGenre() {
     const [page, setPage] = useState(Number(searchParams.get('page') || 1));
 
 
-    // Refs for managing scrollHeight
-    const topDiv = useRef<HTMLDivElement>(null)
-    const pastScrollHeight = useRef<number>(0)
-
     const search = searchParams.get("query") ?? ''
 
     const { user } = useUser()
         
     const { addFavourite, removeFavourite } = FavouriteToggle()
-    const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds(user?._id)
+
+    const { isError: isErrorIds, data: favouriteIds } = useFetchFavouritesIds(user?._id)
+    if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
 
     
     // fetching data from backend
-    const { films, loading, hasMore } = useFetchMedia({ search , page, setPage})
+    const { films, fetchNextPage, isPending, isError, error, hasNextPage } = useFetchMedia({ search , page, setPage})
+    if(isError) console.log('An error occured during fetching Media', error?.message)
     
-    
-    const lastMediaElementRef = useInfiniteScroll({loading: loading, pastScrollHeight: pastScrollHeight, setPage: setPage,  topDiv: topDiv, hasMore: hasMore})
-
-
-    useEffect(() => {
-        if (!topDiv.current) return;
-        const currentScroll = topDiv.current.scrollHeight - pastScrollHeight.current;
-        topDiv.current.scrollTo(0, currentScroll)
-    },[films])
+    const lastMediaElementRef = useInfiniteScroll({loading: isPending, fetch: fetchNextPage, hasMore: hasNextPage})
     
     return (
     <>
@@ -60,7 +51,7 @@ function SpecificGenre() {
             {/* Grid for posters  */}
             <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
                 <AnimatePresence>
-                {loading ? (
+                {isPending ? (
                 // <SkeletonImage cards={8}/>
                     <div className=" min-w-7/10 mx-auto border-red-500">
                     <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem'  }}></i>
@@ -69,9 +60,9 @@ function SpecificGenre() {
                 (
                 films.map((film, i) => {
                     if(films.length === i + 1) {
-                    return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres isRef/>
+                    return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} favouriteIds={favouriteIds ?? new Set()}  addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres isRef/>
                     } else {
-                    return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} favouriteIds={favouriteIds} setFavouriteIds={setFavouriteIds} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres/>
+                    return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} favouriteIds={favouriteIds ?? new Set()}  addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres/>
                     } })
                 )
                 }

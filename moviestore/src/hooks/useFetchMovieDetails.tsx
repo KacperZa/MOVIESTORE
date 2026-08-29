@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 interface FetchDetailsProps {
     id: string | undefined
@@ -62,24 +62,21 @@ export interface Details {
 }
 
 export default function useFetchDetails({id} : FetchDetailsProps) {
-    const [details, setDetails] = useState<Details>()
 
-    useEffect(() => {
-        const fetchDetails = async () => {
-            try{
-                const res = await fetch(`http://localhost:5000/details/movie/${id}`, {
-                    method: 'GET'
-                });
+        const fetchDetails = async (): Promise<Details> => {
+            const res = await fetch(`http://localhost:5000/details/movie/${id}`, {
+                method: 'GET'
+            });
 
-                if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
+            if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
 
-                const data = await res.json()
-                setDetails(data)
-            } catch(err) {
-            console.error(err)
-            }
+            return await res.json()
         }
-        fetchDetails()
-   },[id])
-  return { details }
+
+   const { isError, isPending, data, error } = useQuery({
+    queryKey: ['movieDetails', id],
+    queryFn: fetchDetails
+   })
+
+  return { isError, isPending, data, error }
 }

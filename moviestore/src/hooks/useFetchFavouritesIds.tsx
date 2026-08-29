@@ -1,31 +1,23 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 function useFetchFavouritesIds(userId?: string) {
 
-  const [favouriteIds, setFavouriteIds] = useState<Set<number>>(new Set())
-
-    useEffect(() => {
-        if(!userId) return
-
-        const fetchFavouriteIds = async () => {
-          try {
+  
+        const fetchFavouriteIds = async (): Promise<Set<number | string>> => {
             const res = await fetch(`http://localhost:5000/favourite/ids/${userId}`)
             if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
             
             const data = await res.json()
-            setFavouriteIds(new Set(data.map((item: {tmdbId: number}) => item.tmdbId)))
-    
-          } catch(err) {
-            console.error(err)
-          }
+            return new Set(data.map((item: {tmdbId: number}) => item.tmdbId))          
         }
 
-        fetchFavouriteIds()
-    },[userId])
-
-
+    const { isPending, isError, data, error} = useQuery({
+      queryKey: ['favouriteIds', userId],
+      queryFn: fetchFavouriteIds,
+      enabled: !!userId
+    })
     
-  return { favouriteIds, setFavouriteIds }
+  return { isPending, isError, data, error }
 }
 
 export default useFetchFavouritesIds

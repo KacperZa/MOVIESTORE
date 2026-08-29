@@ -13,7 +13,7 @@ export interface GenreSectionProps {
 function GenreSection({genreId, genreName, type} : GenreSectionProps) {
 
     const navigate = useNavigate()
-    const { ref, movies, loading } = useGenreSection({genreId, type})
+    const { ref, data: movies, isPending, isError } = useGenreSection({genreId, type})
 
   return (
     <>

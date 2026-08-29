@@ -6,15 +6,24 @@ import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimation, useInView } from 'motion/react'
 import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
 import FavouriteToggle from './FavouriteToggle'
+import { useUser } from '@/context/useUser'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
     const {id} = useParams()
     const type = "tv"
 
-    const { details } = useFetchTvDetails({id})
+    const { isError, isPending, data: details, error } = useFetchTvDetails({id})
+    if(isError) console.log('An Error occured during fetching favouriteIds', error?.message)
 
-    const { favouriteIds, setFavouriteIds } = useFetchFavouritesIds()
+
+    const { user } = useUser()
+
+    const { isError: isErrorIds, data } = useFetchFavouritesIds(user?._id)
+
+    if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
+
+    const favouriteIds = data ?? new Set()
     const { removeFavourite, addFavourite } = FavouriteToggle()
     console.log(details)
 
@@ -36,6 +45,7 @@ const MovieDetailPage = () => {
         }
     }
 
+    // Variants for seasons container
 
     const infoItemVariants = {
         hidden: {
@@ -71,6 +81,34 @@ const MovieDetailPage = () => {
         }
     }
 
+    // ---------- //
+
+    // Hero Page Variants
+        const heroPageItemVariants = {
+        hidden: {
+            opacity: 0,
+            x: -50,
+            filter: 'blur(10px)',
+        },
+        visible: {
+            opacity: 1,
+            x: 0,
+            filter: 'blur(0px)',
+            transition: {
+                duration: 0.7
+            }
+        }
+    }
+
+    const heroPageContainerVariants = {
+        hidden: {},
+        visible: {
+            transition: {
+                staggerChildren: 0.2
+            }
+        }
+    }
+
     const currentSeason = details?.seasons.find(s => s.season_number === selectedSeason)
 
     useEffect(() => {
@@ -97,20 +135,35 @@ const MovieDetailPage = () => {
             <img src={`https://image.tmdb.org/t/p/original/${details?.backdrop_path}`} className='w-full h-full object-cover aspect-video' alt={details?.name} />
             <div className='absolute left-0 bottom-0 w-full h-full bg-linear-to-b to-black/80 from-gray-500/0 flex flex-row justify-between'>
                 {/* TEXT  */}
-                <div className='h-full flex flex-col justify-end text-white p-7 gap-2'>
-                    <p className='text-6xl font-extrabold'>{details?.name}</p>
-                    <p className='text-3xl font-semibold italic'>{details?.tagline}</p>
-                </div>
+                <motion.div 
+                className='h-full flex flex-col justify-end text-white p-7 gap-2'
+                variants={heroPageContainerVariants}
+                initial="hidden"
+                animate="visible"
+                >
+                    <motion.p 
+                    className='text-6xl font-extrabold'
+                    variants={heroPageItemVariants}
+                    >
+                        {details?.name}
+                    </motion.p>
+                    <motion.p 
+                    className='text-3xl font-semibold italic'
+                    variants={heroPageItemVariants}
+                    >
+                        {details?.tagline}
+                    </motion.p>
+                </motion.div>
                 {/* BUTTONS  */}
                 <div className='h-full p-7 gap-2 flex items-end'>
                     <button className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'>MARK AS WATCHED</button>
                     <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' onClick={(e) => {
                         if(!id || !type) return
                         if(favouriteIds.has(Number(id))){
-                            removeFavourite({e, id: Number(id), setFavouriteIds})
+                            removeFavourite({e, id: Number(id)})
                             console.log("Usuwamy")
                         } else {
-                            addFavourite({e, type, id: Number(id), setFavouriteIds});
+                            addFavourite({e, type, id: Number(id)});
                             console.log("Dodajemy")
                         }
                     }}>
