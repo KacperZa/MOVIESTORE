@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { useParams, useSearchParams } from "react-router-dom"
 import 'react-loading-skeleton/dist/skeleton.css'
 import { motion, AnimatePresence } from "motion/react";
@@ -32,15 +32,17 @@ function BrowsePage() {
 
   const { addFavourite, removeFavourite } = FavouriteToggle()
 
-  // Refs for managing scrollHeight
-  const topDiv = useRef<HTMLDivElement>(null)
-  const pastScrollHeight = useRef<number>(0)
+
   
   // fetching data from backend
   const { films, fetchNextPage, isPending, isError, error, hasNextPage } = useFetchMedia({ search: debouncedSearch, page, filters: selectedFilter, setPage, adultFilms})
   if(isError) console.log('An error occured during fetching Media', error?.message)
   
   const lastMediaElementRef = useInfiniteScroll({loading: isPending, fetch: fetchNextPage, hasMore: hasNextPage})
+
+  const { isError: isErrorIds, data: favouriteIds } = useFetchFavouritesIds(user?._id)
+  if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
+
 
   return (
   <>
@@ -65,7 +67,7 @@ function BrowsePage() {
           {/* Grid for posters  */}
           <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center">
             <AnimatePresence>
-            {loading ? (
+            {isPending ? (
               // <SkeletonImage cards={8}/>
                 <div className=" min-w-7/10 mx-auto border-red-500">
                   <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem'  }}></i>
