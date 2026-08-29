@@ -26,6 +26,7 @@ function BrowsePage() {
   const [page, setPage] = useState(Number(searchParams.get('page') || 1))
 
   const { type } = useParams()
+  const safeType = type === "movie" || type === "tv" ? type : undefined
 
   const { user } = useUser()
 
@@ -46,7 +47,7 @@ function BrowsePage() {
 
     <motion.div className=" flex w-full h-full flex-row bg-card rounded-2xl p-2  scrollbar-thumb-primary scrollbar-gutter-stable gap-2">
 
-      <GenreSidebar />
+      <GenreSidebar genre={safeType}/>
 
       <div className="h-full flex-1 overflow-auto">
         <div className="flex flex-row gap-2 w-full">
