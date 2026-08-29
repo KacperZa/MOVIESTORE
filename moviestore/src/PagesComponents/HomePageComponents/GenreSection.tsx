@@ -15,6 +15,41 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
     const navigate = useNavigate()
     const { ref, data: movies, isPending, isError } = useGenreSection({genreId, type})
 
+
+    const slideItemVariants = {
+        hidden: {
+        y: 10,
+        opacity: 0
+        },
+        visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.4
+        }
+        }
+    }
+
+    const slideOverlayVariants = {
+        hidden: {
+        opacity: 0
+        },
+        visible: {
+        opacity: 1,
+        transition: {
+            duration: 0.3
+        }
+        }
+    }
+
+    const slideContainerVariants = {
+        hidden: {},
+        visible: {
+        transition: {
+            staggerChildren: 0.4
+        }
+        }
+    }
   return (
     <>
     <AnimatePresence>
@@ -31,7 +66,7 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                 </motion.button>
             </div>
             <div ref={ref} className="flex flex-row gap-11 justify">
-                {loading ? (
+                {isPending ? (
                     <Carousel
                     slideSize={{ base: '100%', sm: '50%', md: '33.333333%', lg: '30%' }}
                     slideGap={{ base: 'sm', sm: 'md', lg: 'lg' }}
@@ -46,10 +81,10 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                     }}
                     className='group'
                     >
-                        {movies.map((movie) => (
+                        {movies?.map((movie) => (
                             <Carousel.Slide key={movie.id}>
-                                <div className='w-full aspect-video bg-gray-500 rounded-lg shadow-xl flex justify-center items-center select-none'>
-                                    <ImageOff/>
+                                <div className='w-full h-auto aspect-video bg-gray-500 rounded-lg shadow-xl flex justify-center items-center select-none'>
+                                    <ImageOff size={50}/>
                                 </div>  
                             </Carousel.Slide>
                         ))}
@@ -115,7 +150,7 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                                     
                                 :
                                 <div className='w-full aspect-video bg-gray-500 rounded-lg shadow-xl flex justify-center items-center select-none'>
-                                    <ImageOff/>
+                                    <ImageOff size={50}/>
                                 </div>  
                             }
                             </Carousel.Slide>
