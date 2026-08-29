@@ -70,10 +70,49 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                     className='group'
                     >
                         {movies && movies.map((movie) => (
-                            <Carousel.Slide key={movie.id}>
+                            <Carousel.Slide key={movie.id} className='w-full h-full'>
                                 {movie.backdrop_path ? 
-                                    <motion.img className="w-full h-auto rounded-lg  select-none cursor-pointer" src={`https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`} alt="" 
+                                <>
+                                <motion.div className='relative inline-block cursor-pointer'
+                                variants={slideContainerVariants} 
+                                initial="hidden"
+                                whileHover="visible"
+                                onClick={() => navigate(`/detail/${type}/${movie.id}`)}
+                                >
+                                    <motion.img className="w-full h-auto rounded-lg select-none cursor-pointer " src={`https://image.tmdb.org/t/p/w1280/${movie.backdrop_path}`} alt={movie.name ?? movie.title} 
                                     transition={{type: spring, stiffness: 120, damping: 8, mass: 1 }} />
+                                    <motion.div 
+                                    className='absolute inset-0 text-white bg-linear-to-b to-gray-800/80 from-gray-500/0 rounded-lg flex justify-start items-end p-4'
+                                    variants={slideOverlayVariants}
+                                    initial="hidden"
+                                    whileHover="visible">
+                                        <div className='flex flex-col'>
+                                            <motion.p 
+                                            className='text-2xl'
+                                            variants={slideItemVariants}>
+                                                {movie.name ?? movie.title}
+                                            </motion.p>
+                                            <div className='flex flex-col'>
+                                                <motion.p 
+                                                className='font-medium'
+                                                variants={slideItemVariants}>
+                                                    {Math.round(movie.vote_average * 10)}% Rating
+                                                </motion.p>
+                                                <motion.div
+                                                variants={slideItemVariants}>
+                                                {(movie.gatunki ?? [])
+                                                .map((g, i, arr: string[]) => (
+                                                    <span key={i} className="font-semibold text-xs"> {i === arr.length - 1 ? g  : g+","}</span>
+                                                    )
+                                                )}
+                                                </motion.div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+
+                                </motion.div>
+                                </>
+                                    
                                 :
                                 <div className='w-full aspect-video bg-gray-500 rounded-lg shadow-xl flex justify-center items-center select-none'>
                                     <ImageOff/>
