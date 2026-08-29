@@ -102,7 +102,7 @@ function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaEle
                     
                     </div>
                     <div className="flex  flex-0.25 justify-center items-center">
-                    <motion.button whileTap={{ scale: 1.2, rotate: -2 }}  whileHover={{ scale: 1.05}} onClick={(e) => {
+                    <motion.button whileTap={{ scale: 0.95, rotate: -2 }}  whileHover={{ scale: 1.05}} onClick={(e) => {
                         if(favouriteIds.has(id)){
                             removeFavourite({e, id})
                             console.log("Usuwamy")
