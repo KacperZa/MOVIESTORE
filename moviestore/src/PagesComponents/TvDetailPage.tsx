@@ -1,12 +1,13 @@
 import { Link, useParams } from 'react-router-dom'
-import { Heart, Star, UserStar } from 'lucide-react'
+import { Heart, Plus, Star, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import useFetchTvDetails from '@/hooks/useFetchTvDetails'
 import { useEffect, useRef, useState } from 'react'
 import { motion, useAnimation, useInView } from 'motion/react'
-import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
 import FavouriteToggle from './FavouriteToggle'
 import { useUser } from '@/context/useUser'
+import useFetchIds from '@/hooks/useFetchIds'
+import HistoryToggle from './HistoryToggle'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
@@ -19,12 +20,18 @@ const MovieDetailPage = () => {
 
     const { user } = useUser()
 
-    const { isError: isErrorIds, data } = useFetchFavouritesIds(user?._id)
+    const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
+    if(isErrorFavouriteIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
-    if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
+    const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchIds({userId: user?._id, type: "history"})
+    if(isErrorHistoryIds) console.log('An Error occured during fetching HistoryIds', errorHistoryIds?.message)
 
-    const favouriteIds = data ?? new Set()
-    const { removeFavourite, addFavourite } = FavouriteToggle()
+    const favouriteIds = favouriteData ?? new Set()
+    const historyIds = historyData ?? new Set()
+
+    const { addFavourite, removeFavourite } = FavouriteToggle()
+    const { addHistory, removeHistory } = HistoryToggle()
+    
     console.log(details)
 
     const ref = useRef(null)
@@ -109,6 +116,18 @@ const MovieDetailPage = () => {
         }
     }
 
+    const plusVariants = {
+        add: {
+            rotate: 0
+        },
+        remove: {
+            rotate: 45,
+            transition: {
+                duration: 0.2
+            }
+        }       
+    }
+
     const currentSeason = details?.seasons.find(s => s.season_number === selectedSeason)
 
     useEffect(() => {
@@ -155,21 +174,45 @@ const MovieDetailPage = () => {
                     </motion.p>
                 </motion.div>
                 {/* BUTTONS  */}
-                <div className='h-full p-7 gap-2 flex items-end'>
-                    <button className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'>MARK AS WATCHED</button>
-                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' onClick={(e) => {
+                <motion.div layout className='h-full p-7 gap-2 flex items-end'>
+                    <motion.button 
+                    className={`${historyIds.has(Number(id)) ? 'bg-red-950' : 'bg-green-950'} text-white px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer items-center gap-1`}
+                    onClick={(e) => {
+                        // console.log("HISTORY IDS:", historyIds)
+                        // console.log("historyIds.has:", historyIds.has(Number(id)))
+                        if(!id || !type) return
+                        if(historyIds.has(Number(id))){
+                            removeHistory({e, id: Number(id)})
+                            console.log("Usuwamy z WATCHED")
+                        } else {
+                            addHistory({e, type, id: Number(id)});
+                            console.log("Dodajemy DO WATCHED")
+                        }
+                    }}>
+                        <motion.div variants={plusVariants} initial={historyIds.has(Number(id)) ? "remove": "add"} animate={historyIds.has(Number(id)) ? "remove": "add"}>
+                            <Plus size={40} color={historyIds.has(Number(id)) ? 'red' : 'green'}/>
+                        </motion.div>
+                        <p className='text-lg'>
+                            {historyIds.has(Number(id)) ? 'In watch history' : 'Add to history'}
+                        </p>
+                        {/* MARK AS WATCHED */}
+                    </motion.button>
+                    <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
+                    className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
+                    onClick={(e) => {
+                        // console.log("favouriteIds.has:", favouriteIds.has(Number(id)))
                         if(!id || !type) return
                         if(favouriteIds.has(Number(id))){
                             removeFavourite({e, id: Number(id)})
-                            console.log("Usuwamy")
+                            console.log("Usuwamy ")
                         } else {
                             addFavourite({e, type, id: Number(id)});
-                            console.log("Dodajemy")
+                            console.log("Dodajemy ")
                         }
                     }}>
                         {details?.id  && favouriteIds.has(details?.id) ? <Heart color='#F00' fill='#F00' size={40}/> :  <Heart color='#F00' size={40}/>}
                         </motion.button>
-                </div>
+                </motion.div>
             </div>
         </div>
 

@@ -1,15 +1,18 @@
 import useFetchMovieDetails from '@/hooks/useFetchMovieDetails'
 import { Link, useParams } from 'react-router-dom'
 import useRuntime from '@/utils/calculateRuntime'
-import { Clock, DollarSign, Heart, UserStar } from 'lucide-react'
+import { Clock, DollarSign, Heart, Plus, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import { animate, inView, motion, stagger } from 'motion/react'
-import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
 import { useUser } from '@/context/useUser'
 import FavouriteToggle from './FavouriteToggle'
+import useFetchIds from '@/hooks/useFetchIds'
+import HistoryToggle from './HistoryToggle'
 
 const MovieDetailPage = () => {
-    const {id} = useParams()
+    const { id } = useParams()
+
+    console.log('MOVIES ID: ', id)
 
     const type = "movie"
 
@@ -23,12 +26,17 @@ const MovieDetailPage = () => {
 
     const { hoursRuntime, minutesRuntime } = useRuntime(details?.runtime)
 
-    const { isError: isErrorIds, data } = useFetchFavouritesIds(user?._id)
-    if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
+    const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
+    if(isErrorFavouriteIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
-    const favouriteIds = data ?? new Set()
+    const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchIds({userId: user?._id, type: "history"})
+    if(isErrorHistoryIds) console.log('An Error occured during fetching HistoryIds', errorHistoryIds?.message)
+
+    const favouriteIds = favouriteData ?? new Set()
+    const historyIds = historyData ?? new Set()
 
     const { addFavourite, removeFavourite } = FavouriteToggle()
+    const { addHistory, removeHistory } = HistoryToggle()
 
     const videos = useFetchVideo({type: "movie", id, enabled: !!id})
 
@@ -86,6 +94,21 @@ const MovieDetailPage = () => {
         }
     }
 
+    // Variants for add to watch history list 
+
+    const plusVariants = {
+        add: {
+            rotate: 0
+        },
+        remove: {
+            rotate: 45,
+            transition: {
+                duration: 0.2
+            }
+        }       
+    }
+
+
     console.log('user._id in component:', user?._id)
 
   
@@ -118,28 +141,45 @@ return (
                         </motion.p>
                     </motion.div>
                 </div>
-                <div className='h-full p-7 gap-2 flex items-end'>
+                <motion.div layout className='h-full p-7 gap-2 flex items-end'>
                     <motion.button 
-                    className='text-white px-6 pt-3 pb-4 flex justify-center backdrop-blur-md rounded-lg cursor-pointer'
-                    >
-                        MARK AS WATCHED
+                    className={`${historyIds.has(Number(id)) ? 'bg-red-950' : 'bg-green-950'} text-white px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer items-center gap-1`}
+                    onClick={(e) => {
+                        // console.log("HISTORY IDS:", historyIds)
+                        // console.log("historyIds.has:", historyIds.has(Number(id)))
+                        if(!id || !type) return
+                        if(historyIds.has(Number(id))){
+                            removeHistory({e, id: Number(id)})
+                            console.log("Usuwamy z WATCHED")
+                        } else {
+                            addHistory({e, type, id: Number(id)});
+                            console.log("Dodajemy DO WATCHED")
+                        }
+                    }}>
+                        <motion.div variants={plusVariants} initial={historyIds.has(Number(id)) ? "remove": "add"} animate={historyIds.has(Number(id)) ? "remove": "add"}>
+                            <Plus size={40} color={historyIds.has(Number(id)) ? 'red' : 'green'}/>
+                        </motion.div>
+                        <p className='text-lg'>
+                            {historyIds.has(Number(id)) ? 'In watch history' : 'Add to history'}
+                        </p>
+                        {/* MARK AS WATCHED */}
                     </motion.button>
                     <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
                     className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
                     onClick={(e) => {
-                        console.log("favouriteIds.has:", favouriteIds.has(Number(id)))
+                        // console.log("favouriteIds.has:", favouriteIds.has(Number(id)))
                         if(!id || !type) return
                         if(favouriteIds.has(Number(id))){
                             removeFavourite({e, id: Number(id)})
-                            console.log("Usuwamy")
+                            console.log("Usuwamy ")
                         } else {
                             addFavourite({e, type, id: Number(id)});
-                            console.log("Dodajemy")
+                            console.log("Dodajemy ")
                         }
                     }}>
                         {details?.id  && favouriteIds.has(details?.id) ? <Heart color='#F00' fill='#F00' size={40}/> :  <Heart color='#F00' size={40}/>}
                         </motion.button>
-                </div>
+                </motion.div>
             </div>
 
         </div>
@@ -210,6 +250,18 @@ return (
     </div>
     )
   }
+{/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M10 11v6"/><path d="M14 11v6"/>
+    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+    <path d="M3 6h18"/>
+    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+</svg> */}
 
+{/* <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-plus-icon lucide-circle-plus">
+    <circle cx="12" cy="12" r="10"/>
+    <path d="M8 12h8"/>
+    <path d="M12 8v8"/>
+</svg>  */}
 
 export default MovieDetailPage
+
