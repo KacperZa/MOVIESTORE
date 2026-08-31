@@ -57,7 +57,7 @@ function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaEle
             whileHover={{scale: 1.02}}
             transition={{type: spring, stiffness: 100, damping: 10, mass: 1 }}
             className="aspect-2/3 m-0 relative w-7/10 mx-auto"
-            onClick={() => navigate(`/detail/${type}/ ${id}`)}
+            onClick={() => navigate(`/detail/${type}/${id}`)}
             >
             <div  className="cursor-pointer">
             <motion.div className="" initial="hidden" whileHover="visible" transition={{ duration: 0.3, staggerChildren: 0, when: "beforeChildren"}}>
