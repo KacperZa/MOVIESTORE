@@ -31,7 +31,7 @@ function App() {
 
 
 
-  // Fetching data for movies genres and saving it in context 
+  // Fetching data for genres and saving it in context 
   const { data: tvGenres, isPending: isPendingTvGenres, isError: isErrorTVGenres, error: errorTvGenres} = useFetchGenres({type:"tv"})
 
   if(isErrorTVGenres) console.log('An error occured during fetching tvGenres', errorTvGenres?.message)

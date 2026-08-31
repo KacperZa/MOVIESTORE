@@ -31,11 +31,11 @@ router.get('/', async (req, res) => {
     }
 })
 
+
+// Getting all watched media from specific user
 router.get('/:id', authMiddleware, async (req, res) => {
 
-    if(!req.user) {
-        return res.status(401).json({message: 'Unautorized'})
-    }
+    if(!req.user) return res.status(401).json({message: 'Unautorized'})
 
     const reqUserId = req.user._id
 
@@ -64,6 +64,8 @@ router.get('/:id', authMiddleware, async (req, res) => {
     res.status(200).json(result)
 })
 
+
+//Getting all the ids from specific user
 router.get('/ids/:id', authMiddleware, async (req, res) => {
 
     if(!req.user) {
@@ -79,12 +81,12 @@ router.get('/ids/:id', authMiddleware, async (req, res) => {
 
 })
 
+
+
 // Adding the media record
 router.post('/:id', authMiddleware, async (req, res) => {
 
-    if(!req.user) {
-        return res.status(401).json({message: 'Unautorized'})
-    }
+    if(!req.user) return res.status(401).json({message: 'Unautorized'})
 
     const result = favouriteSchema.safeParse(req.body)
 
@@ -134,9 +136,8 @@ router.post('/:id', authMiddleware, async (req, res) => {
 // })
 
 router.delete('/:tmdbId', getMedia, async (req, res) => {
-    if(!req.media) {
-        return res.status(404).json({message: 'Media not found'})   
-    }
+    if(!req.media) return res.status(404).json({message: 'Media not found'})   
+
 
     try{
         await req.media.deleteOne()

@@ -103,14 +103,14 @@ const ThemeSwitch = () => {
         />
 
             <motion.g  variants={raysVariants} initial="hidden" animate={theme === "light" ? "visible" : "hidden"} className="stroke-3 stroke-yellow-500 origin-center">
-            <motion.path variants={rayVariant} d="M21 5V1" />   
-            <motion.path variants={rayVariant} d="M32 10L35 7" /> 
-            <motion.path variants={rayVariant} d="M37 21H41" />  
-            <motion.path variants={rayVariant} d="M32 32L35 35" /> 
-            <motion.path variants={rayVariant} d="M21 37V41" />  
-            <motion.path variants={rayVariant} d="M10 32L7 35" /> 
-            <motion.path variants={rayVariant} d="M5 21H1" />   
-            <motion.path variants={rayVariant} d="M10 10L7 7" /> 
+              <motion.path variants={rayVariant} d="M21 5V1" />   
+              <motion.path variants={rayVariant} d="M32 10L35 7" /> 
+              <motion.path variants={rayVariant} d="M37 21H41" />  
+              <motion.path variants={rayVariant} d="M32 32L35 35" /> 
+              <motion.path variants={rayVariant} d="M21 37V41" />  
+              <motion.path variants={rayVariant} d="M10 32L7 35" /> 
+              <motion.path variants={rayVariant} d="M5 21H1" />   
+              <motion.path variants={rayVariant} d="M10 10L7 7" /> 
             </motion.g>
         </motion.svg>
     </div>

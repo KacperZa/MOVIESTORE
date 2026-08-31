@@ -42,7 +42,7 @@ const MenuOptionSearch = () => {
                     animate={{opacity: 1}}
                     exit={{opacity: 0}}
                     >
-                        <X color='black'/>
+                        <X color='gray'/>
                     </motion.div>
                 </form>}
             </AnimatePresence>
