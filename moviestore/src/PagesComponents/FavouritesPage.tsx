@@ -1,10 +1,10 @@
 import useFetchFavourites, { type DetailsWithUser } from '../hooks/useFetchFavourites'
 import MediaCard, { type FilmsWithGenres } from '@/ui/MediaCard'
 import FavouriteToggle from './FavouriteToggle'
-import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
 import { useUser } from '@/context/useUser'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
+import useFetchIds from '@/hooks/useFetchIds'
 
 export interface MediaWithUser extends FilmsWithGenres {
   userId: string
@@ -37,7 +37,7 @@ function Favourites() {
 
   const { addFavourite, removeFavourite} = FavouriteToggle()
 
-  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
 
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 

@@ -7,11 +7,11 @@ import useFetchMedia from "../hooks/useFetchMedia";
 import { useDebounce } from "use-debounce";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import FavouriteToggle from "./FavouriteToggle";
-import useFetchFavouritesIds from "../hooks/useFetchFavouritesIds";
 import { useUser } from "@/context/useUser";
 import Filters, { type FilterItem } from "@/ui/Filters";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
+import useFetchIds from "../hooks/useFetchIds";
 
 
 
@@ -40,7 +40,7 @@ function BrowsePage() {
     
   const lastMediaElementRef = useInfiniteScroll({loading: isPending, fetch: fetchNextPage, hasMore: hasNextPage})
   
-  const { isError: isErrorIds, data: favouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
 
 

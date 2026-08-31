@@ -8,7 +8,7 @@ import { useField, useForm } from '@mantine/form';
 import { AtSignIcon, Calendar, Check, Lock, SquarePen, Trash, User } from 'lucide-react'
 import useGetCreationDay from '../../hooks/useGetCreationDay'
 import useFetchWatchedMedia from '@/hooks/useFetchWatchedMedia'
-import useFetchFavouritesIds from '@/hooks/useFetchFavouritesIds'
+import useFetchFavouritesIds from '@/hooks/useFetchIds'
 import FavouriteToggle from '../FavouriteToggle'
 import type { MediaWithUser } from '../FavouritesPage'
 import MediaCard from '@/ui/MediaCard'
@@ -35,7 +35,7 @@ function Profile() {
   const { isPending: isPendingWatchedMedia, isError, data: watchedFilms, error: errorWatchedMedia } = useFetchWatchedMedia()
   if(isError) console.log('An error occured during fetching favouriteIds', errorWatchedMedia?.message)
   
-  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds({ userId: user?._id, type: "favourite"})
   if(isErrorIds) console.log('An error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
   const { addFavourite, removeFavourite } = FavouriteToggle()

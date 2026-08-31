@@ -8,8 +8,8 @@ import { useUser } from "../context/useUser";
 import useFetchMedia from "../hooks/useFetchMedia";
 import FavouriteToggle from "./FavouriteToggle";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import useFetchFavouritesIds from "../hooks/useFetchFavouritesIds";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
+import useFetchIds from "@/hooks/useFetchIds";
 
 function SpecificGenre() {
     const [searchParams] = useSearchParams();
@@ -22,7 +22,7 @@ function SpecificGenre() {
         
     const { addFavourite, removeFavourite } = FavouriteToggle()
 
-    const { isError: isErrorIds, data: favouriteIds } = useFetchFavouritesIds(user?._id)
+    const { isError: isErrorIds, data: favouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
     if(isErrorIds) console.log('An Error occured during fetching favouriteIds')
 
     

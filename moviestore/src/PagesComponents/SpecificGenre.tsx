@@ -8,10 +8,10 @@ import { useUser } from "../context/useUser";
 import useFetchMedia from "../hooks/useFetchMedia";
 import FavouriteToggle from "./FavouriteToggle";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import useFetchFavouritesIds from "../hooks/useFetchFavouritesIds";
 import Filters, { type FilterItem } from "@/ui/Filters";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
+import useFetchIds from "../hooks/useFetchIds";
 
 function SpecificGenre() {
   const { type, id_genre, name_genre } = useParams()
@@ -30,7 +30,7 @@ function SpecificGenre() {
   const { addFavourite, removeFavourite } = FavouriteToggle()
 
   // fetching data from backend
-  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
   
   const { films, fetchNextPage,  isPending, isError, error, hasNextPage } = useFetchMedia({ id_genre, page, filters: selectedFilter, setPage, adultFilms})

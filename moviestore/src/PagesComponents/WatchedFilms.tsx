@@ -1,19 +1,19 @@
 import { useUser } from '../context/useUser'
 
 import type { MediaWithUser } from './FavouritesPage'
-import useFetchFavouritesIds from '../hooks/useFetchFavouritesIds'
 import FavouriteToggle from './FavouriteToggle'
 import useFetchWatchedMedia from '../hooks/useFetchWatchedMedia'
 import MediaCard from '@/ui/MediaCard'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
+import useFetchIds from '../hooks/useFetchIds'
 
 
 function WatchedFilms() {
   
   const { user } = useUser()
 
-  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds(user?._id)
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
   const { addFavourite, removeFavourite } = FavouriteToggle()
@@ -40,7 +40,7 @@ function WatchedFilms() {
             <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
               <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Watched films</div>
                 <div className='w-full h-full flex justify-center items-center'>
-                  <p className='text-2xl text-text font-bold tracking-wider'>An Error has occurred during fetching watched films, please reload the page.</p>
+                  <p className='text-2xl text-text font-bold tracking-wider'>An error has occurred during fetching watched films, please reload the page.</p>
                 </div>
             </div>
     )        
@@ -53,7 +53,7 @@ function WatchedFilms() {
               {watchedFilms?.length !== 0 ?
             <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full'>
               {watchedFilms?.map((media: MediaWithUser) => {
-                  return <MediaCard<MediaWithUser> key={media.id}  media={media} type={media.type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
+                  return <MediaCard<MediaWithUser> key={media.id}  media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
                 })}
             </div>
 
