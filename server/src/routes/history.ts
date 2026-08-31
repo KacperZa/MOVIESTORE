@@ -4,6 +4,9 @@ import History from '../model/history'
 import authMiddleware from '../middleware/authMiddleware'
 import { HistorySchema } from '../schemas/History.schema'
 import z from 'zod'
+import history from '../model/history'
+import { getOrSetCache } from '../redis/redisClient'
+import { tmdbFetch } from '../utils/tmdbFetch'
 
 
 router.delete('/clear', async (req, res) => {
@@ -13,6 +16,91 @@ router.delete('/clear', async (req, res) => {
     }catch(err){
         const error = err instanceof Error ?  err.message : 'Unknown error'
         res.status(500).json({message: error})
+    }
+})
+router.get('/ids/:id', authMiddleware, async (req,res) => {
+    if(!req.user) {
+        return res.status(401).json({message: "Unauthorized"})
+    }
+
+    try{
+        const medias = await History.find({ userId: req.user._id })
+        res.status(200).json(medias)
+    } catch (err) {
+        const error = err instanceof Error ?  err.message : 'Unknown error'
+        res.status(500).json({ message: error})
+    }
+})
+router.get('/:id', authMiddleware, async (req, res) => {
+
+    if(!req.user) return res.status(401).json({message: 'Unautorized'})
+
+    const reqUserId = req.user._id
+    
+        const history = await History.find({ userId: reqUserId})
+        const detailed = await Promise.all(
+            history.map(his => 
+                getOrSetCache(
+                    `details:${his.mediaType}:${his.tmdbId}`,
+                    async () => await tmdbFetch({ endpoint: `/${his.mediaType}/${his.tmdbId}`})
+                )
+            )
+        )
+    
+        const result = detailed
+        .map((details, index) => {
+            if (!details) return null
+            const his = history[index]
+            
+            return {
+                ...details,
+                userId: reqUserId,
+                mediaType: his.mediaType
+            }
+        })
+        .filter(Boolean)
+        res.status(200).json(result)
+})
+
+
+// Adding the history record
+router.post('/:id', authMiddleware, async (req, res) => {
+
+    if(!req.user) return res.status(401).json({message: "Unauthorized"})
+
+    const result = HistorySchema.safeParse(req.body)
+
+    // History data validation
+    if (result.error){
+        const errorTree = z.treeifyError(result.error)
+        return res.status(400).json({
+            success: false,
+            message: 'History validation failed',
+            ...errorTree
+        })
+    }
+
+    const { mediaType, tmdbId } = result.data
+    
+    try{
+        const exists =  await History.findOne({
+            userId: req.user._id,
+            tmdbId: tmdbId,
+        })
+        if(exists){
+            return res.status(409).json({message: 'Already in history.'})
+        }
+
+        const history = new History({
+            userId: req.user._id,            
+            mediaType: mediaType,
+            tmdbId: tmdbId,
+        })
+        const newMedia = await history.save()
+        res.status(201).json(newMedia)
+    } catch(err) {
+        const error = err instanceof Error ?  err.message : 'Unknown error'
+        res.status(400).json({message: error})
     }
 })
 // Getting all the data
@@ -26,76 +114,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/me/:id', authMiddleware, async (req,res) => {
-    if(!req.user) {
-        return res.status(401).json({message: "Unauthorized"})
-    }
 
-    try{
-        const medias = await History.find({ userId: req.user._id })
-        res.json(medias)
-    } catch (err) {
-        const error = err instanceof Error ?  err.message : 'Unknown error'
-        res.status(500).json({ message: error})
-    }
-})
-
-
-// Adding the history record
-router.post('/add/:id', authMiddleware, async (req, res) => {
-    if(!req.user) {
-        return res.status(401).json({message: "Unauthorized"})
-    }
-
-    
-    const result = HistorySchema.safeParse(req.query)
-
-    // History data validation
-    if (result.error){
-        const errorTree = z.treeifyError(result.error)
-        return res.status(400).json({
-            success: false,
-            message: 'History validation failed',
-            ...errorTree
-        })
-    }
-
-    const { mediaType, tmdbId, adult, backdrop_path, genre_ids, original_language, original_title, overview, popularity, poster_path, release_date, title, video, vote_average, vote_count } = result.data
-    
-    try{
-        const exists =  await History.findOne({
-            userId: req.user._id,
-            tmdbId: req.body.tmdbId,
-        })
-        if(exists){
-            return res.status(409).json({message: 'Already in history.'})
-        }
-
-        const history = new History({
-            userId: req.user._id,            
-            mediaType: mediaType,
-            tmdbId: tmdbId,
-            adult: adult,
-            backdrop_path: backdrop_path,
-            genre_ids: genre_ids,
-            original_language: original_language,
-            original_title: original_title,
-            overview: overview,
-            popularity: popularity,
-            poster_path: poster_path,
-            release_date: release_date,
-            title: title,
-            video: video,
-            vote_average: vote_average,
-            vote_count: vote_count,
-        })
-        const newMedia = await history.save()
-        res.status(201).json(newMedia)
-    } catch(err) {
-        const error = err instanceof Error ?  err.message : 'Unknown error'
-        res.status(400).json({message: error})
-    }
-})
 
 router.patch('/:id',  getMedia, async (req, res) => {
     if(!req.history) return res.status(404).json({message: 'Media not found'})
@@ -129,7 +148,7 @@ router.delete('/:id', getMedia, async (req, res) => {
 
 async function getMedia(req: Request, res: Response, next: NextFunction){
     try{
-        const history = await History.findById(req.params.id)
+        const history = await History.findOne({tmdbId: Number(req.params.id)})
         if (history == null){
             return res.status(404).json({ message: "Cannot find the movie/tv show."})
         }
