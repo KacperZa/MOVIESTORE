@@ -131,12 +131,12 @@ const MovieDetailPage = () => {
 
     const currentSeason = details?.seasons.find(s => s.season_number === selectedSeason)
 
-    useEffect(() => {
-        if (isInView) {
-            mainControls.start("visible")
-        }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    },[isInView])
+    // useEffect(() => {
+    //     if (isInView) {
+    //         mainControls.start("visible")
+    //     }
+    // // eslint-disable-next-line react-hooks/exhaustive-deps
+    // },[isInView])
 
     useEffect(() => {
         if(details?.seasons?.length && selectedSeason === null) {
@@ -235,11 +235,6 @@ const MovieDetailPage = () => {
                             <Link to={`/movie/genre/${genre.id}/${genre.name}`} key={genre.id} className='underline-animate'>{genre.name}</Link >
                         ))}
                     </div>
-                    {/* <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl gap-1'>
-                            <p><Clock /></p>
-                            <p>{hoursRuntime}h {minutesRuntime}min</p>
-                    </div> */}
-
                     {/* <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Release date: {details?.release_date.replaceAll("-", ".").split(" ")}</div> */}
                     <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Number of episodes: {details?.number_of_episodes}</div>
                     <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Number of seasons: {details?.number_of_seasons}</div>
@@ -283,11 +278,37 @@ const MovieDetailPage = () => {
                     ))}
                 </div>
                 <div className='w-full flex flex-row-reverse justify-between p-2 gap-2' ref={ref}>
-                    <motion.img src={`https://image.tmdb.org/t/p/w780/${currentSeason?.poster_path}`} variants={imagesVariants} initial="hidden" animate={mainControls} id='season-img' loading='lazy' className='w-1/2 aspect-auto rounded-lg'/>
-                    <motion.div className='flex flex-col gap-3 p-2' variants={infoContainerVariants} initial="hidden" animate={mainControls}>
-                        <motion.p variants={infoItemVariants} className='text-xl font-semibold' id='season-name'>{currentSeason?.name}</motion.p>
-                        <motion.p variants={infoItemVariants} className='leading-[200%] text-lg pr-5 tracking-[-1%]' id='season-overview'>{currentSeason?.overview || "No overview available for this season."}</motion.p>
-                        <motion.p variants={infoItemVariants} className='flex flex-row gap-2' id='season-rating'>
+                    <motion.img 
+                    src={`https://image.tmdb.org/t/p/w780/${currentSeason?.poster_path}`}
+                    // variants={imagesVariants}
+                    // initial="hidden" 
+                    // animate={mainControls}
+                    id='season-img' 
+                    loading='lazy' 
+                    className='w-1/2 aspect-auto rounded-lg'/>
+                    <motion.div 
+                    className='flex flex-col gap-3 p-2' 
+                    // variants={infoContainerVariants} 
+                    // initial="hidden" 
+                    // animate={mainControls}
+                    >
+                        <motion.p 
+                        // variants={infoItemVariants} 
+                        className='text-xl font-semibold' 
+                        id='season-name'>
+                            {currentSeason?.name}
+                        </motion.p>
+                        <motion.p 
+                        // variants={infoItemVariants} 
+                        className='leading-[200%] text-lg pr-5 tracking-[-1%]' 
+                        id='season-overview'>
+                            {currentSeason?.overview || "No overview available for this season."}
+                        </motion.p>
+                        <motion.p 
+                        // variants={infoItemVariants} 
+                        className='flex flex-row gap-2' 
+                        id='season-rating'
+                        >
                         {currentSeason?.vote_average  ?
 
                             <>Rating: {currentSeason?.vote_average} <span><Star  color='yellow'/></span> </>
@@ -295,7 +316,13 @@ const MovieDetailPage = () => {
                             'Not rated yet.' }
                         </motion.p>
 
-                        <motion.p variants={infoItemVariants} className='text-xs'id='season-airdate'>{currentSeason?.air_date}</motion.p>
+                        <motion.p 
+                        // variants={infoItemVariants} 
+                        className='text-xs' 
+                        id='season-airdate'
+                        >
+                            {currentSeason?.air_date}
+                        </motion.p>
                     </motion.div>                    
                 </div>                
             </div>
@@ -304,6 +331,9 @@ const MovieDetailPage = () => {
 
 
         </div>
+        </>
+
+        }
     </div>
   )
 }
