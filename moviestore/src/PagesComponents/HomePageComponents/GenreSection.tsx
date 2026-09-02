@@ -13,8 +13,8 @@ export interface GenreSectionProps {
 function GenreSection({genreId, genreName, type} : GenreSectionProps) {
 
     const navigate = useNavigate()
-    const { ref, data: movies, isPending, isError } = useGenreSection({genreId, type})
-
+    const { ref, data: movies, isPending, isError, error } = useGenreSection({genreId, type})
+    if (isError) console.log('An Error occured during fetching genre sections', error?.message)
 
     const slideItemVariants = {
         hidden: {

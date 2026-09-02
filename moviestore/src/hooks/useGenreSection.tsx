@@ -56,7 +56,7 @@ function useGenreSection({genreId, type} : GenreSectionProps) {
     }, [])
 
 
-  return { ref, data, isPending, isError }
+  return { ref, data, isPending, isError, error }
 
 }
 
