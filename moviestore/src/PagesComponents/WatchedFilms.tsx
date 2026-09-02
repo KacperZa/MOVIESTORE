@@ -7,6 +7,7 @@ import MediaCard from '@/ui/MediaCard'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import useFetchIds from '../hooks/useFetchIds'
+import MediaCardSkeleton from '@/ui/MediaCardSkeleton'
 
 
 function WatchedFilms() {

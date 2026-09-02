@@ -66,7 +66,7 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                 </motion.button>
             </div>
             <div ref={ref} className="flex flex-row gap-11 justify">
-                {isPending ? (
+                {isPending ? 
                     <Carousel
                     slideSize={{ base: '100%', sm: '50%', md: '33.333333%', lg: '30%' }}
                     slideGap={{ base: 'sm', sm: 'md', lg: 'lg' }}
@@ -83,13 +83,13 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
                     >
                         {movies?.map((movie) => (
                             <Carousel.Slide key={movie.id}>
-                                <div className='w-full h-auto aspect-video bg-gray-500 rounded-lg shadow-xl flex justify-center items-center select-none'>
+                                <div className='w-full h-auto aspect-video bg-gray-500 animate-pulse rounded-lg shadow-xl flex justify-center items-center select-none'>
                                     <ImageOff size={50}/>
                                 </div>  
                             </Carousel.Slide>
                         ))}
                     </Carousel>
-                ) : ( 
+                 : ( 
                     <Carousel
                     slideSize={{ base: '100%', sm: '50%', md: '33.333333%', lg: '30%' }}
                     slideGap={{ base: 'sm', sm: 'md', lg: 'lg' }}

@@ -34,7 +34,7 @@ function useGenreSection({genreId, type} : GenreSectionProps) {
             return filmyZGatunkami
     }
 
-    const { data, isPending, isError } = useQuery({
+    const { data, isPending, isError, error } = useQuery({
         queryKey: ['homeGenreMovies',type, genreId],
         queryFn: fetchGenreMovies,
         enabled: isVisible
