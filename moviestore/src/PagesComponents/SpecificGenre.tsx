@@ -12,6 +12,7 @@ import Filters, { type FilterItem } from "@/ui/Filters";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
 import useFetchIds from "../hooks/useFetchIds";
+import MediaCardSkeleton from "@/ui/MediaCardSkeleton";
 
 function SpecificGenre() {
   const { type, id_genre, name_genre } = useParams()
@@ -54,18 +55,16 @@ function SpecificGenre() {
 
           </div>
         </div>
-        <motion.div  className="flex flex-8 flex-row rounded-2xl justify-center items-center ">
+        <motion.div  className="flex flex-8 flex-row rounded-2xl justify-center items-center w-full h-full ">
 
 
           {/* Grid for posters  */}
-          <motion.div  className="grid grid-cols-4 gap-y-5 p-3 justify-center items-center w-full">
+          <motion.div  className="grid grid-cols-4 gap-y-5 p-3 w-full h-full justify-center items-center ">
             <AnimatePresence>
-            {isPending ? (
+            {!isPending ? 
               // <SkeletonImage cards={8}/>
-                <div className=" min-w-7/10 mx-auto border-red-500">
-                  <i className="pi pi-spin pi-spinner" style={{ fontSize: '2rem'  }}></i>
-                </div>
-            ):
+                <MediaCardSkeleton count={8}/>
+            :
             (
               films.map((film, i) => {
                 if(films.length === i + 1) {

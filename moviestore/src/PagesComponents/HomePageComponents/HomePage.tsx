@@ -104,7 +104,41 @@ function App() {
       <div className="flex flex-row gap-16 items-center w-full">
 
         {/* OBRAZEK */}
-        {movies.length > 0 && (
+        {movies.length === 0 ?
+
+        // SKELETON -------
+        <div className='w-full h-134'>
+          <Carousel withIndicators 
+          height='100%' 
+          key={popularShows.length}
+          slideSize={{base: "80%", sm: "30%", md: "60%"}}
+          slideGap={{ base: 'sm', sm: 'md', lg: 'lg' }}
+          controlSize={30}
+          
+          plugins={[autoplay]}
+          onMouseEnter={() => {autoplay.stop(); console.log('najechane')}}
+          onMouseLeave={() => autoplay.play()}
+          emblaOptions={{
+            loop: true,
+            align: 'center',
+          }}
+          className='group'
+          classNames={{
+            viewport: 'overflow-visible! mask-x-from-80% mask-x-to-100%',
+            controls: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300 !px-20',
+            indicators: 'opacity-0 group-hover:opacity-100 transition-opacity duration-300'
+          }}
+          >
+            {Array.from({ length: 10}).map((_, i) => (
+            <Carousel.Slide key={i} className='w-full h-full flex justify-center '>
+              <div className='w-full aspect-video bg-gray-450 rounded-lg animate-pulse'/>
+            </Carousel.Slide>
+            ))}
+          </Carousel>
+        </div>
+
+        // ------------
+        :(
           <Carousel withIndicators 
           height='100%' 
           key={popularShows.length}
@@ -186,6 +220,9 @@ function App() {
           </motion.div>
         </div>
 
+        {isPending ?
+        <GenreSectionSkeleton count={3}/>
+        :
         {selectedGenre === "movies" ? 
           movieGenreHolder?.map((movieGenre) => {
             return <GenreSection type='movie' key={`movie-${movieGenre.id}`} genreId={movieGenre.id} genreName={movieGenre.name}/>

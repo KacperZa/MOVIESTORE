@@ -5,6 +5,7 @@ import { useUser } from '@/context/useUser'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import useFetchIds from '@/hooks/useFetchIds'
+import MediaCardSkeleton from '@/ui/MediaCardSkeleton'
 
 export interface MediaWithUser extends FilmsWithGenres {
   userId: string
@@ -42,17 +43,6 @@ function Favourites() {
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
   const navigate = useNavigate()
-  
-  if (isPending) {
-    return (
-            <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
-              <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Favourites</div>
-                <div className='w-full h-full flex justify-center items-center'>
-                  <p className='text-2xl text-text font-bold tracking-wider'>Loading...</p>
-                </div>
-            </div>
-    )        
-  }
 
   if (isError) {
     return (
@@ -75,9 +65,12 @@ function Favourites() {
               </>
             }
                 {favourites?.length !== 0 ?
-                    <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full h-full justify-center'>
-                  {favourites?.map((media: DetailsWithUser) =>
-                  {
+                    <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full h-full justify-center scrollbar-thumb-primary scrollbar-gutter-stable auto-rows-110'>
+
+                  {isPending ? 
+                    <MediaCardSkeleton count={4} />
+                  :
+                  favourites?.map((media: DetailsWithUser) => {
                     return <MediaCard<DetailsWithUser> key={media.id} media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
                     }
                   )}

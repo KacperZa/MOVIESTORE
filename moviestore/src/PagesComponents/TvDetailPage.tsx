@@ -8,6 +8,7 @@ import FavouriteToggle from './FavouriteToggle'
 import { useUser } from '@/context/useUser'
 import useFetchIds from '@/hooks/useFetchIds'
 import HistoryToggle from './HistoryToggle'
+import TvDetailsSkeleton from '@/ui/TvDetailsSkeleton'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
@@ -149,6 +150,12 @@ const MovieDetailPage = () => {
 
   return (
     <div className='w-full h-full bg-card overflow-hidden overflow-y-auto scrollbar-thumb-primary scrollbar-gutter-stable'>
+
+        {isPending 
+        ?
+            <TvDetailsSkeleton />
+        :
+        <>
         {/* IMAGE SECTION*/}
         <div className='relative w-full h-full'> 
             <img src={`https://image.tmdb.org/t/p/original/${details?.backdrop_path}`} className='w-full h-full object-cover aspect-video' alt={details?.name} />

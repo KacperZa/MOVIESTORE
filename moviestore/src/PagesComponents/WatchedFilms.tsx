@@ -24,17 +24,6 @@ function WatchedFilms() {
   const navigate = useNavigate()
 
 
-  if (isPendingWatchedMedia) {
-    return (
-            <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
-              <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Watched films</div>
-                <div className='w-full h-full flex justify-center items-center'>
-                  <p className='text-2xl text-text font-bold tracking-wider'>Loading...</p>
-                </div>
-            </div>
-    )        
-  }
-
   if (isErrorWatchedMedia) {
     return (
             <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
@@ -51,8 +40,13 @@ function WatchedFilms() {
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
             <p className='text-3xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary'>Watched films</p>
               {watchedFilms?.length !== 0 ?
-            <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full'>
-              {watchedFilms?.map((media: MediaWithUser) => {
+            <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full h-full auto-rows-110'>
+              {isPendingWatchedMedia ? 
+                <>
+                  <MediaCardSkeleton count={4}/>
+                </>
+              :
+              watchedFilms?.map((media: MediaWithUser) => {
                   return <MediaCard<MediaWithUser> key={media.id}  media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
                 })}
             </div>
