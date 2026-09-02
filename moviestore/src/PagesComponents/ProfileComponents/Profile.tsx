@@ -1,5 +1,4 @@
 import { motion } from 'motion/react'
-import { useState } from 'react'
 import { useUser } from '../../context/useUser'
 import { Button, Group, Modal, NumberInput, PasswordInput, TextInput } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
@@ -7,11 +6,7 @@ import { useField, useForm } from '@mantine/form';
 
 import { AtSignIcon, Calendar, Check, Lock, SquarePen, Trash, User } from 'lucide-react'
 import useGetCreationDay from '../../hooks/useGetCreationDay'
-import useFetchWatchedMedia from '@/hooks/useFetchWatchedMedia'
-import useFetchFavouritesIds from '@/hooks/useFetchIds'
-import FavouriteToggle from '../FavouriteToggle'
-import type { MediaWithUser } from '../FavouritesPage'
-import MediaCard from '@/ui/MediaCard'
+
 import useDeleteUser from '@/hooks/useDeleteUser'
 import useEditUser from '@/hooks/useEditUser'
 // import { InputText } from 'primereact/inputtext';
@@ -23,24 +18,18 @@ function Profile() {
 
 
   const { user } = useUser()
-
-  const [selectedGenre, setSelectedGenre] = useState("movie")
   
   const [visible, { toggle }] = useDisclosure(false)
   const [opened, {open, close}] = useDisclosure(false)
   const [deleteModalOpened, {open: openDeleteModal, close: closeDeleteModal}] = useDisclosure(false)
 
-
   const { time, day, month, year } = useGetCreationDay(user?.creationDate ?? null)
-  const { isPending: isPendingWatchedMedia, isError, data: watchedFilms, error: errorWatchedMedia } = useFetchWatchedMedia()
-  if(isError) console.log('An error occured during fetching favouriteIds', errorWatchedMedia?.message)
-  
-  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouritesIds({ userId: user?._id, type: "favourite"})
-  if(isErrorIds) console.log('An error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
-  const { addFavourite, removeFavourite } = FavouriteToggle()
+  // const { addFavourite, removeFavourite } = FavouriteToggle()
 
   const {deleteUser, loading, error} = useDeleteUser()
+
+  if(error) console.log('An error occured during deleting user', error)
 
   const { editUser } = useEditUser()
 
@@ -74,11 +63,10 @@ function Profile() {
     }
   })
 
-  const sortedMedia = watchedFilms?.filter((media) => media.mediaType === selectedGenre)
 
   return (
   <>
-    <motion.div layout className="flex flex-col bg-background border-t border-card rounded-2xl p-2 w-screen max-h-screen justify-center items-center overflow-auto">
+    <motion.div  className="flex flex-col bg-background border-t border-card rounded-2xl p-2 w-screen max-h-screen justify-center items-center overflow-auto">
       <div className="flex min-w-full h-full flex-col p-3 gap-3">
         <div className='flex flex-row items-center justify-between min-w-full h-fit bg-secondary rounded-xl p-2 font-medium  '>
           <p className='flex font-bold text-5xl  p-4'>{user ? user?.username.toUpperCase() : 'Loading'}</p>
@@ -93,27 +81,6 @@ function Profile() {
             <p>Account created: {day} {month} {year} at {time}.</p>
             <Button variant='light' size='sm' leftSection={<SquarePen />} onClick={open} className='bg-gray-400 py-3 px-8 rounded-lg font-medium  shadow-xl/15 shadow-black flex justify-center cursor-pointer'>Edit</Button>
           </div>
-        </div>
-
-        <div>
-          <div className='text-2xl font-semibold p-3 flex flex-row gap-1 select-none'> Watched 
-            <div className='flex flex-row gap-1'>
-              <div onClick={() => setSelectedGenre("movie")} className={`cursor-pointer px-1 ${selectedGenre === "movie" ? 'bg-accent rounded-md flex-1' : null} `}>Movies </div>
-              / 
-              <div onClick={() => setSelectedGenre("tv")} className={`cursor-pointer px-1 ${selectedGenre === "tv" ? 'bg-accent rounded-md flex-1' : null} `}>Tv shows </div>
-            </div>
-             </div>
-             {isPendingWatchedMedia ?
-                <div className='grid grid-cols-4 gap-y-5 overflow-auto p-2'>
-                  {sortedMedia?.map((media, i) => {
-                      return  <MediaCard<MediaWithUser> key={i}  media={media} type={media.type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
-                    })}
-                </div>
-            :
-            <div className='w-full h-full'>
-
-            </div> 
-            }
         </div>
       </div>
     </motion.div>
