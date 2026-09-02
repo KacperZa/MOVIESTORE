@@ -1,4 +1,3 @@
-import '../.././App.css'
 import { motion } from 'motion/react'
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from "react-router-dom"
@@ -14,7 +13,7 @@ import { useTvGenres } from '@/context/useTvGenres';
 import GenreSectionSkeleton from '@/ui/GenreSectionSkeleton';
 
 
-function App() {
+function HomePage() {
   const [searchParams, ] = useSearchParams();
   const [page, setPage] = useState(Number(searchParams.get('page') || 1))
   const [selectedGenre, setSelectedGenre] = useState("movie")
@@ -92,8 +91,6 @@ function App() {
     Autoplay({ delay: 3000})
   ).current
 
-  console.log( selectedGenre + "genre", movieGenreHolder)
-
   useEffect(() => {
     console.log(movies)
       console.log("Dlugosc films to: ", movies.length)
@@ -165,7 +162,7 @@ function App() {
           }}
           >
             {topMedias.map(media => (
-            <Carousel.Slide key={media.id} className='w-full h-full flex justify-center '>
+            <Carousel.Slide key={media.id} className='w-full h-full flex justify-center select-none'>
               <motion.div className='relative inline-block'
               onClick={() => navigate(`/detail/${media.type}/${media.id}`)}
               variants={slideContainerVariants} 
@@ -243,4 +240,4 @@ function App() {
 )
 }
 
-export default App
+export default HomePage
