@@ -1,6 +1,7 @@
-import { MovieGenreContext } from "@/context/MovieGenreContext";
-import { TvGenreContext } from "@/context/TvMovieGenreContext";
-import { useContext } from "react";
+
+import { useMovieGenres } from "@/context/useMovieGenres";
+import { useTvGenres } from "@/context/useTvGenres";
+
 import { Link } from "react-router-dom";
 
 interface GenreSidebarProps {
@@ -10,8 +11,8 @@ interface GenreSidebarProps {
 const GenreSidebar = ({genre} : GenreSidebarProps) => {
 
   // fetching genres 
-  const movieGenres = useContext(MovieGenreContext);
-  const tvGenres = useContext(TvGenreContext);
+  const {movieGenres, isPending: isPendingMovieGenres} = useMovieGenres()
+  const {tvGenres, isPending: isPendingTvGenres} = useTvGenres()
 
   return (
       <div className="h-full w-72 shrink-0 bg-secondary rounded-xl flex flex-col  py-3">

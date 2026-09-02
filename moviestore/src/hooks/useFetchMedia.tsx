@@ -1,11 +1,13 @@
-import { useContext, useEffect, useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import axios from 'axios';
-import { MovieGenreContext, type MovieGenres } from '../context/MovieGenreContext'
-import { TvGenreContext, type TvGenres } from '../context/TvMovieGenreContext'
 import { useParams, useSearchParams } from 'react-router-dom'
 import type { Films, FilmsWithGenres } from '@/ui/MediaCard';
 import type { FilterItem } from '@/ui/Filters';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import type { MovieGenre } from '@/context/MovieGenreContext';
+import type { TvGenre } from '@/context/TvGenreContext';
+import { useMovieGenres } from '@/context/useMovieGenres';
+import { useTvGenres } from '@/context/useTvGenres';
 
 
 
@@ -32,7 +34,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
     page: number,
     filters: FilterItem | undefined,
     adultFilms?: boolean,
-    genreHolder: MovieGenres[] | TvGenres[] | null
+    genreHolder: MovieGenre[] | TvGenre[] | undefined
     signal: AbortSignal
   }
 
@@ -104,10 +106,10 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
 
     const type = paramType ?? customType
  
-    const movieGenreHolder = useContext(MovieGenreContext)
-    const tvGenreHolder = useContext(TvGenreContext)
+  const {movieGenres: movieGenresHolder} = useMovieGenres()
+  const {tvGenres: tvGenresHolder} = useTvGenres()
 
-    const genreHolder = type === "tv" ? tvGenreHolder : movieGenreHolder
+    const genreHolder = type === "tv" ? tvGenresHolder : movieGenresHolder
 
     
     useEffect(() => {

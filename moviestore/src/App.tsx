@@ -24,21 +24,7 @@ import SearchPage from './PagesComponents/SearchPage'
 import MovieDetailPage from './PagesComponents/MovieDetailPage'
 import TvDetailPage from './PagesComponents/TvDetailPage'
 
-import useFetchGenres from './hooks/useFetchGenres'
-
-
 function App() {
-
-
-
-  // Fetching data for genres and saving it in context 
-  const { data: tvGenres, isPending: isPendingTvGenres, isError: isErrorTVGenres, error: errorTvGenres} = useFetchGenres({type:"tv"})
-
-  if(isErrorTVGenres) console.log('An error occured during fetching tvGenres', errorTvGenres?.message)
-  const { data: movieGenres, isPending: isPendingMovieGenres, isError: isErrorMovieGenres, error: errorMovieGenres} = useFetchGenres({type:"movie"})
-
-  if(isErrorMovieGenres) console.log('An error occured during fetching MovieGenres', errorMovieGenres?.message)
-
   return (
   <>
       {/* Mantine UI Provider */}
@@ -49,8 +35,8 @@ function App() {
           {/* User context's Provider  */}
             <UserProvider>
               {/* Genres context's Providers  */}
-              <TvGenreContext.Provider value={tvGenres}>
-                <MovieGenreContext.Provider value={movieGenres}>
+              <TvGenreProvider>
+                <MovieGenresProvider>
                   <Routes>
                     <Route element={<Menu />}>
                       <Route path="/" element={<HomePage />}></Route>
@@ -66,8 +52,8 @@ function App() {
                     <Route path='/login' element={<Login />}></Route>
                     <Route path='/register' element={<Register />}></Route>
                   </Routes>
-                </MovieGenreContext.Provider>
-              </TvGenreContext.Provider>
+                </MovieGenresProvider>
+              </TvGenreProvider>
             </UserProvider>
         </ThemeProvider>
       </MantineProvider>

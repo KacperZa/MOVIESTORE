@@ -6,10 +6,12 @@ import Autoplay from 'embla-carousel-autoplay';
 
 
 import { Carousel } from '@mantine/carousel';
-import { MovieGenreContext } from '@/context/MovieGenreContext'
-import { TvGenreContext } from '@/context/TvMovieGenreContext'
+
 import useFetchMedia from '@/hooks/useFetchMedia'
 import GenreSection from './GenreSection'
+import { useMovieGenres } from '@/context/useMovieGenres';
+import { useTvGenres } from '@/context/useTvGenres';
+import GenreSectionSkeleton from '@/ui/GenreSectionSkeleton';
 
 
 function App() {
@@ -21,8 +23,10 @@ function App() {
   const { films: movies } = useFetchMedia({page, setPage, customType: "movie"})
   const { films: shows } = useFetchMedia({page, setPage, customType: "tv"})
   
-  const movieGenreHolder = useContext(MovieGenreContext)
-  const tvGenreHolder = useContext(TvGenreContext)
+  const {movieGenres: movieGenresHolder, isPending: isPendingMovieGenres} = useMovieGenres()
+  const {tvGenres: tvGenresHolder, isPending: isPendingTvGenres} = useTvGenres()
+
+  const isPending = selectedGenre === "movies" ? isPendingMovieGenres : isPendingTvGenres
 
   const navigate = useNavigate()
 

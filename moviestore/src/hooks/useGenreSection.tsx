@@ -1,20 +1,20 @@
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { GenreSectionProps } from '@/PagesComponents/HomePageComponents/GenreSection'
 import type { Films, FilmsWithGenres } from '@/ui/MediaCard'
 import { useQuery } from '@tanstack/react-query'
-import { MovieGenreContext } from '@/context/MovieGenreContext'
-import { TvGenreContext } from '@/context/TvMovieGenreContext'
 import type { Genres } from './useFetchMedia'
+import { useMovieGenres } from '@/context/useMovieGenres'
+import { useTvGenres } from '@/context/useTvGenres'
 
 
 function useGenreSection({genreId, type} : GenreSectionProps) {
     const [isVisible, setIsVisible] = useState(false)
     const ref = useRef<HTMLDivElement>(null)
 
-    const movieGenreHolder = useContext(MovieGenreContext)
-    const tvGenreHolder = useContext(TvGenreContext)
+  const {movieGenres: movieGenresHolder} = useMovieGenres()
+  const {tvGenres: tvGenresHolder} = useTvGenres()
 
-    const genreHolder = type === "tv" ? tvGenreHolder : movieGenreHolder
+    const genreHolder = type === "tv" ? tvGenresHolder : movieGenresHolder
     
     const fetchGenreMovies = async (): Promise<FilmsWithGenres[]> => {
             const res = await fetch(`http://localhost:5000/api/${type}/${genreId}`)
