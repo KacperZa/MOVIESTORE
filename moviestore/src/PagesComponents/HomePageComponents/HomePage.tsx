@@ -1,6 +1,6 @@
 import '../.././App.css'
 import { motion } from 'motion/react'
-import { useContext, useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate, useSearchParams } from "react-router-dom"
 import Autoplay from 'embla-carousel-autoplay';
 
@@ -227,10 +227,10 @@ function App() {
         {isPending ?
         <GenreSectionSkeleton count={3}/>
         :
-        {selectedGenre === "movies" ? 
-          movieGenreHolder?.map((movieGenre) => {
+        selectedGenre === "movies" ? 
+          movieGenresHolder?.map((movieGenre) => {
             return <GenreSection type='movie' key={`movie-${movieGenre.id}`} genreId={movieGenre.id} genreName={movieGenre.name}/>
-          }): tvGenreHolder?.map((tvGenre) => {
+          }): tvGenresHolder?.map((tvGenre) => {
             return <GenreSection type='tv' key={`tv-${tvGenre.id}`} genreId={tvGenre.id} genreName={tvGenre.name}/>
           })
         
