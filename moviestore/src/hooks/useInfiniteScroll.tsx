@@ -21,7 +21,7 @@ const observer = useRef<IntersectionObserver | null>(null)
           fetch()
         }
       },
-    {threshold: 1}
+    {threshold: 0.9}
     )
   if (node) observer.current.observe(node)
   },[loading, hasMore, fetch])
