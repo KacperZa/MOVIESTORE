@@ -39,12 +39,12 @@ function WatchedFilms() {
     return (
       <>
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
-            <p className='text-3xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary'>Watched films</p>
+            <p className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary'>Watched films</p>
               {watchedFilms?.length !== 0 ?
-            <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full h-full auto-rows-110'>
+            <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-y-5 overflow-auto w-full h-full auto-rows-110'>
               {isPendingWatchedMedia ? 
                 <>
-                  <MediaCardSkeleton count={4}/>
+                  <MediaCardSkeleton count={8}/>
                 </>
               :
               watchedFilms?.map((media: MediaWithUser) => {

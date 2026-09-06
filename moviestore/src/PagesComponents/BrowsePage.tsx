@@ -13,6 +13,7 @@ import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
 import useFetchIds from "../hooks/useFetchIds";
 import MediaCardSkeleton from "@/ui/MediaCardSkeleton";
+import FiltersMobile from "@/ui/FiltersMobile";
 
 
 
@@ -20,6 +21,8 @@ function BrowsePage() {
   const [search] = useState("")
   const [debouncedSearch] = useDebounce(search, 400)
   const [searchParams,] = useSearchParams();
+  const [isVisibleSidebar, setIsVisibleSidebar] = useState(false)
+  const [isVisibleFilters, setIsVisibleFilters] = useState(false)
 
   const [selectedFilter, setSelectedFilter] = useState<FilterItem | undefined>()
 
@@ -48,25 +51,31 @@ function BrowsePage() {
   return (
   <>
 
-    <motion.div className=" flex w-full h-full flex-row bg-card rounded-2xl p-2  scrollbar-thumb-primary scrollbar-gutter-stable gap-2">
-
-      <GenreSidebar genre={safeType}/>
+    <motion.div className=" flex w-full h-full flex-row bg-card rounded-2xl p-2  scrollbar-thumb-primary scrollbar-gutter-stable">
+      <AnimatePresence>
+      {isVisibleSidebar && 
+        <GenreSidebar genre={safeType} setIsVisibleSidebar={setIsVisibleSidebar}/>
+      } 
+      </AnimatePresence>
 
       <div className="h-full flex-1 overflow-auto">
         <div className="flex flex-row gap-2 w-full">
 
           <div className="bg-secondary py-3 rounded-2xl w-full flex justify-around">
             {/* // SPACE FOR FILTERS ETC */}
-            <Filters type={type} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms}  adultFilms={adultFilms}/>
-
+            <Filters setIsVisibleFilters={setIsVisibleFilters} setIsVisibleSidebar={setIsVisibleSidebar} type={type} search={search} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms}  adultFilms={adultFilms}/>
           </div>
+          
+          <AnimatePresence>
+            {/* Filters for mobile  */}
+            {isVisibleFilters &&
+            <FiltersMobile setIsVisibleFilters={setIsVisibleFilters}  setAdultFilms={setAdultFilms} adultFilms={adultFilms} setSelectedFilter={setSelectedFilter}/>
+            }
+        </AnimatePresence>
         </div>
         {/* Displaying the search value */}
-        <motion.div className="flex rounded-2xl justify-center  w-full h-full">
-
-
           {/* Grid for posters  */}
-          <motion.div className="grid grid-cols-4 gap-y-5 p-3 w-full h-full justify-center items-center ">
+          <motion.div className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-2 gap-y-5 p-4 w-full h-full justify-center items-center">
             <AnimatePresence>
             {isPending ? 
               <MediaCardSkeleton count={8}/>
@@ -81,7 +90,6 @@ function BrowsePage() {
             )
             }
             </AnimatePresence>
-          </motion.div>
         </motion.div>
       </div>
     </motion.div>

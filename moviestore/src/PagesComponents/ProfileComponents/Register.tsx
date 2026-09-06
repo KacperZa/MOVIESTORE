@@ -5,6 +5,7 @@ import { AtSignIcon, Calendar, User, Lock } from "lucide-react"
 import { useDisclosure } from "@mantine/hooks"
 import { useForm } from "@mantine/form"
 import ThemeSwitch from "@/ui/ThemeSwitch"
+import ReturnButton from "@/ui/ReturnButton"
 // import { Password } from 'primereact/password';
 // import { InputText } from "primereact/inputtext";
 // import { Calendar } from "primereact/calendar";
@@ -74,13 +75,16 @@ function Login() {
 
   return (
     <>
-    <div className="bg-background p-6 flex flex-col gap-10 justify-center items-center w-screen h-screen text-text">
-        <motion.div className="bg-secondary w-1/4 rounded-2xl p-7 flex flex-col gap-4 shadow-lg">
+    <div className="bg-background p-6 flex flex-col gap-3 sm:gap-5 xl:gap-10 justify-center items-center w-screen h-screen text-text">
+
+        <ReturnButton />
+
+        <motion.div className="bg-secondary w-4/5 md:w-1/2 xl:w-1/4 rounded-2xl p-7 flex flex-col gap-4 shadow-lg">
             <div className="text-3xl  w-full font-medium justify-self-center">Register</div>
             <form onSubmit={form.onSubmit((values) => {
               HandleRegister({username: values.username, email: values.email, age: values.age, password: values.password})
               form.reset()
-            })} className="flex flex-col gap-3 w-full">
+            })} className="flex flex-col gap-2 md:gap-3 w-full">
               <TextInput
               withAsterisk
               placeholder="Johndore1232"

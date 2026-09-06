@@ -5,6 +5,8 @@ import { motion } from "motion/react"
 import { Button, PasswordInput, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import ThemeSwitch from "@/ui/ThemeSwitch"
+import { Undo2 } from "lucide-react"
+import ReturnButton from "@/ui/ReturnButton"
 
 interface HandleSubmitProps {
   username: string
@@ -63,9 +65,10 @@ function Login() {
 
   return (
     <>
-    <div className="bg-background p-6 flex flex-col justify-center gap-10 items-center w-screen h-screen text-text">
+    <div className="bg-background p-6 flex flex-col justify-center gap-5 xl:gap-10 items-center w-screen h-screen text-text ">
 
-        <motion.div className="bg-secondary w-1/3 rounded-2xl p-7 flex flex-col gap-2 justify-center shadow-text shadow-md/15">
+        <ReturnButton />
+        <motion.div className="bg-secondary w-4/5 md:w-2/3 xl:w-1/3 rounded-2xl p-7 flex flex-col gap-2 justify-center shadow-text shadow-md/15">
             <div className="text-3xl w-full font-bold flex justify-center">Login</div>
             <form 
             onSubmit={form.onSubmit((values) => HandleSubmit({username: values.username, password: values.password}))} 
@@ -86,15 +89,15 @@ function Login() {
               </div>
 
                 {dataError && <p className="text-red-500">Credentials are invalid or user doesn't exist.</p>}
-                <div className="w-full flex flex-row justify-between">
-                  <div className="font-medium font-inter">You don't have an account? Create one <Link to={'/register'} className="underline-animate text-primary">here</Link>! </div>
+                <div className="w-full flex flex-row justify-between gap-1">
+                  <div className="font-medium font-inter text-sm md:text-base">You don't have an account? Create one <Link to={'/register'} className="underline-animate text-primary">here</Link>! </div>
                   <Button color="green" size="md" className="shadow-lg/15" type="submit">Log in</Button>
                 </div>
 
             </form>
         </motion.div>
-
         <ThemeSwitch />
+
 
     </div>
     </>

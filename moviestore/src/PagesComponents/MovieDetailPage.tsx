@@ -137,18 +137,18 @@ return (
                         animate="visible"
                         >
                             <motion.p 
-                            className='text-6xl font-extrabold'
+                            className='text-4xl md:text-6xl font-extrabold'
                             variants={heroPageItemVariants}>
                                 {details?.title}
                             </motion.p>
                             <motion.p 
-                            className='text-3xl font-semibold italic'
+                            className='text-lg md:text-3xl font-semibold italic'
                             variants={heroPageItemVariants}>
                                 {details?.tagline}
                             </motion.p>
                         </motion.div>
                     </div>
-                    <motion.div layout className='h-full p-7 gap-2 flex items-end'>
+                    <motion.div layout className='h-full p-7 gap-2 flex items-end '>
                         <motion.button 
                         className={`${historyIds.has(Number(id)) ? 'bg-red-950' : 'bg-green-950'} text-white px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer items-center gap-1`}
                         onClick={(e) => {
@@ -166,11 +166,12 @@ return (
                             <motion.div variants={plusVariants} initial={historyIds.has(Number(id)) ? "remove": "add"} animate={historyIds.has(Number(id)) ? "remove": "add"}>
                                 <Plus size={40} color={historyIds.has(Number(id)) ? 'red' : 'green'}/>
                             </motion.div>
-                            <p className='text-lg'>
+                            <p className='text-sm lg:text-lg'>
                                 {historyIds.has(Number(id)) ? 'In watch history' : 'Add to history'}
                             </p>
                             {/* MARK AS WATCHED */}
                         </motion.button>
+
                         <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
                         className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
                         onClick={(e) => {
@@ -190,10 +191,10 @@ return (
                 </div>
 
             </div>
-            <div id='info' className='w-full h-full bg-card p-10 flex flex-col gap-5 items-center'>
+            <div id='info' className='w-full h-fit bg-card p-5 flex flex-col gap-5 items-center'>
                 <p className='text-5xl text-primary font-bold self-center'>{details?.title}</p>    
 
-                <div className='h-full w-2/3 rounded-lg p-5 flex flex-col'>
+                <div className='h-fit w-full md:w-4/5 lg:w-2/3 rounded-lg p-5 flex flex-col'>
 
                     <div className='flex flex-row justify-evenly flex-wrap gap-y-2 gap-1'>
                         <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 gap-2 shadow-xl'>
@@ -217,9 +218,9 @@ return (
 
                     <p className='p-2 py-7 font-medium text-lg leading-[150%] text-text'>{details?.overview}</p>
 
-                    <div className='w-full flex flex-row justify-around items-center flex-wrap bg-primary py-4 rounded-2xl'>
+                    <div className='w-full flex flex-col md:flex-row justify-around items-center flex-wrap bg-primary py-4 rounded-2xl gap-2'>
                         <DollarSign color='white'/>
-                        <div className='flex flex-row justify-evenly w-1/2'>
+                        <div className='flex flex-col md:flex-row justify-evenly w-1/2 gap-2'>
                             <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Revenue: {details?.revenue}$</div>
                             <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Budget: {details?.budget}$</div>
                         </div>
@@ -229,12 +230,12 @@ return (
                 </div>
 
                 <div className='w-full flex justify-center items-center pb-4 rounded-2xl'>
-                    <div id='trailer-container' className='flex flex-row gap-2 w-full'>  
+                    <div id='trailer-container' className='flex flex-col xl:flex-row gap-2 w-full items-center'>  
                             {videos?.filter(v => v.type === "Trailer").map(video => {
                                 const embedUrl = getEmbedUrl(video)
                                 if(!embedUrl) return null
                                 return (
-                                <div key={video.id} className='aspect-video h-full w-full justify-center trailer-video'>
+                                <div key={video.id} className='aspect-video h-full md:w-4/5 w-full justify-center trailer-video'>
                                     <iframe src={embedUrl} allowFullScreen className='w-full h-full rounded-lg' />
                                 </div>
                                 )

@@ -59,16 +59,16 @@ function Favourites() {
     return (
     <>
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center  bg-radial from-card from-5% to-background'>
-            <div className='text-3xl p-5 font-bold tracking-wide text-secondary'>Favourites</div>
+            <div className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary'>Favourites</div>
             {isPending && 
               <>
               </>
             }
                 {favourites?.length !== 0 ?
-                    <div className='grid grid-cols-4 gap-y-5 overflow-auto w-full h-full justify-center scrollbar-thumb-primary scrollbar-gutter-stable auto-rows-110'>
+                    <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-y-5 overflow-auto w-full h-full justify-center scrollbar-thumb-primary scrollbar-gutter-stable auto-rows-110'>
 
                   {isPending ? 
-                    <MediaCardSkeleton count={4} />
+                    <MediaCardSkeleton count={8} />
                   :
                   favourites?.map((media: DetailsWithUser) => {
                     return <MediaCard<DetailsWithUser> key={media.id} media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>

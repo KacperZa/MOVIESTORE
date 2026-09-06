@@ -140,10 +140,11 @@ function HomePage() {
 
         // ------------
         :(
+          
           <Carousel withIndicators 
-          height='100%' 
+          // height='100%' 
           key={popularShows.length}
-          slideSize={{base: "80%", sm: "30%", md: "60%"}}
+          slideSize={{base: "70%", sm: "64%", md: "60%"}}
           slideGap={{ base: 'sm', sm: 'md', lg: 'lg' }}
           controlSize={30}
           
@@ -170,7 +171,7 @@ function HomePage() {
               whileHover="visible"
               >
 
-                <motion.img src={`https://image.tmdb.org/t/p/w1280/${media.backdrop_path}`} alt="" className='rounded-lg w-full h-auto select-none shadow-lg'/>
+                <motion.img src={`https://image.tmdb.org/t/p/w1280/${media.backdrop_path}`} alt="" className=' aspect-video rounded-lg w-full h-auto select-none shadow-lg'/>
                 <motion.div className="absolute inset-0 rounded-lg flex px-7 py-10 gap-2 justify-end flex-col text-white bg-linear-to-b to-gray-800/80 from-gray-500/0 cursor-pointer"
                 variants={slideOverlayVariants}
                 initial="hidden"

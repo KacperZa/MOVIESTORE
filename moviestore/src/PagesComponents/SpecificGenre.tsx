@@ -13,6 +13,7 @@ import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
 import useFetchIds from "../hooks/useFetchIds";
 import MediaCardSkeleton from "@/ui/MediaCardSkeleton";
+import FiltersMobile from "@/ui/FiltersMobile";
 
 function SpecificGenre() {
   const { type, id_genre, name_genre } = useParams()
@@ -24,6 +25,8 @@ function SpecificGenre() {
 
   const [selectedFilter, setSelectedFilter] = useState<FilterItem | undefined>()
   const [adultFilms, setAdultFilms] = useState(false)
+  const [isVisibleSidebar, setIsVisibleSidebar] = useState(false)
+  const [isVisibleFilters, setIsVisibleFilters] = useState(false)
 
 
   const { user } = useUser()
@@ -44,24 +47,34 @@ function SpecificGenre() {
   <>
     <motion.div className=" flex w-full h-full flex-row bg-card rounded-t-2xl p-2 gap-2">
       {/* Genres Sidebar */}
-      <GenreSidebar genre={safeType}/>
+      <AnimatePresence>
+      {isVisibleSidebar && 
+        <GenreSidebar genre={safeType} setIsVisibleSidebar={setIsVisibleSidebar}/>
+      } 
+      </AnimatePresence>
 
       <div className="h-full flex-1 overflow-auto w-full scrollbar-thumb-primary scrollbar-gutter-stable scroll-smooth">
         <div className="flex flex-row gap-2 w-full">
 
           <div className="bg-secondary py-3 rounded-2xl w-full flex justify-around">
             {/* // SPACE FOR FILTERS ETC */}
-            <Filters type={type} name_genre={name_genre} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
-
+            <Filters setIsVisibleFilters={setIsVisibleFilters} setIsVisibleSidebar={setIsVisibleSidebar} type={type} name_genre={name_genre} setSelectedFilter={setSelectedFilter} setAdultFilms={setAdultFilms} adultFilms={adultFilms}/>
           </div>
+          <AnimatePresence>
+            {/* Filters for mobile  */}
+            {isVisibleFilters &&
+            <FiltersMobile setIsVisibleFilters={setIsVisibleFilters}  setAdultFilms={setAdultFilms} adultFilms={adultFilms} setSelectedFilter={setSelectedFilter}/>
+            }
+          </AnimatePresence>
+
         </div>
         <motion.div  className="flex flex-8 flex-row rounded-2xl justify-center items-center w-full h-full ">
 
 
           {/* Grid for posters  */}
-          <motion.div  className="grid grid-cols-4 gap-y-5 p-3 w-full h-full justify-center items-center ">
+          <motion.div  className="grid grid-cols-2 lg:grid-cols-4 md:grid-cols-2 gap-y-5 p-3 w-full h-full justify-center items-center ">
             <AnimatePresence>
-            {!isPending ? 
+            {isPending ? 
               // <SkeletonImage cards={8}/>
                 <MediaCardSkeleton count={8}/>
             :
