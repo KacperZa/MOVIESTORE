@@ -103,11 +103,17 @@ function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaEle
                     </div>
                     <div className="flex  flex-0.25 justify-center items-center">
                     <motion.button whileTap={{ scale: 0.95, rotate: -2 }}  whileHover={{ scale: 1.05}} onClick={(e) => {
+                            e.preventDefault();
+                        e.stopPropagation();
+
+                        if(!id || !type) return
+                        if (userId === null) {navigate('/login'); return}
+
                         if(favouriteIds.has(id)){
-                            removeFavourite({e, id})
+                            removeFavourite({ id, userId, type})
                             console.log("Usuwamy")
                         } else {
-                            addFavourite({e, type, id});
+                            addFavourite({userId, type, id});
                             console.log("Dodajemy")
                         }
                     }}

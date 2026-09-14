@@ -1,11 +1,12 @@
 import useFetchFavourites, { type DetailsWithUser } from '../hooks/useFetchFavourites'
 import MediaCard, { type FilmsWithGenres } from '@/ui/MediaCard'
-import FavouriteToggle from './FavouriteToggle'
 import { useUser } from '@/context/useUser'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import useFetchIds from '@/hooks/useFetchIds'
 import MediaCardSkeleton from '@/ui/MediaCardSkeleton'
+import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
+import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 
 export interface MediaWithUser extends FilmsWithGenres {
   userId: string
@@ -36,7 +37,9 @@ function Favourites() {
 
   if(isError) console.log('An error occured during fetching favourite media', errorFavourite?.message)
 
-  const { addFavourite, removeFavourite} = FavouriteToggle()
+
+  const { mutate: mutateAddFavourite } = useAddFavourite()
+  const { mutate: mutateRemoveFavourite } = useRemoveFavourite()
 
   const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
 
@@ -71,7 +74,7 @@ function Favourites() {
                     <MediaCardSkeleton count={8} />
                   :
                   favourites?.map((media: DetailsWithUser) => {
-                    return <MediaCard<DetailsWithUser> key={media.id} media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
+                    return <MediaCard<DetailsWithUser> key={media.id} media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={mutateAddFavourite} removeFavourite={mutateRemoveFavourite} userId={user?._id}/>
                     }
                   )}
                     </div>

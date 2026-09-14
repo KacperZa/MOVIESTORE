@@ -9,6 +9,8 @@ import { useUser } from '@/context/useUser'
 import useFetchIds from '@/hooks/useFetchIds'
 import HistoryToggle from './HistoryToggle'
 import TvDetailsSkeleton from '@/ui/TvDetailsSkeleton'
+import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
+import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)

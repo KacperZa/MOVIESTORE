@@ -17,7 +17,8 @@ function WatchedFilms() {
   const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
-  const { addFavourite, removeFavourite } = FavouriteToggle()
+  const { mutate: addFavourite } = useAddFavourite()
+  const { mutate: removeFavourite } = useRemoveFavourite()
   const { isPending : isPendingWatchedMedia, isError: isErrorWatchedMedia, data: watchedFilms, error: errorWatchedMedia } = useFetchWatchedMedia()
 
   if(isErrorWatchedMedia) console.log('An error occured during fetching watched media', errorWatchedMedia?.message)

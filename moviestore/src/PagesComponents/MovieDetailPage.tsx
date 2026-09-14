@@ -9,6 +9,8 @@ import FavouriteToggle from './FavouriteToggle'
 import useFetchIds from '@/hooks/useFetchIds'
 import HistoryToggle from './HistoryToggle'
 import MovieDetailsSkeleton from '@/ui/MovieDetailsSkeleton'
+import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
+import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 
 const MovieDetailPage = () => {
     const { id } = useParams()
