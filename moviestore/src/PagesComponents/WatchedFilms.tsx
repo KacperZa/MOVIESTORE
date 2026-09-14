@@ -1,16 +1,17 @@
 import { useUser } from '../context/useUser'
-
-import type { MediaWithUser } from './FavouritesPage'
-import FavouriteToggle from './FavouriteToggle'
-import useFetchWatchedMedia from '../hooks/useFetchWatchedMedia'
+import useFetchWatchedMedia, { type HistoryItem } from '../hooks/useFetchWatchedMedia'
 import MediaCard from '@/ui/MediaCard'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
 import useFetchIds from '../hooks/useFetchIds'
 import MediaCardSkeleton from '@/ui/MediaCardSkeleton'
+import { useState } from 'react'
+import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
+import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 
 
 function WatchedFilms() {
+  const [currentStatus, setCurrentStatus] = useState<string | null>(null)
   
   const { user } = useUser()
 
@@ -19,11 +20,18 @@ function WatchedFilms() {
 
   const { mutate: addFavourite } = useAddFavourite()
   const { mutate: removeFavourite } = useRemoveFavourite()
-  const { isPending : isPendingWatchedMedia, isError: isErrorWatchedMedia, data: watchedFilms, error: errorWatchedMedia } = useFetchWatchedMedia()
+
+  // Fetching watched media
+  const { isPending : isPendingWatchedMedia, isError: isErrorWatchedMedia, data: watchedMedia, error: errorWatchedMedia } = useFetchWatchedMedia()
 
   if(isErrorWatchedMedia) console.log('An error occured during fetching watched media', errorWatchedMedia?.message)
 
   const navigate = useNavigate()
+
+  const sortedData = watchedMedia?.filter(media => media.status === currentStatus)
+
+  const finalData = currentStatus ? sortedData : watchedMedia
+
 
 
   if (isErrorWatchedMedia) {
@@ -40,16 +48,32 @@ function WatchedFilms() {
     return (
       <>
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
-            <p className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary'>Watched films</p>
-              {watchedFilms?.length !== 0 ?
+            <div className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary flex flex-row w-full items-center px-6'>
+              <p className='flex-1 min-h-0 flex font-extrabold justify-center text-5xl tracking-widest'>Watchlist</p>
+
+
+              {/* Filters  */}
+              <div className='px-4 py-2 bg-card rounded-lg gap-2 flex flex-col'>
+                <div className='flex flex-row gap-2 items-center justify-between'>
+                  <p className='text-2xl py-1 px-2'>Status</p>
+                  <p className={`text-text text-lg self-end cursor-pointer py-0.5 px-2 rounded-lg select-none transition-all duration-200 ease ${currentStatus === null ? 'bg-gray-600' : 'hover:bg-gray-600/40' }`} onClick={() => setCurrentStatus(null)}>All</p>
+                </div>
+                <div className='w-full text-base flex flex-row gap-2 text-text'>
+                  <p className={`cursor-pointer py-1 px-2 rounded-lg select-none transition-all duration-200 ease ${currentStatus === 'watched' ? 'bg-gray-600' : 'hover:bg-gray-600/40' }`} onClick={() => setCurrentStatus('watched')}>Watched</p>
+                  <p className={`cursor-pointer py-1 px-2 rounded-lg select-none transition-all duration-200 ease ${currentStatus === 'pending' ? 'bg-gray-600' : 'hover:bg-gray-600/40' }`} onClick={() => setCurrentStatus('pending')}>Pending</p>
+                </div>
+              </div>
+
+            </div>
+              {finalData?.length !== 0 ?
             <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-y-5 overflow-auto w-full h-full auto-rows-110'>
               {isPendingWatchedMedia ? 
                 <>
                   <MediaCardSkeleton count={8}/>
                 </>
               :
-              watchedFilms?.map((media: MediaWithUser) => {
-                  return <MediaCard<MediaWithUser> key={media.id}  media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}/>
+              finalData?.map((media: HistoryItem) => {
+                  return <MediaCard<HistoryItem> key={media.id}  media={media} type={media.mediaType} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} userId={user?._id}/>
                 })}
             </div>
 
