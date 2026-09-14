@@ -170,29 +170,9 @@ return (
                             </motion.p>
                         </motion.div>
                     </div>
-                    <motion.div layout className='h-full p-7 gap-2 flex items-end '>
-                        <motion.button 
-                        className={`${historyIds.has(Number(id)) ? 'bg-red-950' : 'bg-green-950'} text-white px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer items-center gap-1`}
-                        onClick={(e) => {
-                            // console.log("HISTORY IDS:", historyIds)
-                            // console.log("historyIds.has:", historyIds.has(Number(id)))
-                            if(!id || !type) return
-                            if(historyIds.has(Number(id))){
-                                removeHistory({e, id: Number(id)})
-                                console.log("Usuwamy z WATCHED")
-                            } else {
-                                addHistory({e, type, id: Number(id)});
-                                console.log("Dodajemy DO WATCHED")
-                            }
-                        }}>
-                            <motion.div variants={plusVariants} initial={historyIds.has(Number(id)) ? "remove": "add"} animate={historyIds.has(Number(id)) ? "remove": "add"}>
-                                <Plus size={40} color={historyIds.has(Number(id)) ? 'red' : 'green'}/>
-                            </motion.div>
-                            <p className='text-sm lg:text-lg'>
-                                {historyIds.has(Number(id)) ? 'In watch history' : 'Add to history'}
-                            </p>
-                            {/* MARK AS WATCHED */}
-                        </motion.button>
+                    {/* Buttons  */}
+                    <motion.div  className='h-full p-7 gap-2 flex items-end '>
+                        <HistoryButton type={type} id={Number(id)} historyMap={historyIds}/>
 
                         <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
                         className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
