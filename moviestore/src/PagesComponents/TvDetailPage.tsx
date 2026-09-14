@@ -12,6 +12,7 @@ import TvDetailsSkeleton from '@/ui/TvDetailsSkeleton'
 import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 import useFetchProviders from '@/hooks/useFetchProviders'
+import SeasonImg from '@/ui/SeasonImg'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
@@ -296,14 +297,9 @@ const MovieDetailPage = () => {
                     ))}
                 </div>
                 <div className='w-full flex flex-col-reverse md:flex-row-reverse justify-between p-2 gap-2' ref={ref}>
-                    <motion.img 
-                    src={`https://image.tmdb.org/t/p/w780/${currentSeason?.poster_path}`}
-                    // variants={imagesVariants}
-                    // initial="hidden" 
-                    // animate={mainControls}
-                    id='season-img' 
-                    loading='lazy' 
-                    className='w-full md:w-1/2 aspect-auto rounded-lg'/>
+
+                    <SeasonImg posterPath={currentSeason?.poster_path}/>
+
                     <motion.div 
                     className='flex flex-col gap-3 p-2' 
                     // variants={infoContainerVariants} 
