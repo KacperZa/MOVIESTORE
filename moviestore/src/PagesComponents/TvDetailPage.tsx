@@ -11,9 +11,12 @@ import HistoryToggle from './HistoryToggle'
 import TvDetailsSkeleton from '@/ui/TvDetailsSkeleton'
 import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
+import useFetchProviders from '@/hooks/useFetchProviders'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
+    const [currentProviderType, setCurrentProviderType] = useState<"flatrate" | "rent" | "buy" | null>(null)
+
     const {id} = useParams()
     const type = "tv"
 
@@ -29,6 +32,17 @@ const MovieDetailPage = () => {
     const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchIds({userId: user?._id, type: "history"})
     if(isErrorHistoryIds) console.log('An Error occured during fetching HistoryIds', errorHistoryIds?.message)
 
+    const { isError: isErrorProviders, data: providersData, error: errorProviders} = useFetchProviders({id, type:"tv"})
+    if(isErrorProviders) console.log('An error occured during fetching providers', errorProviders?.message)
+
+    // Setting default value depending on the existing data
+    const defaultType = (providersData?.flatrate?.length ?? 0) > 0 ? 'flatrate' 
+        : (providersData?.rent?.length ?? 0) > 0 ? 'rent' 
+        : (providersData?.buy?.length ?? 0) > 0 ? 'buy'
+        : null
+
+    const displayType = currentProviderType ?? defaultType
+
     const favouriteIds = favouriteData ?? new Set()
     const historyIds = historyData ?? new Set()
 
@@ -42,7 +56,9 @@ const MovieDetailPage = () => {
 
     // const mainControls = useAnimation()
 
-    const videos = useFetchVideo({type: "tv", id, enabled: !!id})
+    const handleProviderClick = (type: "flatrate" | "rent" | "buy") => {
+        setCurrentProviderType(type)
+    }
 
     const getEmbedUrl = (video: Video) => {
         switch(video.site) {
@@ -328,6 +344,31 @@ const MovieDetailPage = () => {
                     </motion.div>                    
                 </div>                
             </div>
+
+                {providersData && Object.keys(providersData).length > 0 ? 
+                    <>
+                    {/* Providers section */}
+                    <div className='w-full p-5 flex flex-col justify-center'>
+                        <p className='text-3xl font-bold tracking-wide text-center p-2 py-5'>PROVIDERS</p>
+                        <div className='w-full flex flex-row justify-evenly py-5 text-xl font-bold text-text bg-secondary rounded-l rounded-lg'>
+                            {providersData?.buy && <p className={`cursor-pointer rounded-lg p-2 transition-all duration-200 ease ${displayType === 'buy' ? 'bg-accent' : 'hover:bg-primary/50'}`} onClick={() => handleProviderClick('buy')}> BUY </p>}
+                            {providersData?.flatrate && <p className={`cursor-pointer rounded-lg p-2 transition-all duration-200 ease ${displayType === 'flatrate' ? 'bg-accent' : 'hover:bg-primary/50'}`} onClick={() => handleProviderClick('flatrate')}> FLATRATE </p>}
+                            {providersData?.rent && <p className={`cursor-pointer rounded-lg p-2 transition-all duration-200 ease ${displayType === 'rent' ? 'bg-accent' : 'hover:bg-primary/50'}`} onClick={() => handleProviderClick('rent')}> RENT </p>}
+                        </div>
+                        <div className='w-full flex flex-row gap-2 justify-evenly p-2 py-10 flex-wrap gap-y-3'>
+                            {displayType && providersData?.[displayType]?.map(provider => (
+                                <div className='flex items-center flex-col'>
+                                    <img src={`https://image.tmdb.org/t/p/w92/${provider.logo_path}`} alt={provider.provider_name} className='rounded-lg' />
+                                    <p className='py-2 text-lg'>{provider.provider_name}</p>
+                                </div>
+                            ))}
+                        </div>
+
+                    </div>
+                </>
+                :
+                <div className='text-2xl font-semibold py-5 w-full text-center'> No current providers for this movie</div>
+                }
 
             </div>
 

@@ -106,6 +106,27 @@ app.get('/movie/videos/:id',  async (req, res) => {
         console.error(err)
     } 
 })
+
+
+// GETTING MOVIE PROVIDERS FROM JUSTWATCH
+app.get('/movie/providers/:id', async (req, res) => {
+    const movieId = req.params.id
+
+    if (typeof movieId !== 'string') {
+        return res.status(400).json({error: 'movieId must be a string'})
+    }
+
+    try {
+        const data = await getOrSetCache(`movieProviders:${movieId}`, async () => await tmdbFetch({ endpoint: `/movie/${movieId}/watch/providers`}))
+
+        const providers = data.results.US ?? {}
+        res.json(providers)
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({ error: 'Failed to fetch providers'})
+    }
+
+})
 // TV SHOWS VIDEOS
 app.get('/tv/videos/:id',  async (req, res) => {
     const tvId = req.params.id
@@ -120,6 +141,27 @@ app.get('/tv/videos/:id',  async (req, res) => {
         console.error(err)
     } 
 })
+
+// GETTING MOVIE PROVIDERS FROM JUSTWATCH
+app.get('/tv/providers/:id', async (req, res) => {
+    const tvId = req.params.id
+
+    if (typeof tvId !== 'string') {
+        return res.status(400).json({error: 'tvId must be a string'})
+    }
+
+    try {
+        const data = await getOrSetCache(`tvProviders:${tvId}`, async () => await tmdbFetch({ endpoint: `/tv/${tvId}/watch/providers`}))
+
+        const providers = data.results.US ?? {}
+        res.json(providers)
+    } catch(err) {
+        console.error(err)
+        res.status(500).json({ error: 'Failed to fetch providers'})
+    }
+
+})
+
 // TV SHOWS DETAILS
 app.get('/details/tv/:id', async (req, res) => {
     const tvId = req.params.id
