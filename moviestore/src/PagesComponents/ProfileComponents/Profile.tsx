@@ -9,13 +9,16 @@ import useGetCreationDay from '../../hooks/useGetCreationDay'
 
 import useDeleteUser from '@/hooks/useDeleteUser'
 import useEditUser from '@/hooks/useEditUser'
+import useFetchWatchedMedia from '@/hooks/useFetchWatchedMedia';
+import Chart from '@/ui/Chart';
+import { useState } from 'react';
 // import { InputText } from 'primereact/inputtext';
 
 
 
 
 function Profile() {
-
+  const [tvType, setTvType] = useState<"Episodes" | "Seasons">('Episodes')
 
   const { user } = useUser()
   
@@ -32,9 +35,51 @@ function Profile() {
   if(error) console.log('An error occured during deleting user', error)
 
   const { editUser } = useEditUser()
+  const { data: watchedMedia } = useFetchWatchedMedia()
+
+  // Filtering watchedMedia for movies that are watched
+  const watchedMovieHours = watchedMedia?.filter(media => media.mediaType === "movie")
+  .filter(movie => movie.status === "watched")
+  .reduce(
+    (acc, currentVal) => acc + currentVal.runtime, 0
+  )
+
+  // Filtering watchedMedia for movies that are pending
+  const pendingMovieHours = watchedMedia?.filter(media => media.mediaType === "movie")
+  .filter(movie => movie.status === "pending")
+  .reduce(
+    (acc, currentVal) => acc + currentVal.runtime, 0
+  )
+
+  const filterType = tvType === "Episodes" ? "number_of_episodes" : "number_of_seasons"
+
+  // Filtering watchedMedia for tv shows that are watched
+  const watchedShowsSeasons = watchedMedia?.filter(media => media.mediaType === "tv")
+  .filter(movie => movie.status === "watched")
+  .reduce(
+    (acc, currentVal) => acc + currentVal[filterType], 0
+  )
+
+  // Filtering watchedMedia for tv shows that are pending
+  const pendingShowsSeasons = watchedMedia?.filter(media => media.mediaType === "tv")
+  .filter(movie => movie.status === "pending")
+  .reduce(
+    (acc, currentVal) => acc + currentVal[filterType], 0
+  )
+
+  // Data for charts
+  const movieData = [
+    { name: 'Watched', value: watchedMovieHours },
+    { name: 'Still to watch', value: pendingMovieHours }
+  ]
+
+  const showData = [
+    { name: 'Watched ', value: watchedShowsSeasons},
+    { name: 'Still to watch', value: pendingShowsSeasons},
+  ]
 
 
-
+  // Mantine Field hook
   const usernameField = useField({
     initialValue: '',
     validate: (value: string) => (value.trim().length > 4 ? null : 'Your username have at least 4 characters'),
@@ -79,9 +124,32 @@ function Profile() {
             <p>E-mail: {user?.email}</p>
             <p>Age: {user?.age ?? 'Not specified'}.</p>
             <p>Account created: {day} {month} {year} at {time}.</p>
-            <Button variant='light' size='sm' leftSection={<SquarePen />} onClick={open} className='bg-gray-400 py-3 px-8 rounded-lg font-medium  shadow-xl/15 shadow-black flex justify-center cursor-pointer'>Edit</Button>
+        <div className='w-full bg-accent rounded-lg p-4 flex flex-col flex-1 min-h-0'>
+          <p className='text-4xl font-bold w-full text-center p-5'>Statistics</p>
+          <div className='w-full flex flex-row p-5'>
+
+            <div className='w-1/2 h-50 flex flex-col items-center'>
+              <p className='text-xl font-semibold p-1'>Movies (hours)</p>
+                <Chart data={movieData}/>
+            </div>
+
+            <div className='w-1/2 h-50 flex flex-col items-center'>
+              <div className='text-xl font-semibold flex flex-row gap-1'>
+                <p className='flex items-center'>Tv shows ({tvType.toLowerCase()})</p>
+                <motion.button 
+                whileHover={{scale: 1.03}}
+                whileTap={{scale: 0.98}}
+                className='bg-primary rounded-lg px-2 py-1 cursor-pointer' 
+                onClick={() => setTvType(prev => prev === "Episodes" ? "Seasons" : "Episodes")}>
+                  {tvType === "Episodes" ? "Seasons" : "Episodes"}
+                </motion.button>
+              </div>
+                <Chart data={showData}/>
+            </div>
+
           </div>
         </div>
+
       </div>
     </motion.div>
     

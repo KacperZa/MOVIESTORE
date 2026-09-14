@@ -55,7 +55,8 @@ router.get('/:id', authMiddleware, async (req, res) => {
             return {
                 ...details,
                 userId: reqUserId,
-                mediaType: his.mediaType
+                mediaType: his.mediaType,
+                status: his.status,
             }
         })
         .filter(Boolean)
@@ -80,7 +81,7 @@ router.post('/:id', authMiddleware, async (req, res) => {
         })
     }
 
-    const { mediaType, tmdbId } = result.data
+    const { mediaType, tmdbId, status } = result.data
     
     try{
         const exists =  await History.findOne({
@@ -95,6 +96,7 @@ router.post('/:id', authMiddleware, async (req, res) => {
             userId: req.user._id,            
             mediaType: mediaType,
             tmdbId: tmdbId,
+            status: status
         })
         const newMedia = await history.save()
         res.status(201).json(newMedia)
