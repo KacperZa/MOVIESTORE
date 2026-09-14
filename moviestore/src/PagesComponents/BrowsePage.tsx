@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "motion/react";
 import useFetchMedia from "../hooks/useFetchMedia";
 import { useDebounce } from "use-debounce";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
-import FavouriteToggle from "./FavouriteToggle";
 import { useUser } from "@/context/useUser";
 import Filters, { type FilterItem } from "@/ui/Filters";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
@@ -14,6 +13,8 @@ import GenreSidebar from "@/ui/GenreSidebar";
 import useFetchIds from "../hooks/useFetchIds";
 import MediaCardSkeleton from "@/ui/MediaCardSkeleton";
 import FiltersMobile from "@/ui/FiltersMobile";
+import useAddFavourite from "@/hooks/FavouriteHooks/useAddFavourite";
+import useRemoveFavourite from "@/hooks/FavouriteHooks/useRemoveFavourite";
 
 
 
@@ -34,7 +35,8 @@ function BrowsePage() {
 
   const { user } = useUser()
 
-  const { addFavourite, removeFavourite } = FavouriteToggle()
+  const { mutate: mutateAddFavourite } = useAddFavourite()
+  const { mutate: mutateRemoveFavourite } = useRemoveFavourite()
 
 
   
@@ -83,9 +85,9 @@ function BrowsePage() {
             (
               films?.map((film: FilmsWithGenres, i: number) => {
                 if(films.length === i + 1) {
-                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres isRef/>
+                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={mutateAddFavourite} removeFavourite={mutateRemoveFavourite} userId={user?._id} showGenres isRef/>
                 } else {
-                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite}  showGenres/>
+                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={mutateAddFavourite} removeFavourite={mutateRemoveFavourite} userId={user?._id} showGenres/>
                 } })
             )
             }
