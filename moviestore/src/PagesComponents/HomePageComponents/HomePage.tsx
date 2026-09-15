@@ -205,18 +205,18 @@ function HomePage() {
       <div className='flex flex-col min-w-full gap-4'>
         <div className='flex flex-row justify-evenly items-center gap-2 min-w-full p-5 bg-secondary rounded-2xl'>
           <motion.div 
-          className={` bg-accent p-2 px-5 rounded-lg font-medium text-xl cursor-pointer select-none ${selectedGenre === "tv" && 'shadow-2xs'}`} 
+          className={` bg-accent p-2 px-5 rounded-lg font-medium text-xl cursor-pointer select-none transition-all duration-200 ease ${selectedGenre === "tv" && 'bg-primary text-white'}`} 
           onClick={() => setSelectedGenre("tv")}
-          whileHover={{scale: 1.02}}
-          transition={{type: "spring", stiffness: 150, damping: 8, mass: 1 }} 
+          whileHover={{scale: 1.04}}
+          whileTap={{ scale: 0.98}}
           >
             Shows
           </motion.div>
           <motion.div 
-          className={`bg-accent p-2 px-5 rounded-lg font-medium text-xl cursor-pointer select-none ${selectedGenre === "movies" && 'shadow-2xs'}`} 
+          className={`bg-accent p-2 px-5 rounded-lg font-medium text-xl cursor-pointer select-none transition-all duration-200 ease ${selectedGenre === "movies" && 'bg-primary text-white'}`} 
           onClick={() => setSelectedGenre("movies")}
-          whileHover={{scale: 1.02}}
-          transition={{type: "spring", stiffness: 150, damping: 8, mass: 1 }} 
+          whileHover={{scale: 1.04}}
+          whileTap={{ scale: 0.98}}
           >
             Movies
           </motion.div>

@@ -57,10 +57,10 @@ function GenreSection({genreId, genreName, type} : GenreSectionProps) {
         exit={{opacity: 0}}>
             <div className='flex flex-row justify-between items-center'>
                 <p className='text-3xl px-2'>{genreName}</p>
-                <motion.button className=' select-none p-2 px-4 rounded-lg border-2 border-primary bg-accent  shadow-sm text-xl! cursor-pointer'
+                <motion.button className=' select-none p-2 px-4 rounded-lg border-4 border-primary bg-accent  shadow-sm text-xl! cursor-pointer'
                 onClick={() => navigate(`${type}/genre/${genreId}/${genreName}`)}
                 whileHover={{scale: 1.02}}
-                transition={{type: spring, stiffness: 150, damping: 8, mass: 1 }} 
+                whileTap={{ scale: 0.98}}
                 >
                     See more...
                 </motion.button>
