@@ -1,5 +1,5 @@
 import { Link, useParams } from 'react-router-dom'
-import { Heart, Plus, Star, UserStar } from 'lucide-react'
+import { Heart, Star, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import useFetchTvDetails from '@/hooks/useFetchTvDetails'
 import { useEffect, useRef, useState } from 'react'
@@ -27,10 +27,12 @@ const MovieDetailPage = () => {
 
     const { user } = useUser()
 
+    // Fetching media ids that are marked as favourite and error handling
     const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
     if(isErrorFavouriteIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
-    const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchIds({userId: user?._id, type: "history"})
+    // Fetching media that are in watchlist and error handling
+    const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchHistoryData({userId: user?._id})
     if(isErrorHistoryIds) console.log('An Error occured during fetching HistoryIds', errorHistoryIds?.message)
 
     const { isError: isErrorProviders, data: providersData, error: errorProviders} = useFetchProviders({id, type:"tv"})

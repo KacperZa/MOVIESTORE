@@ -95,7 +95,7 @@ function Profile() {
     validate: (value: number) => (value >= 6 || value <= 100 ? null : 'I dont think this is your age...')
   })
 
-  
+  // Mantine Form hook
   const form = useForm({
     mode: 'uncontrolled',
     initialValues: {

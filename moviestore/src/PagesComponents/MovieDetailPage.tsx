@@ -1,7 +1,7 @@
 import useFetchMovieDetails from '@/hooks/useFetchMovieDetails'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import useRuntime from '@/utils/calculateRuntime'
-import { Clock, DollarSign, Heart, Plus, UserStar } from 'lucide-react'
+import { Clock, DollarSign, Heart, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import { animate, inView, motion, stagger } from 'motion/react'
 import { useUser } from '@/context/useUser'
@@ -127,23 +127,6 @@ const MovieDetailPage = () => {
             }
         }
     }
-
-    // Variants for add to watch history list 
-
-    const plusVariants = {
-        add: {
-            rotate: 0
-        },
-        remove: {
-            rotate: 45,
-            transition: {
-                duration: 0.2
-            }
-        }       
-    }
-
-
-    console.log('user._id in component:', user?._id)
 
   
 return (
