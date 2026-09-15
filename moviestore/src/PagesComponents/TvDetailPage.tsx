@@ -232,18 +232,26 @@ const MovieDetailPage = () => {
             <div className='h-fit w-full md:w-4/5 xl:w-2/3 rounded-lg py-2 xl:p-5 flex flex-col'>
 
                 <div className='flex flex-row justify-evenly flex-wrap gap-y-2 gap-1'>
-                    <div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 gap-2 shadow-xl'>
-                        {details?.genres.map(genre => (
-                            <Link to={`/movie/genre/${genre.id}/${genre.name}`} key={genre.id} className='underline-animate'>{genre.name}</Link >
-                        ))}
-                    </div>
+                    {details?.genres && 
+                        <div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 gap-2 shadow-xl'>
+                            {details?.genres.map(genre => (
+                                <Link to={`/movie/genre/${genre.id}/${genre.name}`} key={genre.id} className='underline-animate'>{genre.name}</Link >
+                            ))}
+                        </div>
+                    }
                     {/* <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Release date: {details?.release_date.replaceAll("-", ".").split(" ")}</div> */}
-                    <div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 shadow-xl'>Number of episodes: {details?.number_of_episodes}</div>
-                    <div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 shadow-xl'>Number of seasons: {details?.number_of_seasons}</div>
+                    {details?.number_of_episodes && <div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 shadow-xl'>Number of episodes: {details?.number_of_episodes}</div>}
+                    {details?.number_of_seasons &&<div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 shadow-xl'>Number of seasons: {details?.number_of_seasons}</div>}
 
                     <div className='bg-secondary rounded-2xl text-sm md:text-base flex flex-row px-5 py-2 shadow-xl gap-1 items-center'>
-                        <p><UserStar /></p>
-                        <p>Rating: {details?.vote_average.toFixed(1)}</p>
+                        {details?.vote_average ? 
+                        <>
+                            <p><UserStar /></p>
+                            <p>Rating: {details?.vote_average.toFixed(1)}</p>
+                        </>
+                        :
+                        <p>Not rated yet</p>
+                    }
                     </div>
 
                     {details?.homepage &&

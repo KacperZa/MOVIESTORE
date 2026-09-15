@@ -202,19 +202,37 @@ return (
 
                     <div className='flex flex-row justify-evenly flex-wrap gap-y-2 gap-1'>
                         <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 gap-2 shadow-xl'>
-                            {details?.genres.map(genre => (
-                                <Link to={`/movie/genre/${genre.id}/${genre.name}`} key={genre.id} className='underline-animate'>{genre.name}</Link >
-                            ))}
+                            {details?.genres && details.genres.length > 0 ? details?.genres.map(genre => (
+                                <Link to={`/movie/genre/${genre.id}/${genre.name}`} key={genre.id} className='underline-animate'>{genre.name}</Link>
+                            ))
+                            :
+                            <p>No genres provided</p>
+                            }
                         </div>
                         <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl gap-1'>
                                 <p><Clock /></p>
                                 <p>{hoursRuntime}h {minutesRuntime}min</p>
                         </div>
-                        <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Release date: {details?.release_date.replaceAll("-", ".").split(" ")}</div>
+
+                        <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>
+                        {details?.release_date ? 
+                            <>Release date: {details?.release_date.replaceAll("-", ".").split(" ")}</>
+                            :
+                            <p> No release date provided</p>
+                        }
+                        </div> 
+
                         <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl gap-1'>
-                                <p><UserStar /></p>
-                                <p>Rating: {details?.vote_average.toFixed(1)}</p>
+                        {details?.vote_average ?
+                        <>
+                            <p><UserStar /></p>
+                            <p>Rating: {details?.vote_average.toFixed(1)}</p>
+                        </>
+                        :
+                        <p>Not rated yet</p>
+                        }
                         </div>
+                        
                         {details?.homepage &&
                             <a href={`${details.homepage}`} target='_blank' rel="noopener noreferrer" className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl underline'>More here</a>
                         }
@@ -225,13 +243,45 @@ return (
                     <div className='w-full flex flex-col md:flex-row justify-around items-center flex-wrap bg-primary py-4 rounded-2xl gap-2'>
                         <DollarSign color='white'/>
                         <div className='flex flex-col md:flex-row justify-evenly w-1/2 gap-2'>
-                            <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Revenue: {details?.revenue}$</div>
-                            <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>Budget: {details?.budget}$</div>
+                            <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>
+                                {details?.revenue ?
+                                <>Revenue: {details?.revenue}$</>
+                                :
+                                <p>No revenue data provided</p>
+                            }
+                            </div>
+                            <div className='bg-secondary rounded-2xl flex flex-row px-5 py-2 shadow-xl'>
+                                {details?.budget ?
+                                <>Budget: {details?.budget}$</>
+                                :
+                                <p>No budget data provided</p>
+                            }
+                            </div>
                         </div>
                     </div>
 
 
                 </div>
+
+
+                {/* Videos  */}
+                    {videos && Object.keys(videos).length > 0 ? 
+                        <div className='w-full flex justify-center items-center pb-4 rounded-2xl'>
+                                <div id='trailer-container' className='flex flex-col xl:flex-row gap-2 w-full items-center justify-center'>  
+                                        {videos?.filter(v => v.type === "Trailer").map(video => {
+                                            const embedUrl = getEmbedUrl(video)
+                                            if(!embedUrl) return null
+                                            return (
+                                            <div key={video.id} className='aspect-video h-full md:w-4/5 w-full justify-center trailer-video'>
+                                                <iframe src={embedUrl} allowFullScreen className='w-full h-full rounded-lg' />
+                                            </div>
+                                            )
+                                        })}  
+                                </div>
+                        </div>
+                    :
+                    <p className='text-2xl font-semibold '> No trailers provided for this movie</p>
+                    }
 
                 {providersData && Object.keys(providersData).length > 0 ? 
                     <>
