@@ -4,11 +4,11 @@ import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import useFetchTvDetails from '@/hooks/useFetchTvDetails'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
-import FavouriteToggle from './FavouriteToggle'
 import { useUser } from '@/context/useUser'
 import useFetchIds from '@/hooks/useFetchFavouriteIds'
 import TvDetailsSkeleton from '@/ui/TvDetailsSkeleton'
 import HistoryButton from '@/ui/HistoryButton'
+import useFetchHistoryData from '@/hooks/useFetchHistoryData'
 import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 import useFetchProviders from '@/hooks/useFetchProviders'
@@ -45,7 +45,7 @@ const MovieDetailPage = () => {
     const displayType = currentProviderType ?? defaultType
 
     const favouriteIds = favouriteData ?? new Set()
-    const historyIds = historyData ?? new Set()
+    const historyIds = historyData ?? new Map()
 
     const { mutate: addFavourite } = useAddFavourite()
     const { mutate: removeFavourite } = useRemoveFavourite()
