@@ -33,7 +33,7 @@ export interface SpokenLanguage {
     name: string
 }
 
-export interface Details {
+export interface MovieDetails {
     adult: boolean,
     backdrop_path: string
     belong_to_collection: BelongsToCollection[]
@@ -63,7 +63,7 @@ export interface Details {
 
 export default function useFetchDetails({id} : FetchDetailsProps) {
 
-        const fetchDetails = async (): Promise<Details> => {
+        const fetchDetails = async (): Promise<MovieDetails> => {
             const res = await fetch(`http://localhost:5000/details/movie/${id}`, {
                 method: 'GET'
             });

@@ -1,8 +1,8 @@
 import { useUser } from '@/context/useUser'
-import type { Details } from './useFetchMovieDetails'
+import type { MovieDetails } from './useFetchMovieDetails'
 import { useQuery } from '@tanstack/react-query'
 
-export interface DetailsWithUser extends Details {
+export interface DetailsWithUser extends MovieDetails {
     userId: string 
     mediaType: string 
 }

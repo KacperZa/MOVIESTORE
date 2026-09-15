@@ -47,7 +47,7 @@ interface Season {
     vote_average: number
 }
 
-export interface Details {
+export interface TvDetails {
     adult: boolean
     backdrop_path: string
     created_by: Creator[]
@@ -83,7 +83,7 @@ export interface Details {
 }
 
 export default function useFetchDetails({id} : FetchDetailsProps) {
-        const fetchDetails = async (): Promise<Details> => {
+        const fetchDetails = async (): Promise<TvDetails> => {
             const res = await fetch(`http://localhost:5000/details/tv/${id}`, {
                 method: 'GET'
             });
