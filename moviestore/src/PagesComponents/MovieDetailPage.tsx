@@ -251,7 +251,7 @@ return (
                         }
                     </div>
 
-                    <p className='p-2 py-7 font-medium text-lg leading-[150%] text-text'>{details?.overview}</p>
+                    <p className='p-2 py-7 font-medium text-lg leading-[150%] text-text  text-center'>{details?.overview}</p>
 
                     <div className='w-full flex flex-col md:flex-row justify-around items-center flex-wrap bg-primary py-4 rounded-2xl gap-2'>
                         <DollarSign color='white'/>
