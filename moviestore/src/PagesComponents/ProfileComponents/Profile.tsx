@@ -180,9 +180,8 @@ function Profile() {
         }}>
             <Group justify='evenly'>
                 <div className="flex flex-col items-center gap-4 w-full p-2 py-4 ">
-                  <div className='bg-gray-400 shadow-xl/20 p-3 px-4 rounded-lg min-w-full flex flex-row items-end gap-2'>
+                  <div className='bg-gray-400  p-3 px-4 rounded-lg min-w-full flex flex-row items-end gap-2'>
                     <TextInput
-                    withAsterisk
                     label='Username'
                     placeholder='Johndore1232'
                     leftSection={<User size={16} />}
@@ -203,9 +202,8 @@ function Profile() {
                       }}
                       rightSection={<Check size={16}/>} type='submit'> Confirm</Button>
                   </div>
-                  <div className="bg-gray-400 shadow-xl/20 p-3 px-4 rounded-lg min-w-full flex flex-row items-end gap-2">
+                  <div className="bg-gray-400  p-3 px-4 rounded-lg min-w-full flex flex-row items-end gap-2">
                     <TextInput
-                    withAsterisk
                     label='Email'
                     placeholder='John.dore@1232.com'
                     leftSection={<AtSignIcon size={16} />}
@@ -226,9 +224,8 @@ function Profile() {
                       }} 
                       rightSection={<Check size={16}/>} type='button'> Confirm</Button>
                   </div>
-                  <div className="bg-gray-400 shadow-xl/20 p-3 px-4 rounded-lg w-full flex flex-row items-end gap-2">
-                    <NumberInput
-                    withAsterisk 
+                  <div className="bg-gray-400  p-3 px-4 rounded-lg w-full flex flex-row items-end gap-2">
+                    <NumberInput 
                     label="Age"
                     placeholder='24'
                     leftSection={<Calendar size={16}/>}
@@ -259,10 +256,10 @@ function Profile() {
                           }); 
                           form.reset()})
                         } 
-                          id="dane" className='flex flex-row items-center w-full bg-gray-400 shadow-xl/20 p-3 px-4 rounded-lg gap-2'>
+                          id="dane" className='flex flex-row items-center w-full bg-gray-400  p-3 px-4 rounded-lg gap-2'>
                     <div className='flex flex-col flex-1 gap-2 w-full '>
                       <PasswordInput
-                      withAsterisk 
+ 
                       label="Password"
                       placeholder='Password'
                       leftSection={<Lock size={16}/>}
@@ -272,7 +269,7 @@ function Profile() {
                       {...form.getInputProps('password')}
                       />
                       <PasswordInput
-                      withAsterisk 
+ 
                       label="Confirm your Password"
                       placeholder='Password'
                       leftSection={<Lock size={16}/>}
