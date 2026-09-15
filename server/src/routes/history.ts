@@ -118,11 +118,25 @@ router.get('/', async (req, res) => {
 
 
 
-router.patch('/:id',  getMedia, async (req, res) => {
+router.patch('/:id', getMedia, async (req, res) => {
     if(!req.history) return res.status(404).json({message: 'Media not found'})
 
-    if (req.body.mediaType !== null){
-        req.history.mediaType = req.body.mediaType
+    const result = HistorySchema.safeParse(req.body)
+
+    if(result.error){
+        const errorTree = z.treeifyError(result.error)
+        return res.status(400).json({
+            success: false,
+            message: 'History patch validation error!',
+            ...errorTree
+        })
+    }
+
+    const { status } = result.data
+
+
+    if (status !== undefined){
+        req.history.status = status
     }
 
     try{

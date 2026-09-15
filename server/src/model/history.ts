@@ -4,6 +4,7 @@ export interface IHistory {
     userId: Types.ObjectId
     mediaType: string
     tmdbId: number
+    status: "watched" | "pending"
 }
 
 const historySchema = new Schema<IHistory>({
@@ -16,6 +17,11 @@ const historySchema = new Schema<IHistory>({
     },
     tmdbId: {
         type: Number
+    },
+    status: {
+        type: String ,
+        enum: ['watched', 'pending'],
+        default: 'pending'
     }
 })
 
