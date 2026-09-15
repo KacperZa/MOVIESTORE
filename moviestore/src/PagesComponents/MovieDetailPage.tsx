@@ -1,5 +1,5 @@
 import useFetchMovieDetails from '@/hooks/useFetchMovieDetails'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import useRuntime from '@/utils/calculateRuntime'
 import { Clock, DollarSign, Heart, Plus, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
@@ -7,33 +7,36 @@ import { animate, inView, motion, stagger } from 'motion/react'
 import { useUser } from '@/context/useUser'
 import useFetchIds from '@/hooks/useFetchFavouriteIds'
 import MovieDetailsSkeleton from '@/ui/MovieDetailsSkeleton'
+import HistoryButton from '@/ui/HistoryButton'
+import useFetchHistoryData from '@/hooks/useFetchHistoryData'
 import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 import useFetchProviders from '@/hooks/useFetchProviders'
+import { useState } from 'react'
 
 const MovieDetailPage = () => {
     const [currentProviderType, setCurrentProviderType] = useState<"flatrate" | "rent" | "buy" | null>(null)
 
     const { id } = useParams()
 
-    console.log('MOVIES ID: ', id)
-
-    const type = "movie"
-
-    const { isError, isPending: isPendingDetails, data: details, error } = useFetchMovieDetails({id})
-
-    if(isError) console.log('An error occured during fetching movie details', error?.message)
-
-    console.log(details)
-
+    const type = "movie"        
+    
+    // Getting user data from context
     const {user} = useUser()
-
+    
+    // Fetching movie details
+    const { isError, isPending: isPendingDetails, data: details, error } = useFetchMovieDetails({id})
+    if(isError) console.log('An error occured during fetching movie details', error?.message)
+    
+    // Calculating runtime
     const { hoursRuntime, minutesRuntime } = useRuntime(details?.runtime)
-
+        
+    // Fetching media ids that are marked as favourite and error handling
     const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
     if(isErrorFavouriteIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
-    const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchIds({userId: user?._id, type: "history"})
+    // Fetching media that are in watchlist and error handling
+    const { isError: isErrorHistoryIds, data: historyData, error: errorHistoryIds } = useFetchHistoryData({userId: user?._id})
     if(isErrorHistoryIds) console.log('An Error occured during fetching HistoryIds', errorHistoryIds?.message)
 
     const { isError: isErrorProviders, data: providersData, error: errorProviders, isPending: isPendingProviders} = useFetchProviders({id, type:"movie"})
