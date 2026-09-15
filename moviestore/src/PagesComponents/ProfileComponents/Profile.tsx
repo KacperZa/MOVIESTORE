@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { useField, useForm } from '@mantine/form';
 
 import { AtSignIcon, Calendar, Check, Lock, SquarePen, Trash, User } from 'lucide-react'
+
 import useGetCreationDay from '../../hooks/useGetCreationDay'
 
 import useDeleteUser from '@/hooks/useDeleteUser'
@@ -21,19 +22,19 @@ function Profile() {
   const [tvType, setTvType] = useState<"Episodes" | "Seasons">('Episodes')
 
   const { user } = useUser()
-  
+
+  // Mantine hooks
   const [visible, { toggle }] = useDisclosure(false)
   const [opened, {open, close}] = useDisclosure(false)
   const [deleteModalOpened, {open: openDeleteModal, close: closeDeleteModal}] = useDisclosure(false)
 
+  
   const { time, day, month, year } = useGetCreationDay(user?.creationDate ?? null)
-
-  // const { addFavourite, removeFavourite } = FavouriteToggle()
-
-  const {deleteUser, loading, error} = useDeleteUser()
-
+    
+  const { deleteUser, error } = useDeleteUser()
+  
   if(error) console.log('An error occured during deleting user', error)
-
+    
   const { editUser } = useEditUser()
   const { data: watchedMedia } = useFetchWatchedMedia()
 
