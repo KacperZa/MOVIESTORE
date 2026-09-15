@@ -113,17 +113,37 @@ function Profile() {
   <>
     <motion.div  className="flex flex-col bg-background border-t border-card rounded-2xl p-2 w-screen max-h-screen justify-center items-center overflow-auto">
       <div className="flex min-w-full h-full flex-col p-3 gap-3">
-        <div className='flex flex-row items-center justify-between min-w-full h-fit bg-secondary rounded-xl p-2 font-medium  '>
-          <p className='flex font-bold text-5xl  p-4'>{user ? user?.username.toUpperCase() : 'Loading'}</p>
-          <Button color='red' onClick={openDeleteModal} rightSection={<Trash />}> Delete Account</Button>
+        <div className='flex flex-row items-center justify-between min-w-full h-fit bg-accent rounded-lg px-4 py-2 font-medium  '>
+          <p className='flex font-bold text-5xl py-4'>{user ? user?.username.toUpperCase() : 'Loading'}</p>
+          <motion.div 
+          onClick={openDeleteModal} 
+          className='bg-red-400 flex flex-row gap-1 py-2 px-4 rounded-lg cursor-pointer select-none'
+          whileHover={{ scale: 1.02}} 
+          whileTap={{ scale: 0.98}}>
+            Delete Account
+            <Trash />
+          </motion.div>
         </div>
 
-        <div className='min-w-full h-fit  bg-secondary rounded-xl p-2'>
+        <div className='min-w-full h-fit  bg-accent rounded-lg p-2'>
           <p className='text-4xl font-bold p-2'>PERSONAL INFORMATION</p>
           <div className='flex flex-row gap-5 justify-evenly p-4 font-medium items-center '>
             <p>E-mail: {user?.email}</p>
             <p>Age: {user?.age ?? 'Not specified'}.</p>
             <p>Account created: {day} {month} {year} at {time}.</p>
+
+            <motion.div 
+            onClick={open} 
+            className='bg-secondary py-2 px-5 rounded-lg font-medium flex flex-row gap-1 justify-center cursor-pointer select-none'
+            whileHover={{ scale: 1.03}} 
+            whileTap={{ scale: 0.98}}>
+              <SquarePen />
+              Edit
+            </motion.div>
+
+          </div>
+        </div>
+
         <div className='w-full bg-accent rounded-lg p-4 flex flex-col flex-1 min-h-0'>
           <p className='text-4xl font-bold w-full text-center p-5'>Statistics</p>
           <div className='w-full flex flex-row p-5'>
