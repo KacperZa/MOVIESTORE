@@ -65,7 +65,7 @@ function WatchedFilms() {
 
             </div>
               {finalData?.length !== 0 ?
-            <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-y-5 overflow-auto w-full h-full auto-rows-110'>
+            <div className='grid md:grid-cols-2 xl:grid-cols-4 gap-y-5 overflow-auto w-full h-full'>
               {isPendingWatchedMedia ? 
                 <>
                   <MediaCardSkeleton count={8}/>
