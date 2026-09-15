@@ -10,7 +10,7 @@ import { useUser } from "@/context/useUser";
 import Filters, { type FilterItem } from "@/ui/Filters";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
 import GenreSidebar from "@/ui/GenreSidebar";
-import useFetchIds from "../hooks/useFetchIds";
+import useFetchIds from "../hooks/useFetchFavouriteIds";
 import MediaCardSkeleton from "@/ui/MediaCardSkeleton";
 import FiltersMobile from "@/ui/FiltersMobile";
 import useAddFavourite from "@/hooks/FavouriteHooks/useAddFavourite";

@@ -8,7 +8,7 @@ import { useUser } from "../context/useUser";
 import useFetchMedia from "../hooks/useFetchMedia";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
-import useFetchIds from "@/hooks/useFetchIds";
+import useFetchIds from "@/hooks/useFetchFavouriteIds";
 import useAddFavourite from "@/hooks/FavouriteHooks/useAddFavourite";
 import useRemoveFavourite from "@/hooks/FavouriteHooks/useRemoveFavourite";
 

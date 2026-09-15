@@ -3,7 +3,7 @@ import useFetchWatchedMedia, { type HistoryItem } from '../hooks/useFetchWatched
 import MediaCard from '@/ui/MediaCard'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
-import useFetchIds from '../hooks/useFetchIds'
+import useFetchIds from '../hooks/useFetchFavouriteIds'
 import MediaCardSkeleton from '@/ui/MediaCardSkeleton'
 import { useState } from 'react'
 import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
@@ -50,7 +50,6 @@ function WatchedFilms() {
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
             <div className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary flex flex-row w-full items-center px-6'>
               <p className='flex-1 min-h-0 flex font-extrabold justify-center text-5xl tracking-widest'>Watchlist</p>
-
 
               {/* Filters  */}
               <div className='px-4 py-2 bg-card rounded-lg gap-2 flex flex-col'>
