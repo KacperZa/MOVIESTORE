@@ -1,12 +1,29 @@
 import { useUser } from '@/context/useUser'
-import type { MediaWithUser } from '@/PagesComponents/FavouritesPage'
 import { useQuery } from '@tanstack/react-query'
+import type { MovieDetails } from './useFetchMovieDetails'
+import type { TvDetails } from './useFetchTvDetails'
+
+
+interface HistoryMovieItem extends MovieDetails {
+    mediaType: 'movie';
+    userId: string;
+    status: 'watched' | 'pending'
+
+}
+
+interface HistoryTvItem extends TvDetails {
+    mediaType: 'tv';
+    userId: string;
+    status: 'watched' | 'pending'
+}
+
+export type HistoryItem = HistoryMovieItem | HistoryTvItem
 
 function useFetchWatchedMedia() {
 
     const { user } = useUser()
 
-        const history = async (): Promise<MediaWithUser[]> => {
+        const history = async (): Promise<HistoryItem[]> => {
             const res = await fetch(`http://localhost:5000/history/${user?._id}`, {
                 method: 'GET'
             })
