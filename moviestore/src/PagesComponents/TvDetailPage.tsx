@@ -58,6 +58,8 @@ const MovieDetailPage = () => {
 
     // const mainControls = useAnimation()
 
+    const { data: videos } = useFetchVideo({type: "tv", id, enabled: !!id})
+
     const handleProviderClick = (type: "flatrate" | "rent" | "buy") => {
         setCurrentProviderType(type)
     }

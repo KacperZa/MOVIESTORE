@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useQuery } from '@tanstack/react-query'
 
 interface FetchVideosProps {
     type: string | undefined
@@ -20,29 +20,24 @@ export interface Video {
 }
 
 const useFetchVideo = ({type, id, enabled} : FetchVideosProps) => {
-    const [videos, setVideos] = useState<Video[]>()
 
-    useEffect(() => {
+    const fetchVideos = async (): Promise<Video[] | null> => {
+        const res = await fetch(`http://localhost:5000/${type}/videos/${id}`,{
+            method: 'GET'
+        });
 
-        if (!enabled) return 
+        if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
 
-        const fetchVideos = async () => {
-            try{
-                const res = await fetch(`http://localhost:5000/${type}/videos/${id}`,{
-                    method: 'GET'
-                });
+        return await res.json()
+    }
 
-                if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
+    const { isPending, isError, error, data } = useQuery({
+        queryKey: ['videos', id, type],
+        queryFn: fetchVideos,
+        enabled: enabled && !!id && !!type
+    })
 
-                const data = await res.json()
-                setVideos(data)
-            } catch (err) {
-                console.error(err)
-            }
-        }
-        fetchVideos()
-    },[id, type, enabled])
-  return videos 
+  return { isPending, isError, error, data }
 }
 
 export default useFetchVideo

@@ -55,9 +55,11 @@ const MovieDetailPage = () => {
     const favouriteIds = favouriteData ?? new Set()
     const historyIds = historyData ?? new Set()
 
-    const { addFavourite, removeFavourite } = FavouriteToggle()
-    const { addHistory, removeHistory } = HistoryToggle()
+    const { data: videos, isError: isErrorVideos, error: errorVideos } = useFetchVideo({type: "movie", id, enabled: !!id})
 
+    if(isErrorVideos) console.log('An error occured during fetching videos: ', errorVideos?.message)
+
+    
     const handleProviderClick = (type: "flatrate" | "rent" | "buy") => {
         setCurrentProviderType(type)
     }
