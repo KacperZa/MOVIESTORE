@@ -174,7 +174,7 @@ function Profile() {
       </div>
     </motion.div>
     
-    <Modal opened={opened} onClose={close} title="Edit" centered size='lg' onClick={(e) => e.stopPropagation()} classNames={{ title: '!px-2 !font-bold !text-2xl'}} overlayProps={{
+    <Modal opened={opened} onClose={close} title="EDIT" centered size='lg' onClick={(e) => e.stopPropagation()} classNames={{ title: '!px-2 !font-bold !text-2xl !tracking-wide', body: '!bg-card', header: '!bg-card'}} overlayProps={{
         backgroundOpacity: 0.55,
         blur: 3,
         }}>

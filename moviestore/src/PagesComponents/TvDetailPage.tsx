@@ -140,17 +140,6 @@ const MovieDetailPage = () => {
         }
     }
 
-    const plusVariants = {
-        add: {
-            rotate: 0
-        },
-        remove: {
-            rotate: 45,
-            transition: {
-                duration: 0.2
-            }
-        }       
-    }
 
     const currentSeason = details?.seasons.find(s => s.season_number === selectedSeason)
 
@@ -262,13 +251,9 @@ const MovieDetailPage = () => {
                         <a href={`${details.homepage}`} target='_blank' rel="noopener noreferrer" className='bg-secondary text-sm md:text-base rounded-2xl flex flex-row px-5 py-2 shadow-xl underline items-center'>More here</a>
                     }
 
-
-                    {/* <div className='bg-secondary rounded-2xl flex flex-row px-3'>
-                        {details.}
-                    </div> */}
                 </div>
 
-                <p className='p-2 py-7 font-medium lg:text-lg leading-[150%] text-text'>{details?.overview}</p>
+                <p className='p-2 py-7 font-medium lg:text-lg leading-[150%] text-text text-center'>{details?.overview}</p>
 
                 <div className='w-full  flex justify-center items-center pb-4 rounded-2xl'>
                     <div className='flex flex-col xl:flex-row gap-2 w-full items-center'>  
