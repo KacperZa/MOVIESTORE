@@ -48,7 +48,7 @@ function WatchedFilms() {
     return (
       <>
         <div className='flex flex-col w-full h-full border-t border-card p-2 items-center scrollbar-thumb-primary scrollbar-gutter-stable bg-radial from-card from-5% to-background'>
-            <div className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary flex flex-row w-full items-center px-6'>
+            <div className='xl:text-3xl text-4xl p-5 font-bold tracking-wide text-secondary text-shadow-2xl shadow-secondary flex  flex-col gap-2 md:gap-0 md:flex-row w-full items-center px-6'>
               <p className='flex-1 min-h-0 flex font-extrabold justify-center text-5xl tracking-widest'>Watchlist</p>
 
               {/* Filters  */}
