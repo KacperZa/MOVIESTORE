@@ -47,8 +47,8 @@ const MovieDetailPage = () => {
     const favouriteIds = favouriteData ?? new Set()
     const historyIds = historyData ?? new Set()
 
-    const { addFavourite, removeFavourite } = FavouriteToggle()
-    const { addHistory, removeHistory } = HistoryToggle()
+    const { mutate: addFavourite } = useAddFavourite()
+    const { mutate: removeFavourite } = useRemoveFavourite()
     
     console.log(details)
 
@@ -208,13 +208,16 @@ const MovieDetailPage = () => {
                     <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
                     className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
                     onClick={(e) => {
-                        // console.log("favouriteIds.has:", favouriteIds.has(Number(id)))
+                        e.preventDefault();
+                        e.stopPropagation();
+
                         if(!id || !type) return
+
                         if(favouriteIds.has(Number(id))){
-                            removeFavourite({e, id: Number(id)})
+                            removeFavourite({ id: Number(id), userId: user?._id, type})
                             console.log("Usuwamy ")
                         } else {
-                            addFavourite({e, type, id: Number(id)});
+                            addFavourite({userId: user?._id, type, id: Number(id)});
                             console.log("Dodajemy ")
                         }
                     }}>

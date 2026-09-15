@@ -1,10 +1,9 @@
 import { motion, spring } from 'motion/react'
-import React from 'react'
 import { NoImageIcon } from "./Icons";
 import { Star } from "lucide-react";
 import { Heart } from 'lucide-react';
-import type { FavouriteProps } from '@/PagesComponents/FavouriteToggle';
 import { useNavigate } from 'react-router-dom';
+import type { FavouriteProps } from '@/hooks/FavouriteHooks/useAddFavourite';
 
 
 export interface Films {
@@ -35,10 +34,11 @@ interface MediaCardProps<T extends FilmsWithGenres> {
     isRef?: boolean
     showGenres?: boolean
     mediaId?: number // prop for defining tmdbId if it has name other than 'id'
+    userId: string | undefined
 }
 
 
-function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, isRef} : MediaCardProps<T>) {
+function MediaCard<T extends FilmsWithGenres>({mediaId, showGenres, lastMediaElementRef, media, type, favouriteIds, addFavourite, removeFavourite, userId, isRef} : MediaCardProps<T>) {
 
     const navigate = useNavigate()
 

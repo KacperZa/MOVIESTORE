@@ -51,7 +51,15 @@ const MovieDetailPage = () => {
     const displayType = currentProviderType ?? defaultType
 
     const favouriteIds = favouriteData ?? new Set()
-    const historyIds = historyData ?? new Set()
+    const historyIds = historyData ?? new Map()
+
+
+
+    const navigate = useNavigate()
+
+    const { mutate: mutateAddFavourite } = useAddFavourite()
+    const { mutate: mutateRemoveFavourite } = useRemoveFavourite()
+    
 
     const { data: videos, isError: isErrorVideos, error: errorVideos } = useFetchVideo({type: "movie", id, enabled: !!id})
 
@@ -177,13 +185,17 @@ return (
                         <motion.button whileTap={{ scale: 0.9, rotate: -2 }}  whileHover={{ scale: 1.1}} 
                         className='px-3 pt-1.5 pb-2 flex justify-center backdrop-blur-md rounded-lg cursor-pointer' 
                         onClick={(e) => {
-                            // console.log("favouriteIds.has:", favouriteIds.has(Number(id)))
+                            e.preventDefault();
+                            e.stopPropagation();
+
                             if(!id || !type) return
+                            if (user === null) {navigate('/login'); return}
+
                             if(favouriteIds.has(Number(id))){
-                                removeFavourite({e, id: Number(id)})
+                                mutateRemoveFavourite({ id: Number(id), userId: user._id, type})
                                 console.log("Usuwamy ")
                             } else {
-                                addFavourite({e, type, id: Number(id)});
+                                mutateAddFavourite({ type, id: Number(id), userId: user?._id});
                                 console.log("Dodajemy ")
                             }
                         }}>

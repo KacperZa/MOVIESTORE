@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "motion/react";
 import { useUser } from "../context/useUser";
 
 import useFetchMedia from "../hooks/useFetchMedia";
-import FavouriteToggle from "./FavouriteToggle";
 import useInfiniteScroll from "../hooks/useInfiniteScroll";
 import Filters, { type FilterItem } from "@/ui/Filters";
 import MediaCard, { type FilmsWithGenres } from "@/ui/MediaCard";
@@ -14,6 +13,8 @@ import GenreSidebar from "@/ui/GenreSidebar";
 import useFetchIds from "../hooks/useFetchFavouriteIds";
 import MediaCardSkeleton from "@/ui/MediaCardSkeleton";
 import FiltersMobile from "@/ui/FiltersMobile";
+import useAddFavourite from "@/hooks/FavouriteHooks/useAddFavourite";
+import useRemoveFavourite from "@/hooks/FavouriteHooks/useRemoveFavourite";
 
 function SpecificGenre() {
   const { type, id_genre, name_genre } = useParams()
@@ -31,7 +32,8 @@ function SpecificGenre() {
 
   const { user } = useUser()
     
-  const { addFavourite, removeFavourite } = FavouriteToggle()
+      const { mutate: addFavourite } = useAddFavourite()
+    const { mutate: removeFavourite } = useRemoveFavourite()
 
   // fetching data from backend
   const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
@@ -81,9 +83,9 @@ function SpecificGenre() {
             (
               films.map((film, i) => {
                 if(films.length === i + 1) {
-                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres isRef/>
+                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} userId={user?._id} showGenres isRef/>
                 } else {
-                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} showGenres/>
+                  return <MediaCard<FilmsWithGenres> key={film.id} lastMediaElementRef={lastMediaElementRef}  media={film} type={type} favouriteIds={favouriteIds ?? new Set()} addFavourite={addFavourite} removeFavourite={removeFavourite} userId={user?._id} showGenres/>
                 } })
             )
             }
