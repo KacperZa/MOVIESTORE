@@ -1,6 +1,5 @@
 import express from 'express'
 const app = express()
-import bcrypt from 'bcrypt'
 import mongoose from 'mongoose'
 import cors from 'cors'
 require('dotenv').config()
@@ -61,7 +60,7 @@ app.get('/api', async (req, res) => {
     } catch(err) {
         console.error(err)
     }
-    })
+})
 
 
 

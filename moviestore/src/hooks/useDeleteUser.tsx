@@ -1,5 +1,5 @@
 import { useUser } from '@/context/useUser'
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export function useDeleteUser() {
