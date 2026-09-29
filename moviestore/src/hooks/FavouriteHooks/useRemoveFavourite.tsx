@@ -1,6 +1,5 @@
 import { useUser } from '@/context/useUser';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import type { FavouriteProps } from './useAddFavourite';
 
 const useRemoveFavourite = () => {
     const { user } =  useUser()
@@ -9,7 +8,7 @@ const useRemoveFavourite = () => {
 
     const queryKey = ['favouriteIds', user?._id]
 
-    const removeFavourite = async ({ id }: FavouriteProps) => {
+    const removeFavourite = async ({ id } : { id: number} ) => {
 
         const res = await fetch(`http://localhost:5000/favourite/${id}`, {
             method: 'DELETE',

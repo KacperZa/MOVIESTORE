@@ -1,4 +1,5 @@
 import { useUser } from '@/context/useUser'
+import { useState } from 'react'
 
 interface handleSubmitProps {
   username: string | null
@@ -8,41 +9,43 @@ interface handleSubmitProps {
 }
 
 const useEditUser = () => {
+   const [loading, setLoading] = useState(false)
+   const [error, setError] = useState<string | null>(null)
 
   const { user, setUser} = useUser()
 
     const editUser = async ({username, email, age, password}: handleSubmitProps) => {
-        // e.preventDefault()
-        try {
-        const res = await fetch(`http://localhost:5000/profile/${user?._id}`, {
-            method: 'PATCH',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-              username, 
-              email, 
-              age, 
-              password
-            })
+      setLoading(true)
+      setError(null)
+      try {
+      const res = await fetch(`http://localhost:5000/profile/${user?._id}`, {
+        method: 'PATCH',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          username, 
+          email, 
+          age, 
+          password
         })
-    
-        const data = await res.json()
-        
-        if(!res.ok){
-            console.error("ERROR: ", res.status)
-            console.log(res)
-        }
-        setUser(data)
-        console.log("USER: ", user)
-        console.log(res.status, data)
-        close()
+      })
 
-        
-        } catch (err) {
+      const data = await res.json()
+      
+      if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
+
+      setUser(data)
+      console.log("USER: ", user)
+      console.log(res.status, data)
+      
+      } catch (err) {
         console.error(err)
-        }
-}
+        setError(err instanceof Error ? err.message : 'Unknown error')
+      } finally {
+        setLoading(false)
+      }
+  }
 
-  return { editUser }
+  return { editUser, loading, error }
 }
 
 export default useEditUser

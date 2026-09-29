@@ -4,13 +4,9 @@ import { useParams, useSearchParams } from 'react-router-dom'
 import type { Films, FilmsWithGenres } from '@/ui/MediaCard';
 import type { FilterItem } from '@/ui/Filters';
 import { useInfiniteQuery } from '@tanstack/react-query';
-import type { MovieGenre } from '@/context/MovieGenreContext';
-import type { TvGenre } from '@/context/TvGenreContext';
 import { useMovieGenres } from '@/context/useMovieGenres';
 import { useTvGenres } from '@/context/useTvGenres';
-
-
-
+import type { Genre } from '@/context/MovieGenreContext';
 
   export interface Genres {
     id: number
@@ -27,14 +23,14 @@ import { useTvGenres } from '@/context/useTvGenres';
     customType?: string
   }
 
-  interface fetchMediaProps {
+  export interface fetchMediaProps {
     type: string, 
     id_genre?: string
     search?: string,
     page: number,
     filters: FilterItem | undefined,
     adultFilms?: boolean,
-    genreHolder: MovieGenre[] | TvGenre[] | undefined
+    genreHolder: Genre[] | undefined
     signal: AbortSignal
   }
 
@@ -164,5 +160,5 @@ export default function useFetchMedia({search, page, id_genre, filters, adultFil
 
 
 
-  return { error, films, fetchNextPage, isFetchNextPageError, isFetchingNextPage, isPending, isError, hasNextPage }
+  return {data, error, films, fetchNextPage, isFetchNextPageError, isFetchingNextPage, isPending, isError, hasNextPage }
 }
