@@ -61,7 +61,7 @@ function Favourites() {
   
     return (
     <>
-        <div className='flex flex-col w-full h-full border-t border-card p-2 items-center  bg-radial from-card from-5% to-background'>
+        <div className='flex flex-col w-full h-full border-t border-card p-2 pb-0 items-center  bg-radial from-card from-5% to-background'>
             <div className='xl:text-5xl tracking-wider text-4xl p-5 font-bold  text-secondary '>Favourites</div>
             {isPending && 
               <>

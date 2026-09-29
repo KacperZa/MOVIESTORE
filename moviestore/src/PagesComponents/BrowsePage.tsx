@@ -53,7 +53,7 @@ function BrowsePage() {
   return (
   <>
 
-    <motion.div className=" flex w-full h-full flex-row bg-card rounded-2xl p-2  scrollbar-thumb-primary scrollbar-gutter-stable">
+    <motion.div className=" flex w-full h-full flex-row bg-card rounded-t-2xl p-2 pb-0  scrollbar-thumb-primary scrollbar-gutter-stable">
       <AnimatePresence>
       {isVisibleSidebar && 
         <GenreSidebar genre={safeType} setIsVisibleSidebar={setIsVisibleSidebar}/>
