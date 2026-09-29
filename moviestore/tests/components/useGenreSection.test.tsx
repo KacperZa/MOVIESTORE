@@ -164,8 +164,6 @@ describe('useGenreSection', () => {
             )
         })
 
-        waitFor(() => expect(getByTestId('status')).toHaveTextContent('error'))
-        expect(getByTestId('')) 
-        
+        waitFor(() => expect(getByTestId('status')).toHaveTextContent('error'))        
     })
 })
