@@ -1,13 +1,10 @@
 import useFetchGenres from "@/hooks/useFetchGenres";
 import { createContext } from "react";
+import type { Genre } from "./MovieGenreContext";
 
-export type TvGenre = {
-  id: number
-  name: string
-}
 
 type TvGenresContextType = {
-  tvGenres: TvGenre[] | undefined
+  tvGenres: Genre[] | undefined
   isPending: boolean
 }
 
