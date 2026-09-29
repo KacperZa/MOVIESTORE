@@ -8,24 +8,23 @@ const useAddHistory = () => {
 
     const { user } = useUser()
 
-    const addHistory = async ({ userId, id, type, status} : HistoryPropsWithStatus) => {
-
-        const res = await fetch(`http://localhost:5000/history/${userId}`, {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-            mediaType: type,
-            tmdbId: id,
-            status: status
-            })
+    const addHistory = async ({ userId, tmdbId, mediaType, status} : HistoryPropsWithStatus) => {
+      const res = await fetch(`http://localhost:5000/history/${userId}`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          mediaType: mediaType,
+          tmdbId: tmdbId,
+          status: status
         })
+      })
 
         if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
         return await res.json()
     }
     
 // TanStack optimistic add function
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, isError, error } = useMutation({
     mutationFn: addHistory,
 
     onSuccess: () => {
@@ -38,7 +37,7 @@ const useAddHistory = () => {
 
       queryClient.setQueryData<Map<number, HistoryMap>>(['historyIds', user?._id], (prev) => {
       const next = new Map(prev ?? [])
-      next.set(newPost.id, newPost.status)
+      next.set(newPost.tmdbId, newPost.status)
       return next
     })
 
@@ -51,7 +50,7 @@ const useAddHistory = () => {
 
   })
 
-  return { mutate, isPending}
+  return { mutate, isPending, error, isError }
 }
 
 export default useAddHistory
