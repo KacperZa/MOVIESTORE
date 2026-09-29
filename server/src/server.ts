@@ -205,10 +205,12 @@ app.get('/reviews/tv/:id', async (req, res) => {
     }
 
 })
-// MOVIE GENRES
-app.get('/api/movie/genres', async (req, res) => {
+// GENRES
+app.get('/api/:type/genres', async (req, res) => {
+    
+    const type = req.params.type
     try {
-        const genres = await getOrSetCache(`genresMovie`, async () => await tmdbFetch({ endpoint: '/genre/movie/list'}))
+        const genres = await getOrSetCache(`genres:${type}`, async () => await tmdbFetch({ endpoint: `/genre/${type}/list`}))
         res.json(genres.genres)
     } catch (err) {
         console.error(err)
@@ -257,17 +259,6 @@ app.get('/api/movie/:genreId', async (req, res) => {
     } catch (err) {
         console.error(err)
         res.status(502).json({ error: 'Failed to fetch movie data' })
-    }
-})
-
-
-// TV SHOWS GENRES
-app.get('/api/tv/genres', async (req, res) => {
-    try {
-        const genres = await getOrSetCache(`genresTv`, async () => await tmdbFetch({ endpoint: '/genre/tv/list'}))
-        res.json(genres.genres)
-    } catch (err){
-        console.error(err)
     }
 })
 
