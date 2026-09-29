@@ -14,7 +14,7 @@ export const createFetchHookTests = <TParams, TData>({ hookName, useHook, validP
     const mockFetch = vi.fn()
     globalThis.fetch = mockFetch
     
-    describe('useFetchVideos', () => {
+    describe(`${hookName}`, () => {
         beforeEach(() =>  mockFetch.mockClear());
     
 
