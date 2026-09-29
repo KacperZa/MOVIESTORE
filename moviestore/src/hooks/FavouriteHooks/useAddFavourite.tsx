@@ -29,7 +29,7 @@ const useAddFavourite = () => {
     }
 
     // TanStack optimistic add function
-    const { mutate, isPending } = useMutation({
+    const { mutate, isPending, error, isError } = useMutation({
     mutationFn: addFavourite,
 
     onSuccess: () => queryClient.invalidateQueries({ queryKey}),
@@ -52,7 +52,7 @@ const useAddFavourite = () => {
         
     })
 
-  return { mutate, isPending }
+  return { mutate, isPending, error, isError }
 }
 
 export default useAddFavourite

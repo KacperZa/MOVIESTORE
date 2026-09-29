@@ -17,7 +17,9 @@ function useGenreSection({genreId, type} : GenreSectionProps) {
     const genreHolder = type === "tv" ? tvGenresHolder : movieGenresHolder
     
     const fetchGenreMovies = async (): Promise<FilmsWithGenres[]> => {
-            const res = await fetch(`http://localhost:5000/api/${type}/${genreId}`)
+            const res = await fetch(`http://localhost:5000/api/${type}/${genreId}`, 
+                { method: 'GET'}
+            )
             if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
 
             const data = await res.json()
@@ -35,7 +37,7 @@ function useGenreSection({genreId, type} : GenreSectionProps) {
     }
 
     const { data, isPending, isError, error } = useQuery({
-        queryKey: ['homeGenreMovies',type, genreId],
+        queryKey: ['homeGenreMovies', type, genreId],
         queryFn: fetchGenreMovies,
         enabled: isVisible
     })

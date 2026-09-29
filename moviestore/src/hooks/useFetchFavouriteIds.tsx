@@ -2,16 +2,16 @@ import { useQuery } from '@tanstack/react-query'
 
 interface FetchIdsProps {
   userId?: string
-  type: "favourite" | "history"
+  // type: "favourite" | "history"
 }
 
-function useFetchFavouriteIds({userId } : FetchIdsProps) {
+function useFetchFavouriteIds({ userId } : FetchIdsProps) {
 
   const url = `http://localhost:5000/favourite/ids/${userId}`
   const queryKey = ['favouriteIds', userId] 
   
   const fetchIds = async (): Promise<Set<number | string>> => {
-      const res = await fetch(url)
+      const res = await fetch(url, { method: 'GET'})
       if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
       
       const data = await res.json()

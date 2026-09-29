@@ -4,14 +4,14 @@ import type { MovieDetails } from './useFetchMovieDetails'
 import type { TvDetails } from './useFetchTvDetails'
 
 
-interface HistoryMovieItem extends MovieDetails {
+export interface HistoryMovieItem extends MovieDetails {
     mediaType: 'movie';
     userId: string;
     status: 'watched' | 'pending'
 
 }
 
-interface HistoryTvItem extends TvDetails {
+export interface HistoryTvItem extends TvDetails {
     mediaType: 'tv';
     userId: string;
     status: 'watched' | 'pending'
@@ -34,7 +34,8 @@ function useFetchWatchedMedia() {
 
     const { isPending, isError, data, error } = useQuery({
         queryKey: ['watchedFilms'],
-        queryFn: history
+        queryFn: history,
+        enabled: !!user?._id
     })
     
   return { isPending, isError, data, error }

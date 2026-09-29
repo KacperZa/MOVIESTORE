@@ -16,18 +16,18 @@ function useFetchHistoryData({userId} : FetchIdsProps) {
   const url = `http://localhost:5000/history/ids/${userId}`
   const queryKey = ['historyIds', userId]
   
-        const fetchIds = async () => {
-            const res = await fetch(url)
-            if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
-            
-            const data = await res.json()
+  const fetchIds = async () => {
+      const res = await fetch(url, { method: 'GET'})
+      if (!res.ok) throw new Error(`HTTP error: ${res.status}`)
+      
+      const data = await res.json()
 
-            const historyData = new Map<number, string>(
-                data.map((entry : HistoryData) => [entry.tmdbId, entry.status])
-            )
+      const historyData = new Map<number, string>(
+          data.map((entry : HistoryData) => [entry.tmdbId, entry.status])
+      )
 
-            return historyData        
-        }
+      return historyData        
+  }
 
     const { isPending, isError, data, error} = useQuery({
       queryKey: queryKey,

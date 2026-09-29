@@ -15,12 +15,10 @@ export function useDeleteUser() {
         try {
         const res = await fetch(`http://localhost:5000/profile/delete/${user?._id}`, {
             method: 'DELETE',
-            headers: {'Content-Type': 'application/json'},
         })
 
-        if(!res.ok) throw new Error(`HTTP Error: ${res.status}`)
+        if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
 
-        console.log('Deleted an account')
         navigate('/')
         setUser(null)
         const data = await res.json()

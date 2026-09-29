@@ -13,7 +13,7 @@ interface Provider {
 }
 
 
-interface ProvidersData {
+export interface ProvidersData {
     link: string;
     rent: Provider[];
     flatrate: Provider[];
@@ -23,10 +23,12 @@ interface ProvidersData {
 const useFetchProviders = ({id, type} : FetchProvidersProps) => {
 
     const fetchProviders = async (): Promise<ProvidersData> => {
-        const res = await fetch(`http://localhost:5000/${type}/providers/${id}`)
+        const res = await fetch(`http://localhost:5000/${type}/providers/${id}`,
+            { method: 'GET' }
+        )
 
         if(!res.ok) {
-            throw new Error(`HTTP status: ${res.status}`)
+            throw new Error(`HTTP error: ${res.status}`)
         }
 
         return await res.json()
@@ -34,7 +36,7 @@ const useFetchProviders = ({id, type} : FetchProvidersProps) => {
 
     const { isError, error, isPending, data} = useQuery({
         queryKey: ['providers', type, id],
-        queryFn: fetchProviders
+        queryFn: fetchProviders,
     })
   return { isError, error, isPending, data}
 }

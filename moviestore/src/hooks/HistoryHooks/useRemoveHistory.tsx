@@ -1,6 +1,6 @@
 import { useUser } from '@/context/useUser'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import type { HistoryMap, HistoryProps } from './usePatchHistory'
+import type { HistoryMap } from './usePatchHistory'
 
 const useRemoveHistory = () => {
 
@@ -9,7 +9,7 @@ const useRemoveHistory = () => {
 
     const queryKey = ['historyIds', user?._id]
 
-      const removeHistory = async ({ id }: HistoryProps) => {
+      const removeHistory = async ({ id }: { id: number}) => {
         const resDelete = await fetch(`http://localhost:5000/history/${id}`, {
           method: 'DELETE',
           headers: {'Content-Type': 'application/json'}
@@ -21,7 +21,7 @@ const useRemoveHistory = () => {
       }
 
     // TanStack optimistic add function
-  const { mutate, isPending } = useMutation({
+  const { mutate, isPending, error, isError } = useMutation({
     mutationFn: removeHistory,
 
     onSuccess: () => {
@@ -47,7 +47,7 @@ const useRemoveHistory = () => {
 
   })
 
-  return { mutate, isPending }
+  return { mutate, isPending, error, isError }
 }
 
 export default useRemoveHistory

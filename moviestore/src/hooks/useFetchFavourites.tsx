@@ -15,13 +15,18 @@ export default function useFetchFavourites() {
         const res = await fetch(`http://localhost:5000/favourite/${user?._id}`, {
             method: 'GET'
         })
-        const data = await res.json()
-        return data
+        
+        if(!res.ok) throw new Error(`HTTP error: ${res.status}`)
+            
+        return await res.json()
+
+
     }
     
     const {isPending, isError, data, error} = useQuery({
         queryKey: ['favourites'],
-        queryFn: favourites
+        queryFn: favourites,
+        enabled: !!user?._id
     })
   return { isPending, isError, data, error }
 }
