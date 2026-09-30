@@ -5,7 +5,6 @@ import { motion } from "motion/react"
 import { Button, PasswordInput, TextInput } from "@mantine/core"
 import { useForm } from "@mantine/form"
 import ThemeSwitch from "@/ui/ThemeSwitch"
-import { Undo2 } from "lucide-react"
 import ReturnButton from "@/ui/ReturnButton"
 
 interface HandleSubmitProps {
