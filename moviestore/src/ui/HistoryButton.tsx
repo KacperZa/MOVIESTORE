@@ -59,10 +59,10 @@ const HistoryButton = ({historyMap, id, type} : HistoryButtonProps) => {
                 if (user === null) {navigate('/login'); return}
      
                 if(historyMap.has(id)){
-                    mutateRemoveHistory({ id, userId: user?._id })
+                    mutateRemoveHistory({ id })
                     console.log("Usuwamy z WATCHED")
                 } else {
-                    mutateAddHistory({ type, id, status: "pending", userId: user?._id});
+                    mutateAddHistory({ mediaType: type, tmdbId: id, status: "pending", userId: user?._id});
                     console.log("Dodajemy DO WATCHED")
                 }
                 }}
@@ -104,12 +104,12 @@ const HistoryButton = ({historyMap, id, type} : HistoryButtonProps) => {
                 if(historyMap.has(id)) {
                     // Checking the status
                     if(status === "watched") {
-                        mutatePatchHistory({ type, id, status: "pending", userId: user?._id})
+                        mutatePatchHistory({ mediaType: type, tmdbId: id, status: "pending"})
                     } else {
-                        mutatePatchHistory({ type, id, status: "watched", userId: user?._id})
+                        mutatePatchHistory({ mediaType: type, tmdbId: id, status: "watched"})
                     }
                 } else {
-                    mutateAddHistory({ type, id, status: "pending", userId: user?._id})
+                    mutateAddHistory({ mediaType: type, tmdbId: id, status: "pending", userId: user?._id})
                 }
 
                 }}

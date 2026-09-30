@@ -205,7 +205,7 @@ const MovieDetailPage = () => {
                         if(!id || !type) return
 
                         if(favouriteIds.has(Number(id))){
-                            removeFavourite({ id: Number(id), userId: user?._id, type})
+                            removeFavourite({ id: Number(id) })
                             console.log("Usuwamy ")
                         } else {
                             addFavourite({userId: user?._id, type, id: Number(id)});
