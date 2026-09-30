@@ -5,7 +5,6 @@ import { Clock, DollarSign, Heart, UserStar } from 'lucide-react'
 import useFetchVideo, { type Video } from '@/hooks/useFetchVideo'
 import { animate, inView, motion, stagger } from 'motion/react'
 import { useUser } from '@/context/useUser'
-import useFetchIds from '@/hooks/useFetchFavouriteIds'
 import MovieDetailsSkeleton from '@/ui/MovieDetailsSkeleton'
 import HistoryButton from '@/ui/HistoryButton'
 import useFetchHistoryData from '@/hooks/useFetchHistoryData'
@@ -13,6 +12,7 @@ import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 import useFetchProviders from '@/hooks/useFetchProviders'
 import { useState } from 'react'
+import useFetchFavouriteIds from '@/hooks/useFetchFavouriteIds'
 
 const MovieDetailPage = () => {
     const [currentProviderType, setCurrentProviderType] = useState<"flatrate" | "rent" | "buy" | null>(null)
@@ -32,7 +32,7 @@ const MovieDetailPage = () => {
     const { hoursRuntime, minutesRuntime } = useRuntime(details?.runtime)
         
     // Fetching media ids that are marked as favourite and error handling
-    const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
+    const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchFavouriteIds({ userId: user?._id })
     if(isErrorFavouriteIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
     // Fetching media that are in watchlist and error handling
@@ -178,7 +178,7 @@ return (
                             if (user === null) {navigate('/login'); return}
 
                             if(favouriteIds.has(Number(id))){
-                                mutateRemoveFavourite({ id: Number(id), userId: user._id, type})
+                                mutateRemoveFavourite({ id: Number(id) })
                                 console.log("Usuwamy ")
                             } else {
                                 mutateAddFavourite({ type, id: Number(id), userId: user?._id});

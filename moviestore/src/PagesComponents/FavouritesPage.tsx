@@ -3,10 +3,10 @@ import MediaCard, { type FilmsWithGenres } from '@/ui/MediaCard'
 import { useUser } from '@/context/useUser'
 import { motion } from 'motion/react'
 import { useNavigate } from 'react-router-dom'
-import useFetchIds from '@/hooks/useFetchFavouriteIds'
 import MediaCardSkeleton from '@/ui/MediaCardSkeleton'
 import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
+import useFetchFavouriteIds from '@/hooks/useFetchFavouriteIds'
 
 export interface MediaWithUser extends FilmsWithGenres {
   userId: string
@@ -41,7 +41,7 @@ function Favourites() {
   const { mutate: mutateAddFavourite } = useAddFavourite()
   const { mutate: mutateRemoveFavourite } = useRemoveFavourite()
 
-  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
+  const { isError: isErrorIds, data: favouriteIds, error: errorFavouriteIds } = useFetchFavouriteIds({ userId: user?._id })
 
   if(isErrorIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 

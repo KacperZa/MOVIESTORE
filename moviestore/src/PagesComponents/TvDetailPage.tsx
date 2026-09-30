@@ -5,7 +5,6 @@ import useFetchTvDetails from '@/hooks/useFetchTvDetails'
 import { useEffect, useRef, useState } from 'react'
 import { motion } from 'motion/react'
 import { useUser } from '@/context/useUser'
-import useFetchIds from '@/hooks/useFetchFavouriteIds'
 import TvDetailsSkeleton from '@/ui/TvDetailsSkeleton'
 import HistoryButton from '@/ui/HistoryButton'
 import useFetchHistoryData from '@/hooks/useFetchHistoryData'
@@ -13,6 +12,7 @@ import useAddFavourite from '@/hooks/FavouriteHooks/useAddFavourite'
 import useRemoveFavourite from '@/hooks/FavouriteHooks/useRemoveFavourite'
 import useFetchProviders from '@/hooks/useFetchProviders'
 import SeasonImg from '@/ui/SeasonImg'
+import useFetchFavouriteIds from '@/hooks/useFetchFavouriteIds'
 
 const MovieDetailPage = () => {
     const [selectedSeason, setSelectedSeason] = useState<number | null>(null)
@@ -28,7 +28,7 @@ const MovieDetailPage = () => {
     const { user } = useUser()
 
     // Fetching media ids that are marked as favourite and error handling
-    const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchIds({userId: user?._id, type: "favourite"})
+    const { isError: isErrorFavouriteIds, data: favouriteData, error: errorFavouriteIds } = useFetchFavouriteIds({ userId: user?._id })
     if(isErrorFavouriteIds) console.log('An Error occured during fetching favouriteIds', errorFavouriteIds?.message)
 
     // Fetching media that are in watchlist and error handling
