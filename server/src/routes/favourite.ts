@@ -1,14 +1,12 @@
-const router = express.Router()
-import Media from '../model/media'
-import express, { Request, Response, NextFunction } from 'express'
-
-
-
 import authMiddleware from '../middleware/authMiddleware'
 import { getOrSetCache } from '../redis/redisClient'
 import { tmdbFetch } from '../utils/tmdbFetch'
 import { favouriteSchema } from '../schemas/Favourite.schema'
 import z from 'zod'
+import Media from '../model/media'
+import express, { Request, Response, NextFunction } from 'express'
+
+const router = express.Router()
 
 router.delete('/clear', async (req, res) => {
     try{

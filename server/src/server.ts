@@ -1,12 +1,17 @@
 import express from 'express'
-const app = express()
 import mongoose from 'mongoose'
 import cors from 'cors'
-require('dotenv').config()
 import rateLimitMiddleware from './middleware/RateLimiter'
 import { redisClient, getOrSetCache } from './redis/redisClient.js'
 import { tmdbFetch } from './utils/tmdbFetch'
+import historyRouter from './routes/history'
+import { deliveryQuerySchema } from './schemas/DeliveryQuery.schema'
+import { deliveryParamSchema } from './schemas/DeliveryParam.schema'
+import z from 'zod'
+import path from 'path'
 
+require('dotenv').config({ path: path.resolve(__dirname, '../../.env')})
+const app = express()
 
 app.use(express.json())
 app.use(cors())
@@ -24,10 +29,6 @@ app.use('/profile', profilesRouter)
 import mediasRouter from './routes/favourite'
 app.use('/favourite', mediasRouter)
 
-import historyRouter from './routes/history'
-import { deliveryQuerySchema } from './schemas/DeliveryQuery.schema'
-import { deliveryParamSchema } from './schemas/DeliveryParam.schema'
-import z from 'zod'
 app.use('/history', historyRouter)
 
 app.get('/api', async (req, res) => {

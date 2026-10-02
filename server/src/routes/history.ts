@@ -1,5 +1,4 @@
 import express, { Request, Response, NextFunction } from 'express'
-const router = express.Router()
 import History from '../model/history'
 import authMiddleware from '../middleware/authMiddleware'
 import { HistorySchema } from '../schemas/History.schema'
@@ -8,6 +7,7 @@ import history from '../model/history'
 import { getOrSetCache } from '../redis/redisClient'
 import { tmdbFetch } from '../utils/tmdbFetch'
 
+const router = express.Router()
 
 router.delete('/clear', async (req, res) => {
     try{

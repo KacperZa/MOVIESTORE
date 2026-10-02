@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction, Router } from 'express'
 import { hash, compare } from 'bcrypt'
-const router =  Router() 
 import User from '../model/user'
 import { isValidObjectId } from 'mongoose'
 import { registerUserSchema } from '../schemas/User.schema'
 import z from 'zod'
+
+const router =  Router() 
 // import db from '../server'
 
 // Getting all users
